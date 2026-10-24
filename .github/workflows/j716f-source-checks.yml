@@ -67,6 +67,11 @@ jobs:
           assert config['boot_image']['header_version'] == 2
           assert (board / 'j716f-loader-v12.dsc').is_file()
           assert (board / 'j716f-loader-v12.fdf').is_file()
+          assert (board / 'j716f-memory-v13.dsc').is_file()
+          assert (board / 'j716f-memory-v13.fdf').is_file()
+          survey = (board / 'Applications/J716fMemoryProbe/J716fMemoryProbe.c').read_text()
+          assert 'Snapshot (' in survey and 'GetMemoryMap' in survey
+          assert '->ExitBootServices (' not in survey and '->Boot (' not in survey
           print('J716F Python, JSON and boot-image configuration syntax passed')
           PY
 

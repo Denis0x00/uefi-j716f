@@ -1,0 +1,29 @@
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+[Defines]
+  INF_VERSION = 0x0001001B
+  BASE_NAME = J716fMemoryProbe
+  FILE_GUID = 16F5B116-8113-47BF-898E-00B333E08A13
+  MODULE_TYPE = UEFI_APPLICATION
+  VERSION_STRING = 0.1
+  ENTRY_POINT = J716fMemoryProbeMain
+[Sources]
+  Font.c
+  IoResult.h
+  J716fMemoryProbe.c
+[Packages]
+  MdePkg/MdePkg.dec
+  UniXNUPkg/UniXNUPkg.dec
+[LibraryClasses]
+  BaseLib
+  PrintLib
+  BaseMemoryLib
+  MemoryAllocationLib
+  UefiApplicationEntryPoint
+  UefiBootServicesTableLib
+  UefiLib
+[Protocols]
+  gEfiLoadedImageProtocolGuid
+  gEfiSimpleFileSystemProtocolGuid
+  gEfiBlockIoProtocolGuid
+  gEfiDevicePathProtocolGuid
+  gEfiGraphicsOutputProtocolGuid

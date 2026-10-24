@@ -36,6 +36,21 @@ in the local bring-up environment.
 
 ## Build boundary
 
+### V13 memory survey
+
+`Platforms/Lenovo/j716fPkg/j716f-memory-v13.dsc` is a separate diagnostic profile
+derived from V12. It builds an external `J716fMemoryProbe.efi` for the local
+embedded FAT. The application captures `GetMemoryMap`, reports free memory and
+the largest 2 MiB-aligned conventional descriptor, then holds paged details for
+photographs. Its capacity estimate does not include the kernel base residue.
+
+The local Ubuntu build and Android header-v2/FV/FAT artifact audits passed.
+Hardware validation is pending. The profile retains the existing memory map;
+it does not load a kernel, allocate a kernel window, or exit boot services.
+The generated `J716fMemoryV13.fat` and boot image remain local inputs/outputs.
+This survey is needed because the current static table exposes a 224 MiB DXE
+region, while the pinned DarwinBoot loader needs a minimum 256 MiB window.
+
 ### GitHub Actions
 
 `J716F UEFI source checks` runs on push/PR. It checks the pinned submodule Git
