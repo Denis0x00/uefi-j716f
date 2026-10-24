@@ -1,0 +1,86 @@
+name: J716F UEFI source checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  source-checks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Check submodule pins and executable file modes
+        run: |
+          python3 - <<'PY'
+          import configparser
+          import subprocess
+          from pathlib import Path
+          index = {}
+          for row in subprocess.check_output(['git', 'ls-files', '--stage', '-z']).split(b'\0'):
+              if row:
+                  meta, name = row.split(b'\t', 1)
+                  mode, sha, stage = meta.decode().split()
+                  index[name.decode()] = (mode, sha)
+          config = configparser.ConfigParser()
+          config.read('.gitmodules')
+          pins = []
+          for section in config.sections():
+              path = config[section]['path']
+              if path not in index or index[path][0] != '160000':
+                  raise SystemExit(f'Missing pinned submodule gitlink: {path}')
+              pins.append(f'{path}: {index[path][1]}')
+          for path in ('build_uefi.py', 'build_active_devices.sh', 'setup_env.sh'):
+              if index[path][0] != '100755':
+                  raise SystemExit(f'Executable bit missing: {path}')
+              if b'\r\n' in Path(path).read_bytes():
+                  raise SystemExit(f'Expected Linux LF endings: {path}')
+          if any(p.startswith('Binaries/j716f/') or p.endswith('.fat')
+                 for p in index):
+              raise SystemExit('Local J716F vendor/generated inputs must stay outside Git')
+          print('\n'.join(pins))
+          print(f'{len(pins)} gitlinks and 3 executable entry points verified')
+          PY
+
+      - name: Check J716F source and configuration syntax
+        run: |
+          bash -n build_active_devices.sh setup_env.sh
+          python3 - <<'PY'
+          import ast
+          import json
+          import tomllib
+          from pathlib import Path
+          board = Path('Platforms/Lenovo/j716fPkg')
+          for path in [Path('build_uefi.py'), *board.rglob('*.py')]:
+              ast.parse(path.read_text(), filename=str(path))
+          for path in board.rglob('*.json'):
+              json.loads(path.read_text())
+          config = tomllib.loads(Path('Resources/Configs/j716f.toml').read_text())
+          assert config['boot_image']['header_version'] == 2
+          assert (board / 'j716f-loader-v12.dsc').is_file()
+          assert (board / 'j716f-loader-v12.fdf').is_file()
+          print('J716F Python, JSON and boot-image configuration syntax passed')
+          PY
+
+      - name: Verify the Python build entry point can execute on Linux
+        run: |
+          python3 -m pip install coloredlogs==15.0.1
+          ./build_uefi.py --help
+
+      - name: Summary
+        run: |
+          {
+            echo '## J716F UEFI source checks'
+            echo 'Checked Git metadata, script execution and J716F configuration syntax.'
+            echo 'This job does not compile a firmware volume or validate a hardware boot.'
+            echo 'The inherited all-active-devices builder is available only as a separate manual workflow.'
+            echo 'J716F firmware builds still need the matching local resources documented in README.md.'
+          } >> "$GITHUB_STEP_SUMMARY"

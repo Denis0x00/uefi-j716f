@@ -36,6 +36,20 @@ in the local bring-up environment.
 
 ## Build boundary
 
+### GitHub Actions
+
+`J716F UEFI source checks` runs on push/PR. It checks the pinned submodule Git
+entries, Linux executable modes, script execution and J716F configuration
+syntax. A green check means source validation passed, not that UEFI compiled.
+
+The inherited `Build upstream active devices (manual)` workflow is retained for
+explicit manual runs. It builds the devices marked Active in upstream
+`Status.md`; it is not a J716F-specific builder. J716F is still a bring-up port.
+
+The previous export lost executable modes and submodule Git entries. They have
+been restored from Mu-Silicium `42fe563791e51bf5500c2e470ed294ca0c94b97c`.
+The batch script also invokes Python explicitly to avoid relying on its mode.
+
 The J716F platform uses the pinned Mu-Silicium and Mu Basecore revisions in
 `.gitmodules` and the local build lock. Vendor inputs are supplied through the
 local checkout only. Do not copy another device's memory map, DTB values or
