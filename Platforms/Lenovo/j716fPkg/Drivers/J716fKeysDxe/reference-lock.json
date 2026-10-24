@@ -1,0 +1,14 @@
+{
+  "repository": "https://github.com/ht94911/uefi-cas",
+  "commit": "a491522d8f5fecd57be706df1e42e8bd3ca79b20",
+  "source_sha256": {
+    "Include/CasInput.h": "262128bdf909bfaeff6cf018f6e6ff0c0b928e4b065bb3041aea45ab307f5202",
+    "Library/CasInputLib/CasKeys.c": "e9768f3fdf9b4a9657556b42701349ac448866ce1d5302bea4341c44f6dea89a",
+    "Library/CasInputLib/CasSpmi.c": "1d1ca7342dd667b426201cd5152f7e82b8e72bbfff8874a8476c2c5dd2952a0d"
+  },
+  "changes": [
+    "J716F names; local portable header; remove cas reserved-memory diagnostics",
+    "30ms debounce; 10ms poll; restrict SPMI reads to 0x0810 and 0xc510"
+  ],
+  "board_evidence": "checks/peer-ports-20261024/j716f-packed-stock.dts"
+}

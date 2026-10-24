@@ -1,0 +1,28 @@
+{
+  "repository": "https://github.com/UniXNU/UniXNU",
+  "commit": "245aca1a9ec5b730b1cad80fade295800d2981f1",
+  "source_sha256": {
+    "Boot.c": "674f34b0ea51b7a077e79a130c8f85d41638160fbaf7238dd120fd888222b6d3",
+    "Config.c": "0adf75d98639015731fa3879ca4e7c5a9dd383527af520d48ed7b75e6e2b6800",
+    "Font.c": "391c7dbc8c6eb3cd07230e3dd8d38e4ba8a5a9b603bcaecb4d8e62a4603d2ac6",
+    "Inject.c": "a0072e04b6ff233746aec973d38e288bdcc689481f660f043fbf8f3b8a9d4943",
+    "Internal.h": "183dfe7e89f9d64ad38c14601967f6f23a3a0fb3f0efd3eacd267fe33e5545dd",
+    "Kext.c": "f1869ca42e03faf9bd967619ba70dcd3329fb8839513811306478548f67f9aa4",
+    "Logo.c": "da9d49c502f42c489742d2abaa8a300db1c265b0fcf807e4d7bd3d8aa8a9e4a1",
+    "LogoShape.h": "8fe96788c3c1e27df7f4209c31ae1b3818ae99cf858d6dae457cd16643a6a43b",
+    "Main.c": "f01a46219b728b945719e8fa26416cf7e129f91e27e3f04df47364e7e3e3a79e",
+    "Menu.c": "aca6ce5b73aac9c2baa7abaeb10683399e98d4b7efccb3f9afdbc32f3311bc17",
+    "Slice.c": "5cbd409945711c13a9dad18ed6eb5a7c0df49c9b53e7599424c03e23ed2126f8",
+    "Toml.c": "4d82a7de6196873df6f0a2cc033c67d337f505c53d235b053b8c6458d7332a2a",
+    "Ui.c": "241a27392c1e8cc7191ecff38fa3ac023e70ce4938a26ba87dfd805f5053c916",
+    "UniXNULib.inf": "c141b4fbbd0e9c91e5b798db7e372000e6395f03ad67513155b14d54e5d7b381",
+    "Volume.c": "ab9a7b36a258cfb43b8c15fee86393ec9a1978e9b3d3e8d8e2a83b2f36bdbff2"
+  },
+  "changes": [
+    "Menu.c: V9 identity, disable action countdown, no-input notice",
+    "Config.c: V9 fallback identity",
+    "UniXNULib.inf: separate V9 library identity",
+    "Main.c/Internal.h/Boot.c: V10 stage trace, file-read probe, held result screen; original LoadImage file path retained",
+    "V11 Main.c/IoResult.h: external probe shared result table with test counts and GOP status"
+  ]
+}

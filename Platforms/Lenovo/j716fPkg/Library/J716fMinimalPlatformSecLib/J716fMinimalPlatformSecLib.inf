@@ -1,0 +1,18 @@
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+[Defines]
+  INF_VERSION = 0x00010005
+  BASE_NAME = J716fMinimalPlatformSecLib
+  FILE_GUID = 80EB8665-518C-4B26-9232-D0B4FB36F3F3
+  MODULE_TYPE = SEC
+  VERSION_STRING = 0.1
+  LIBRARY_CLASS = PlatformSecLib
+[Sources]
+  PlatformSec.c
+[Sources.AArch64]
+  PlatformHelper.S
+[Packages]
+  MdePkg/MdePkg.dec
+  SiliciumPkg/SiliciumPkg.dec
+[LibraryClasses]
+  IoLib
+  MemoryMapHelperLib

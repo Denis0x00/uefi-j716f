@@ -1,0 +1,11 @@
+{
+  "bytes": 4194304,
+  "fat_type": "FAT16",
+  "sector_size": 512,
+  "data_clusters": 8095,
+  "payload_guid": "a4934a8e-547b-4e44-b2b2-e044ebfa19eb",
+  "efi_bytes": 22528,
+  "efi_sha256": "d1b3aaf5e3378727b77846370117dc446edf7dd10c1e094e0aec5bd3e84fcf10",
+  "sha256": "c7d76d836c4b9fcb12852fdf1b070377705c2469fca3309e3d8f72132dbaaa59",
+  "hardware_verified": false
+}

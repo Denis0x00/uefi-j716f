@@ -1,0 +1,10 @@
+{
+  "bytes": 4194304,
+  "fat_type": "FAT16",
+  "payload_guid": "a4934a8e-547b-4e44-b2b2-e044ebfa19eb",
+  "efi_bytes": 25600,
+  "efi_sha256": "06deb8beba99626c7564a2219b80c8e16dd19f0ef1c46036cf51775025d6a4de",
+  "sha256": "ff42f7086f9a2b2e4a124c717c96f97ec36a062b1172e0be8bb3446d021caf16",
+  "hardware_verified": false,
+  "test_scope": "loader protocol and controlled refusal; no real kernel entry"
+}

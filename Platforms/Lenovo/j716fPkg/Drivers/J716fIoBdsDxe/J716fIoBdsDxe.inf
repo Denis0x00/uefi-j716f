@@ -1,0 +1,34 @@
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+[Defines]
+  INF_VERSION = 0x00010019
+  BASE_NAME = J716fIoBdsDxe
+  FILE_GUID = 3AA08FE4-9915-4AE0-9614-644A504BBA81
+  MODULE_TYPE = DXE_DRIVER
+  VERSION_STRING = 0.1
+  ENTRY_POINT = J716fIoBdsInitialize
+[Sources]
+  J716fIoBds.c
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  UniXNUPkg/UniXNUPkg.dec
+[LibraryClasses]
+  BaseMemoryLib
+  DebugLib
+  DevicePathLib
+  MemoryAllocationLib
+  PcdLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  UefiLib
+[Pcd]
+  gUniXNUPkgTokenSpaceGuid.PcdUniXNUApplicationFile
+[Guids]
+  gEfiEndOfDxeEventGroupGuid
+[Protocols]
+  gEfiBdsArchProtocolGuid
+  gEfiFirmwareVolume2ProtocolGuid
+  gEfiSimpleTextOutProtocolGuid
+  gEfiSimpleTextInProtocolGuid
+[Depex]
+  TRUE

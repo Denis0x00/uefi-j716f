@@ -1,0 +1,6 @@
+{
+  "source": "UniXNUPkg/Library/UniXNULib/Font.c",
+  "commit": "245aca1a9ec5b730b1cad80fade295800d2981f1",
+  "sha256": "391c7dbc8c6eb3cd07230e3dd8d38e4ba8a5a9b603bcaecb4d8e62a4603d2ac6",
+  "changes": "include Uefi.h and local glyph height only"
+}

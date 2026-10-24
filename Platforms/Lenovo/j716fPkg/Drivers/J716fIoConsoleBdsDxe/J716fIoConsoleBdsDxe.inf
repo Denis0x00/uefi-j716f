@@ -1,0 +1,35 @@
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+[Defines]
+  INF_VERSION = 0x00010019
+  BASE_NAME = J716fIoConsoleBdsDxe
+  FILE_GUID = 8A1180B4-9B4E-49A4-BAC4-8C3350965DF8
+  MODULE_TYPE = DXE_DRIVER
+  VERSION_STRING = 0.1
+  ENTRY_POINT = J716fIoConsoleBdsInitialize
+[Sources]
+  J716fIoConsoleBds.c
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  UniXNUPkg/UniXNUPkg.dec
+[LibraryClasses]
+  BaseMemoryLib
+  DebugLib
+  DevicePathLib
+  MemoryAllocationLib
+  PcdLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  UefiLib
+[Pcd]
+  gUniXNUPkgTokenSpaceGuid.PcdUniXNUApplicationFile
+[Guids]
+  gEfiEndOfDxeEventGroupGuid
+[Protocols]
+  gEfiGraphicsOutputProtocolGuid
+  gEfiBdsArchProtocolGuid
+  gEfiFirmwareVolume2ProtocolGuid
+  gEfiSimpleTextOutProtocolGuid
+  gEfiSimpleTextInProtocolGuid
+[Depex]
+  TRUE

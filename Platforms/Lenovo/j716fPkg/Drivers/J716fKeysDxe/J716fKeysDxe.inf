@@ -1,0 +1,31 @@
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+[Defines]
+  INF_VERSION = 0x0001001B
+  BASE_NAME = J716fKeysDxe
+  FILE_GUID = 0E917852-129A-44CB-BC69-FA6444BA1447
+  MODULE_TYPE = DXE_DRIVER
+  VERSION_STRING = 0.1
+  ENTRY_POINT = J716fKeysInitialize
+[Sources]
+  J716fKeysDxe.c
+  J716fInput.h
+  J716fKeys.c
+  J716fSpmi.c
+[Packages]
+  MdePkg/MdePkg.dec
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  IoLib
+  TimerLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+[Protocols]
+  gEfiSimpleTextInProtocolGuid
+  gEfiDevicePathProtocolGuid
+  gEfiTimerArchProtocolGuid
+[Guids]
+  gEfiEventExitBootServicesGuid
+[Depex]
+  gEfiTimerArchProtocolGuid

@@ -1,0 +1,33 @@
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+[Defines]
+  INF_VERSION = 0x00010019
+  BASE_NAME = J716fInheritedFbDxe
+  FILE_GUID = 40D49BA8-448A-40E5-BF92-75FDC4A760D4
+  MODULE_TYPE = DXE_DRIVER
+  VERSION_STRING = 0.1
+  ENTRY_POINT = J716fInheritedFbEntry
+[Sources]
+  J716fInheritedFb.c
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  SiliciumPkg/SiliciumPkg.dec
+[LibraryClasses]
+  BaseMemoryLib
+  CacheMaintenanceLib
+  DebugLib
+  FrameBufferBltLib
+  MemoryAllocationLib
+  MemoryMapHelperLib
+  PcdLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+[Protocols]
+  gEfiDevicePathProtocolGuid
+  gEfiGraphicsOutputProtocolGuid
+[FixedPcd]
+  gSiliciumPkgTokenSpaceGuid.PcdFrameBufferWidth
+  gSiliciumPkgTokenSpaceGuid.PcdFrameBufferHeight
+  gSiliciumPkgTokenSpaceGuid.PcdFrameBufferColorDepth
+[Depex]
+  TRUE
