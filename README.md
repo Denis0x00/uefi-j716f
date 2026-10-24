@@ -74,6 +74,17 @@ unverified. Generated FAT, firmware and photos stay outside this repository.
 rebuild the firmware to embed it. The FAT helper retains the earlier tested
 volume layout. `Tests/WindowPolicyTest.c` compiles the actual WindowPolicy.h.
 
+### V15 real-kernel entry diagnostic (device test pending)
+
+`j716f-entry-v15.dsc` keeps the V14 memory map and 7 MiB FD, but selects a
+separate read-only 64 MiB FAT32 driver and entry menu. The local volume carries
+the experimental prelinked kernel, J716F ADT and manual XNU menu entry. Firmware
+and payload identity audits passed. The new volume, runtime window allocation,
+ExitBootServices and real XNU entry remain unverified. Large-volume heap use can
+fragment free runs. No UFS, root volume or Data seed is configured. The source
+qualification kernel lacks board CPU/platform drivers; the candidate diagnoses
+entry/MMU/first-panic behavior. Generated payloads remain local.
+
 ### GitHub Actions
 
 `J716F UEFI source checks` runs on push/PR. It checks the pinned submodule Git
