@@ -45,11 +45,34 @@ the largest 2 MiB-aligned conventional descriptor, then holds paged details for
 photographs. Its capacity estimate does not include the kernel base residue.
 
 The local Ubuntu build and Android header-v2/FV/FAT artifact audits passed.
-Hardware validation is pending. The profile retains the existing memory map;
+The real device survey and EFI_SUCCESS return were validated. The profile retains the original memory map;
 it does not load a kernel, allocate a kernel window, or exit boot services.
 The generated `J716fMemoryV13.fat` and boot image remain local inputs/outputs.
 This survey is needed because the current static table exposes a 224 MiB DXE
 region, while the pinned DarwinBoot loader needs a minimum 256 MiB window.
+
+### V14 memory-window qualification
+
+`Platforms/Lenovo/j716fPkg/j716f-window-v14.dsc` selects independent memory-map
+and menu-report libraries. V13 is retained unchanged. The new candidate region
+is `[0xD0000000,0xE8000000)`; the application allocates one 256 MiB window with
+the pinned DarwinBoot alignment and the current kernel's `0x7C000` residue.
+
+Real-device evidence on 2026-10-24 confirms `[0xD007C000,0xE007C000)` allocation,
+two complete address-dependent 64-bit write/read rounds (second inverted), data
+cache clean/invalidate, and FreePages. Result: 7 PASS, 0 FAIL, 512 MiB verified
+across two rounds of the same 256 MiB window. The V14 return page also confirms
+EFI_SUCCESS, Complete=1 and matching counts. This does not certify all RAM.
+
+The application and menu use identical version-2 result headers. Firmware
+artifact audits checked 32 source PE modules, no vendor PE, APRIORI, embedded
+FAT identity and Android header-v2. Kernel entry and ExitBootServices remain
+unverified. Generated FAT, firmware and photos stay outside this repository.
+
+`Tools/make_j716f_window_fat.py --efi <J716fMemoryWindowProbe.efi> --out
+<Resources/J716fWindowV14.fat>` creates the local FAT after the first build;
+rebuild the firmware to embed it. The FAT helper retains the earlier tested
+volume layout. `Tests/WindowPolicyTest.c` compiles the actual WindowPolicy.h.
 
 ### GitHub Actions
 

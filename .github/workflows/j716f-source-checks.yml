@@ -75,6 +75,30 @@ jobs:
           print('J716F Python, JSON and boot-image configuration syntax passed')
           PY
 
+      - name: Check V14 isolation and window boundary policy
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          from pathlib import Path
+          board = Path('Platforms/Lenovo/j716fPkg')
+          old = board / 'Library/MemoryMapLib/MemoryMapLib.c'
+          assert hashlib.sha256(old.read_bytes()).hexdigest() == '13e388ecf73e2caf4ae3e38890cf1ccac28194e26b415199e2bc5ed171ab14bb'
+          new = board / 'Library/J716fWindowMemoryMapLib/MemoryMapLib.c'
+          added = '  {"V14 Window Candidate", 0xD0000000, 0x18000000, AddMem, SYS_MEM, SYS_MEM_CAP, Conv, WRITE_BACK_XN},\n'
+          assert new.read_text().replace(added, '') == old.read_text()
+          app = board / 'Applications/J716fMemoryWindowProbe'
+          menu = board / 'Library/J716fWindowTraceUniXNULib'
+          assert (app / 'IoResult.h').read_bytes() == (menu / 'IoResult.h').read_bytes()
+          source = (app / 'J716fMemoryWindowProbe.c').read_text()
+          assert 'WriteBackInvalidateDataCacheRange' in source and 'gBS->FreePages' in source
+          assert '->ExitBootServices (' not in source and '->Boot (' not in source
+          assert 'Report->Version == 2' in (menu / 'Main.c').read_text()
+          PY
+          clang -std=c11 -Wall -Wextra -Werror -fsanitize=undefined -fsanitize-trap=undefined \
+            -I Platforms/Lenovo/j716fPkg/Applications/J716fMemoryWindowProbe \
+            Platforms/Lenovo/j716fPkg/Tests/WindowPolicyTest.c -o /tmp/j716f-window-policy
+          /tmp/j716f-window-policy
+
       - name: Verify the Python build entry point can execute on Linux
         run: |
           python3 -m pip install coloredlogs==15.0.1
