@@ -82,6 +82,8 @@ READ_LOCK_STATUS   = TRUE
   !include j716fPkg/Include/ENTRY_V15_APRIORI.inc
   !include j716fPkg/Include/ENTRY_V15_DXE.inc
 
+  # V15 keeps the existing embedded FAT volume for the entry diagnostic.
+  # UniXNURamDiskDxe is included above for the standard Mu-Silicium initrd path.
   FILE FREEFORM = A4934A8E-547B-4E44-B2B2-E044EBFA19EB {
     SECTION RAW = j716fPkg/Resources/J716fEntryV15.fat
   }

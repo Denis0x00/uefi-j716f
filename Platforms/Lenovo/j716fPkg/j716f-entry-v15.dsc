@@ -88,10 +88,12 @@
 [LibraryClasses]
   UniXNULib|UniXNUPkg/Library/UniXNULib/UniXNULib.inf
   FdtLib|MdePkg/Library/BaseFdtLib/BaseFdtLib.inf
+  HobLib|MdePkg/Library/DxeHobLib/DxeHobLib.inf
 
 [Components]
   UniXNUPkg/Application/UniXNU/UniXNU.inf
   UniXNUPkg/Driver/UniXNUDxe/UniXNUDxe.inf
+  UniXNUPkg/Driver/UniXNURamDiskDxe/UniXNURamDiskDxe.inf
 
 # V8: firmware-volume selection is source-only. Inherited ABL display state.
 [PcdsFixedAtBuild]

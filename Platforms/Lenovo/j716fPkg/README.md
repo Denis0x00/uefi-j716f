@@ -10,3 +10,7 @@ does not configure an IPSW payload, userdata window or kernel handoff.
 
 Vendor binaries and generated FAT resources are local build inputs and are
 ignored by the public repository. See the top-level README before building.
+
+## UniXNU payload integration
+
+The V15 DSC/FDF declares `UniXNURamDiskDxe` together with DiskIoDxe and FAT support, as required by the current UniXNU firmware guide. The existing embedded FAT volume remains enabled for the V15 entry diagnostic until the standard Android initrd handoff is rebuilt and verified.

@@ -1,4 +1,4 @@
-# J716F V12 official DarwinBoot protocol candidate. No vendor DXE modules.
+# J716F V15 migration: shared UniXNURamDiskDxe is declared for the Mu-Silicium initrd path; the existing embedded-FAT diagnostic remains.
 APRIORI DXE {
   INF MdeModulePkg/Core/Dxe/DxeMain.inf
   INF MdeModulePkg/Universal/PCD/Dxe/Pcd.inf
@@ -24,6 +24,7 @@ APRIORI DXE {
   INF j716fPkg/Drivers/J716fInheritedFbDxe/J716fInheritedFbDxe.inf
   INF MdeModulePkg/Universal/Console/GraphicsConsoleDxe/GraphicsConsoleDxe.inf
   INF UniXNUPkg/Driver/UniXNUDxe/UniXNUDxe.inf
+  INF UniXNUPkg/Driver/UniXNURamDiskDxe/UniXNURamDiskDxe.inf
   INF j716fPkg/Drivers/J716fKeysDxe/J716fKeysDxe.inf
   INF j716fPkg/Drivers/J716fEntryFatDxe/J716fEntryFatDxe.inf
   INF MdeModulePkg/Universal/Disk/DiskIoDxe/DiskIoDxe.inf
