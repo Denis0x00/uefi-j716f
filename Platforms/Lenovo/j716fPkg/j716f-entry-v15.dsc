@@ -94,6 +94,9 @@
   UniXNUPkg/Application/UniXNU/UniXNU.inf
   UniXNUPkg/Driver/UniXNUDxe/UniXNUDxe.inf
   UniXNUPkg/Driver/UniXNURamDiskDxe/UniXNURamDiskDxe.inf
+  MdeModulePkg/Universal/Disk/DiskIoDxe/DiskIoDxe.inf
+  MdeModulePkg/Universal/Disk/UnicodeCollation/EnglishDxe/EnglishDxe.inf
+  FatPkg/EnhancedFatDxe/Fat.inf
 
 # V8: firmware-volume selection is source-only. Inherited ABL display state.
 [PcdsFixedAtBuild]
