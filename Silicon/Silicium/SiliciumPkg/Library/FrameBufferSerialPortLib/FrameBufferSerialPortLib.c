@@ -128,8 +128,9 @@ GetFontScale ()
   // Get Smaller Display Dimension
   UINT32 ShorterDimension = (FB_WIDTH < FB_HEIGHT) ? FB_WIDTH : FB_HEIGHT;
 
-  // Return Calculated Font Scale
-  return (ShorterDimension < 426) ? 1 : (UINT8)(ShorterDimension / 426);
+  // Keep diagnostic traces readable in photographs. The J716F panel is
+  // 1600 pixels high, selecting scale 5 on the target panel.
+  return (ShorterDimension < 320) ? 1 : (UINT8)(ShorterDimension / 320);
 }
 
 VOID

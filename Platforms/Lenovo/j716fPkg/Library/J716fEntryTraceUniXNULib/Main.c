@@ -80,11 +80,29 @@ J716fResetReasonFormat (
   }
 }
 
+STATIC
+VOID
+J716fResetReasonSummary (
+  OUT CHAR16 *Buffer,
+  IN  UINTN  BufferSize
+  )
+{
+  if (Buffer == NULL || BufferSize == 0) {
+    return;
+  }
+
+  if (mJ716fResetReasonAvailable) {
+    UnicodeSPrint (Buffer, BufferSize, L"PMIC RESET: 0x%08x", mJ716fResetReasonCode);
+  } else {
+    UnicodeSPrint (Buffer, BufferSize, L"PMIC RESET: unavailable (%r)", mJ716fResetReasonStatus);
+  }
+}
+
 VOID J716fBootTrace (CONST CHAR16 *Stage)
 {
   CHAR16 Line[96];
   gJ716fBootStage = Stage;
-  UnicodeSPrint (Line, sizeof (Line), L"V19 stage: %s", Stage);
+  UnicodeSPrint (Line, sizeof (Line), L"V21 stage: %s", Stage);
   if (mJ716fTraceUi != NULL) { UniXNUUiDrawStatus (mJ716fTraceUi, 2, Line); }
 }
 
@@ -98,7 +116,7 @@ STATIC VOID J716fShowBootReturn (UNIXNU_UI *Ui, UNIXNU_CONFIG *Config, EFI_STATU
   EFI_INPUT_KEY Key;
   EFI_EVENT Timer;
   UINTN I, Signaled;
-  Screen.Title = L"J716F V19 - EFI return diagnosis";
+  Screen.Title = L"J716F V21 - EFI return diagnosis";
   Screen.ShowLogo = FALSE;
   Screen.Entries = Rows;
   Screen.EntryCount = ARRAY_SIZE (Rows);
@@ -127,7 +145,7 @@ STATIC VOID J716fShowBootReturn (UNIXNU_UI *Ui, UNIXNU_CONFIG *Config, EFI_STATU
   Ui->Info[0] = 0; Ui->Notice[0] = 0;
   UniXNUUiDrawFrame (Ui, &Screen);
   for (I = 0; I < ARRAY_SIZE (Rows); ++I) { UniXNUUiDrawEntry (Ui, &Screen, I, I == 0); }
-  UniXNUUiDrawStatus (Ui, 0, L"V19 BOOT ATTEMPT RETURNED - SCREEN HELD");
+  UniXNUUiDrawStatus (Ui, 0, L"V21 BOOT ATTEMPT RETURNED - SCREEN HELD");
   // Let the key that initiated the attempt fully release; no automatic reboot.
   if (gST->ConIn != NULL) { gST->ConIn->Reset (gST->ConIn, FALSE); }
   if (EFI_ERROR (gBS->CreateEvent (EVT_TIMER, TPL_CALLBACK, NULL, NULL, &Timer))) {
@@ -246,7 +264,10 @@ UniXNURun (
     (UINT32)Config.KitsSkipped
     );
 
-  Config.Title = L"J716F V19 - reset reason diagnostic";
+  Config.Title = L"J716F V21 - reset reason diagnostic";
+  // Use large diagnostic text and reserve the screen for menu/results.
+  Config.Scale = 4;
+  Config.ShowLogo = FALSE;
   UniXNUPublishSlices (&Config);
 
   //
@@ -259,18 +280,26 @@ UniXNURun (
 
   UniXNUUiInit (&Config, &Ui);
   {
-    CHAR16 ResetLine[96];
-    J716fResetReasonFormat (ResetLine, sizeof (ResetLine));
+    CHAR16 ResetSummary[64];
+    J716fResetReasonSummary (ResetSummary, sizeof (ResetSummary));
     UnicodeSPrint (
       Ui.Info,
       sizeof (Ui.Info),
       L"%s | drv %u/%u kits %u acpi %u",
-      ResetLine,
+      ResetSummary,
       (UINT32)Stats.DriversLoaded,
       (UINT32)Stats.DriversFailed,
       (UINT32)Config.KitsLoaded,
       (UINT32)Stats.AcpiInstalled
       );
+    // Config.Notice is an ASCII buffer used by the shared UI. Keep the short
+    // PMIC result prominent while the complete register string remains on the
+    // held return page and serial trace.
+    if (mJ716fResetReasonAvailable) {
+      AsciiSPrint (Config.Notice, sizeof (Config.Notice), "PMIC RESET: 0x%08x", mJ716fResetReasonCode);
+    } else {
+      AsciiSPrint (Config.Notice, sizeof (Config.Notice), "PMIC RESET: unavailable");
+    }
   }
 
   Countdown = TRUE;

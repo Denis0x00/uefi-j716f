@@ -10,7 +10,7 @@
     "Kext.c": "f1869ca42e03faf9bd967619ba70dcd3329fb8839513811306478548f67f9aa4",
     "Logo.c": "da9d49c502f42c489742d2abaa8a300db1c265b0fcf807e4d7bd3d8aa8a9e4a1",
     "LogoShape.h": "8fe96788c3c1e27df7f4209c31ae1b3818ae99cf858d6dae457cd16643a6a43b",
-    "Main.c": "f01a46219b728b945719e8fa26416cf7e129f91e27e3f04df47364e7e3e3a79e",
+    "Main.c": "7a16f002800690f4f9d47046a2f988d9588e2f7231bb56518407bb33da8ee83e",
     "Menu.c": "aca6ce5b73aac9c2baa7abaeb10683399e98d4b7efccb3f9afdbc32f3311bc17",
     "Slice.c": "5cbd409945711c13a9dad18ed6eb5a7c0df49c9b53e7599424c03e23ed2126f8",
     "Toml.c": "4d82a7de6196873df6f0a2cc033c67d337f505c53d235b053b8c6458d7332a2a",
@@ -24,6 +24,8 @@
     "UniXNULib.inf: separate V9 library identity",
     "Main.c/Internal.h/Boot.c: V10 stage trace, file-read probe, held result screen; original LoadImage file path retained",
     "V11 Main.c/IoResult.h: external probe shared result table with test counts and GOP status",
-    "V12: trace actual RunXnu/loader protocol refusal; report only current external probe results"
+    "V12: trace actual RunXnu/loader protocol refusal; report only current external probe results",
+    "V20: read-only PMIC reset-reason protocol provider and serial capture",
+    "V21: large PMIC summary status line, V21 labels, and camera-readable framebuffer trace scale"
   ]
 }

@@ -30,9 +30,18 @@ in the local bring-up environment.
 - UEFI menu, volume keys, power key and RAM FAT / BlockIO paths were validated
   on the real device.
 - Official DarwinBoot v2 protocol and invalid-payload refusal were validated.
-- Physical UFS, ExitBootServices, real Apple ADT, XNU entry, trust cache and
-  userspace remain unverified.
+- Earlier V16/V17 diagnostics recorded ExitBootServices and early XNU entry
+  checkpoints. V18 still reset after replacing its post-MMU reset with WFE;
+  the reset source remains unresolved.
+- V21 was built, audited, flashed to `boot_b` and rebooted. A device photograph
+  confirms the V21 menu, enlarged menu text and `PMIC RESET: 0x02000001`.
+- A V21 XNU attempt has not yet been observed. Native platform drivers,
+  physical UFS/root, trust cache and userspace remain unverified.
 - TzDxe is intentionally out of scope for the current phase.
+
+Current details: [V21 diagnostics](docs/V21_DIAGNOSTICS.md),
+[public validation metadata](docs/v21-validation.json), and the companion
+[device progress record](https://github.com/Denis0x00/UniXNU-j716f/blob/main/docs/V21_RESET_DIAGNOSTICS.md).
 
 ## Build boundary
 
@@ -85,7 +94,7 @@ fragment free runs. No UFS, root volume or Data seed is configured. The source
 qualification kernel lacks board CPU/platform drivers; the candidate diagnoses
 entry/MMU/first-panic behavior. Generated payloads remain local.
 
-### V19 entry reset diagnostics (source change pending hardware test)
+### V21 entry reset diagnostics (menu verified; XNU attempt pending)
 
 The entry trace library now probes the optional Qualcomm `EFI_RESETREASON`
 protocol after serial initialization and again after `ConnectAll()`. When a
@@ -93,7 +102,20 @@ provider is present, the reset code and text are shown in the UniXNU menu and
 on the held return page; the serial trace records the numeric code. When the
 protocol is absent, the page records the EFI status instead of guessing that a
 post-MMU reboot was caused by the UEFI watchdog. The probe is read-only and
-does not clear or write reset state.
+does not clear or write reset state. V21 puts a short PMIC result in the
+prominent status row, renames the stale V19 labels, and increases the
+active framebuffer diagnostic font scale from 3 to 5 on the J716F panel.
+The diagnostic menu uses scale 4 and hides the logo to make room for results.
+
+Use `Platforms/Lenovo/j716fPkg/j716f-entry-v21.dsc` for the recorded diagnostic
+profile. Its contents match the local V21 build, retaining the historical V15
+FDF and output path. The V15 DSC also contains additional standard initrd
+integration declarations; those declarations were absent from the built
+V21 profile. V21 uses the existing embedded read-only FAT and an empty Android
+ramdisk. The public profile needs matching local binary inputs before building.
+
+The photographed PMIC value is a boot-history baseline. Its bit meanings and
+the cause of the earlier resets have not been established.
 
 ### GitHub Actions
 
