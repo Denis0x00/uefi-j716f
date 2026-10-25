@@ -13,11 +13,13 @@
   J716fSpmi.c
 [Packages]
   MdePkg/MdePkg.dec
+  Silicon/Qualcomm/QcomPkg/QcomPkg.dec
 [LibraryClasses]
   BaseLib
   BaseMemoryLib
   DebugLib
   IoLib
+  PrintLib
   TimerLib
   UefiBootServicesTableLib
   UefiDriverEntryPoint
@@ -25,6 +27,7 @@
   gEfiSimpleTextInProtocolGuid
   gEfiDevicePathProtocolGuid
   gEfiTimerArchProtocolGuid
+  gEfiResetReasonProtocolGuid
 [Guids]
   gEfiEventExitBootServicesGuid
 [Depex]

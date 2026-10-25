@@ -31,8 +31,10 @@ J716F_INPUT_U32 J716fSpmiReadByte (const J716F_SPMI_BUS *B, J716F_SPMI_STATE *S,
   if (B == 0 || S == 0 || Value == 0 || B->Read32 == 0 || B->Write32 == 0 || B->DelayUs == 0) { return J716fSpmiBadBus; }
   *Value = 0;
   if (!S->Ready || (S->Version >> 28) != 5) { return J716fSpmiVersion; }
-  // J716F: only SID0 PON and GPIO6 RT_STS bytes are readable.
-  if (Address == J716F_PON_RT_STS) { Apid = S->PonApid; }
+  // J716F: SID0 PON registers and GPIO6 RT_STS are readable.  Keep this
+  // allowlist bounded: callers cannot turn the observer into an arbitrary
+  // SPMI write/read primitive.
+  if ((Address & 0xf00) == 0x800) { Apid = S->PonApid; }
   else if (Address == J716F_GPIO6_RT_STS) { Apid = S->GpioApid; }
   else { return J716fSpmiAddress; }
   if (Apid >= J716F_SPMI_APID_COUNT) { return J716fSpmiMapping; }

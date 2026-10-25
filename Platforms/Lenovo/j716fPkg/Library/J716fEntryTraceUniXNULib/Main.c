@@ -16,7 +16,7 @@ STATIC UNIXNU_UI *mJ716fTraceUi;
 STATIC BOOLEAN mJ716fResetReasonAvailable;
 STATIC EFI_STATUS mJ716fResetReasonStatus = EFI_NOT_FOUND;
 STATIC UINT32 mJ716fResetReasonCode;
-STATIC CHAR16 mJ716fResetReasonText[64];
+STATIC CHAR16 mJ716fResetReasonText[192];
 
 VOID
 J716fResetReasonCapture (
