@@ -35,11 +35,13 @@ in the local bring-up environment.
   the reset source remains unresolved.
 - V21 was built, audited, flashed to `boot_b` and rebooted. A device photograph
   confirms the V21 menu, enlarged menu text and `PMIC RESET: 0x02000001`.
-- A V21 XNU attempt has not yet been observed. Native platform drivers,
+- V21 video confirms its entry bands and a subsequent Lenovo-logo restart; reset attribution remains unresolved.
+- V22A/1s and V22B/3s passed host builds and artifact audits; device testing is pending. Native platform drivers,
   physical UFS/root, trust cache and userspace remain unverified.
 - TzDxe is intentionally out of scope for the current phase.
 
-Current details: [V21 diagnostics](docs/V21_DIAGNOSTICS.md),
+Current details: [V22 checkpoints](docs/V22_DIAGNOSTICS.md),
+[V22 validation](docs/v22-validation.json), [V21 diagnostics](docs/V21_DIAGNOSTICS.md),
 [public validation metadata](docs/v21-validation.json), and the companion
 [device progress record](https://github.com/Denis0x00/UniXNU-j716f/blob/main/docs/V21_RESET_DIAGNOSTICS.md).
 
@@ -94,7 +96,7 @@ fragment free runs. No UFS, root volume or Data seed is configured. The source
 qualification kernel lacks board CPU/platform drivers; the candidate diagnoses
 entry/MMU/first-panic behavior. Generated payloads remain local.
 
-### V21 entry reset diagnostics (menu verified; XNU attempt pending)
+### V21 entry reset diagnostics (entry bands and restart observed)
 
 The entry trace library now probes the optional Qualcomm `EFI_RESETREASON`
 protocol after serial initialization and again after `ConnectAll()`. When a

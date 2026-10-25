@@ -2,7 +2,8 @@
 
 Updated: 2026-10-25. V21 has passed the local firmware build and host image
 audit, and a device photograph confirms its menu and PMIC summary.
-The V21 XNU entry attempt is still awaiting observation.
+Subsequent video confirms V21 entry bands and a restart through the Lenovo logo.
+See the update below and the separately prepared V22 checkpoints.
 
 ## Source changes
 
@@ -84,3 +85,11 @@ reappearance, and the eventual held page or menu. Keep testing limited to `boot_
 Earlier V19/V20 observations and the current device-side record are summarized
 in the companion [V21 progress document](https://github.com/Denis0x00/UniXNU-j716f/blob/main/docs/V21_RESET_DIAGNOSTICS.md).
 Generated firmware, boot images, raw DTBs, photos and raw logs remain local.
+
+## Subsequent V21 video
+
+Entry bands appear at about 24.5s, the screen goes black at 44s, Lenovo logo
+reappears at 46s and a new menu appears at 48s. Startup PMIC changes from
+0x02000001 to 0x02000041. Entry and restart are observed; sustained MMU-on and
+the reset source remain unresolved. The actual kernel lacks the default
+post-MMU timer hook. See [V22 checkpoints](V22_DIAGNOSTICS.md).

@@ -1,3 +1,8 @@
 # Keep Linux build entry points executable with valid shebang line endings.
 *.sh text eol=lf
 *.py text eol=lf
+# Preserve the exact provenance lock bytes recorded by the V22 build.
+Platforms/Lenovo/j716fPkg/Library/J716fV22TraceUniXNULib/* text eol=lf
+Platforms/Lenovo/j716fPkg/Library/J716fV22TraceUniXNULib/source-lock.json -text whitespace=cr-at-eol
+Platforms/Lenovo/j716fPkg/j716f-entry-v22.* text eol=lf
+Platforms/Lenovo/j716fPkg/Include/ENTRY_V22_* text eol=lf
