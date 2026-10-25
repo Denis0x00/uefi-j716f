@@ -13,25 +13,92 @@
 CONST CHAR16 *gJ716fBootStage = L"NOT ENTERED";
 UINTN gJ716fBootFileBytes;
 STATIC UNIXNU_UI *mJ716fTraceUi;
+STATIC BOOLEAN mJ716fResetReasonAvailable;
+STATIC EFI_STATUS mJ716fResetReasonStatus = EFI_NOT_FOUND;
+STATIC UINT32 mJ716fResetReasonCode;
+STATIC CHAR16 mJ716fResetReasonText[64];
+
+VOID
+J716fResetReasonCapture (
+  VOID
+  )
+{
+  EFI_RESETREASON_PROTOCOL  *Protocol;
+  UINT32                    TextLength;
+
+  mJ716fResetReasonAvailable = FALSE;
+  mJ716fResetReasonStatus    = gBS->LocateProtocol (
+                                  &gEfiResetReasonProtocolGuid,
+                                  NULL,
+                                  (VOID **)&Protocol
+                                  );
+  mJ716fResetReasonText[0] = L'\0';
+  mJ716fResetReasonCode    = 0;
+  if (EFI_ERROR (mJ716fResetReasonStatus) || Protocol == NULL ||
+      Protocol->GetResetReason == NULL) {
+    return;
+  }
+
+  TextLength = ARRAY_SIZE (mJ716fResetReasonText);
+  mJ716fResetReasonStatus = Protocol->GetResetReason (
+                              Protocol,
+                              &mJ716fResetReasonCode,
+                              mJ716fResetReasonText,
+                              &TextLength
+                              );
+  if (EFI_ERROR (mJ716fResetReasonStatus)) {
+    mJ716fResetReasonText[0] = L'\0';
+    return;
+  }
+  mJ716fResetReasonAvailable = TRUE;
+}
+
+VOID
+J716fResetReasonFormat (
+  OUT CHAR16  *Buffer,
+  IN  UINTN    BufferSize
+  )
+{
+  if (Buffer == NULL || BufferSize == 0) {
+    return;
+  }
+  if (mJ716fResetReasonAvailable) {
+    UnicodeSPrint (
+      Buffer,
+      BufferSize,
+      L"reset 0x%08x %s",
+      mJ716fResetReasonCode,
+      (mJ716fResetReasonText[0] != L'\0') ? mJ716fResetReasonText : L"(no text)"
+      );
+  } else {
+    UnicodeSPrint (
+      Buffer,
+      BufferSize,
+      L"reset protocol unavailable (%r)",
+      mJ716fResetReasonStatus
+      );
+  }
+}
+
 VOID J716fBootTrace (CONST CHAR16 *Stage)
 {
   CHAR16 Line[96];
   gJ716fBootStage = Stage;
-  UnicodeSPrint (Line, sizeof (Line), L"V15 stage: %s", Stage);
+  UnicodeSPrint (Line, sizeof (Line), L"V19 stage: %s", Stage);
   if (mJ716fTraceUi != NULL) { UniXNUUiDrawStatus (mJ716fTraceUi, 2, Line); }
 }
 
 STATIC VOID J716fShowBootReturn (UNIXNU_UI *Ui, UNIXNU_CONFIG *Config, EFI_STATUS Result)
 {
   UNIXNU_CONFIG Screen = *Config;
-  UNIXNU_ENTRY Rows[7];
-  CHAR16 Text[7][96];
+  UNIXNU_ENTRY Rows[8];
+  CHAR16 Text[8][96];
   EFI_GUID ResultGuid = J716F_IO_RESULT_GUID;
   J716F_IO_RESULT *Report;
   EFI_INPUT_KEY Key;
   EFI_EVENT Timer;
   UINTN I, Signaled;
-  Screen.Title = L"J716F V15 - EFI return diagnosis";
+  Screen.Title = L"J716F V19 - EFI return diagnosis";
   Screen.ShowLogo = FALSE;
   Screen.Entries = Rows;
   Screen.EntryCount = ARRAY_SIZE (Rows);
@@ -54,12 +121,13 @@ STATIC VOID J716fShowBootReturn (UNIXNU_UI *Ui, UNIXNU_CONFIG *Config, EFI_STATU
     UnicodeSPrint (Text[4], sizeof (Text[4]), L"Test input: PATTERN.BIN (not a kernel)");
     UnicodeSPrint (Text[5], sizeof (Text[5]), L"Expected refusal: Unsupported");
   }
-  UnicodeSPrint (Text[6], sizeof (Text[6]), L"Photo this screen; short power returns");
+  J716fResetReasonFormat (Text[6], sizeof (Text[6]));
+  UnicodeSPrint (Text[7], sizeof (Text[7]), L"Photo this screen; short power returns");
   for (I = 0; I < ARRAY_SIZE (Rows); ++I) { Rows[I].Title = Text[I]; Rows[I].Type = UniXNUEntryEfi; }
   Ui->Info[0] = 0; Ui->Notice[0] = 0;
   UniXNUUiDrawFrame (Ui, &Screen);
   for (I = 0; I < ARRAY_SIZE (Rows); ++I) { UniXNUUiDrawEntry (Ui, &Screen, I, I == 0); }
-  UniXNUUiDrawStatus (Ui, 0, L"V15 BOOT ATTEMPT RETURNED - SCREEN HELD");
+  UniXNUUiDrawStatus (Ui, 0, L"V19 BOOT ATTEMPT RETURNED - SCREEN HELD");
   // Let the key that initiated the attempt fully release; no automatic reboot.
   if (gST->ConIn != NULL) { gST->ConIn->Reset (gST->ConIn, FALSE); }
   if (EFI_ERROR (gBS->CreateEvent (EVT_TIMER, TPL_CALLBACK, NULL, NULL, &Timer))) {
@@ -84,6 +152,7 @@ UniXNULogInit (
   if (EFI_ERROR (gBS->LocateProtocol (&gEfiSerialIoProtocolGuid, NULL, (VOID **)&mSerial))) {
     mSerial = NULL;
   }
+  J716fResetReasonCapture ();
 }
 
 VOID
@@ -139,12 +208,30 @@ UniXNURun (
     (gST->FirmwareVendor != NULL) ? gST->FirmwareVendor : L"?",
     gST->FirmwareRevision
     );
+  if (mJ716fResetReasonAvailable) {
+    UniXNULog (
+      "reset: code=0x%08x text-present=%u",
+      mJ716fResetReasonCode,
+      (mJ716fResetReasonText[0] != L'\0') ? 1U : 0U
+      );
+  } else {
+    UniXNULog ("reset: protocol unavailable (%r)", mJ716fResetReasonStatus);
+  }
 
   //
   // Started straight from BDS, storage may not be connected yet.
   //
   if (Host == UniXNUHostFirmware) {
     UniXNUConnectAll ();
+    // Some Qualcomm protocol providers are started by ConnectAll.  Refresh
+    // the optional reset snapshot before loading the menu configuration.
+    J716fResetReasonCapture ();
+    if (mJ716fResetReasonAvailable) {
+      UniXNULog ("reset-after-connect: code=0x%08x text-present=%u", mJ716fResetReasonCode,
+                 (mJ716fResetReasonText[0] != L'\0') ? 1U : 0U);
+    } else {
+      UniXNULog ("reset-after-connect: protocol unavailable (%r)", mJ716fResetReasonStatus);
+    }
   }
 
   UniXNUConfigLoad (ImageHandle, &Config);
@@ -159,7 +246,7 @@ UniXNURun (
     (UINT32)Config.KitsSkipped
     );
 
-  Config.Title = L"J716F V15 - real XNU entry diagnostic";
+  Config.Title = L"J716F V19 - reset reason diagnostic";
   UniXNUPublishSlices (&Config);
 
   //
@@ -171,15 +258,20 @@ UniXNURun (
   UniXNUInjectAcpi (&Config, &Stats);
 
   UniXNUUiInit (&Config, &Ui);
-  UnicodeSPrint (
-    Ui.Info,
-    sizeof (Ui.Info),
-    L"drivers %u loaded / %u failed    kits %u    acpi %u",
-    (UINT32)Stats.DriversLoaded,
-    (UINT32)Stats.DriversFailed,
-    (UINT32)Config.KitsLoaded,
-    (UINT32)Stats.AcpiInstalled
-    );
+  {
+    CHAR16 ResetLine[96];
+    J716fResetReasonFormat (ResetLine, sizeof (ResetLine));
+    UnicodeSPrint (
+      Ui.Info,
+      sizeof (Ui.Info),
+      L"%s | drv %u/%u kits %u acpi %u",
+      ResetLine,
+      (UINT32)Stats.DriversLoaded,
+      (UINT32)Stats.DriversFailed,
+      (UINT32)Config.KitsLoaded,
+      (UINT32)Stats.AcpiInstalled
+      );
+  }
 
   Countdown = TRUE;
   for ( ; ;) {

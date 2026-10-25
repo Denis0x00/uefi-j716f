@@ -85,6 +85,16 @@ fragment free runs. No UFS, root volume or Data seed is configured. The source
 qualification kernel lacks board CPU/platform drivers; the candidate diagnoses
 entry/MMU/first-panic behavior. Generated payloads remain local.
 
+### V19 entry reset diagnostics (source change pending hardware test)
+
+The entry trace library now probes the optional Qualcomm `EFI_RESETREASON`
+protocol after serial initialization and again after `ConnectAll()`. When a
+provider is present, the reset code and text are shown in the UniXNU menu and
+on the held return page; the serial trace records the numeric code. When the
+protocol is absent, the page records the EFI status instead of guessing that a
+post-MMU reboot was caused by the UEFI watchdog. The probe is read-only and
+does not clear or write reset state.
+
 ### GitHub Actions
 
 `J716F UEFI source checks` runs on push/PR. It checks the pinned submodule Git

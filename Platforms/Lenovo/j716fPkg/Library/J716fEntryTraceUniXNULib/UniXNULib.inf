@@ -31,6 +31,7 @@
 
 [Packages]
   MdePkg/MdePkg.dec
+  QcomPkg/QcomPkg.dec
   UniXNUPkg/UniXNUPkg.dec
 
 [LibraryClasses]
@@ -62,6 +63,7 @@
   gEfiLoadedImageProtocolGuid       ## CONSUMES
   gEfiLoadFile2ProtocolGuid         ## SOMETIMES_PRODUCES
   gEfiSerialIoProtocolGuid          ## SOMETIMES_CONSUMES
+  gEfiResetReasonProtocolGuid       ## SOMETIMES_CONSUMES
   gEfiSimpleFileSystemProtocolGuid  ## SOMETIMES_CONSUMES
   gEfiSimpleTextInProtocolGuid      ## SOMETIMES_CONSUMES
   gUniXNULoaderProtocolGuid   ## SOMETIMES_CONSUMES

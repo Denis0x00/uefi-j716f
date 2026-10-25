@@ -26,6 +26,7 @@
 #include <Protocol/SimpleFileSystem.h>
 #include <Protocol/SimpleTextIn.h>
 #include <Protocol/SimpleTextOut.h>
+#include <Protocol/EFIResetReason.h>
 
 #define UNIXNU_VERSION_STRING  "0.1.0"
 
@@ -602,3 +603,9 @@ UniXNUMenuConfirm (
 extern CONST CHAR16 *gJ716fBootStage;
 extern UINTN gJ716fBootFileBytes;
 VOID J716fBootTrace (CONST CHAR16 *Stage);
+
+// Reset reason is optional on this platform.  Capture it when Qualcomm's
+// protocol is published so a later XNU/ABL reset can be distinguished from a
+// normal return to BDS without relying on a serial console.
+VOID J716fResetReasonCapture (VOID);
+VOID J716fResetReasonFormat (OUT CHAR16 *Buffer, IN UINTN BufferSize);
