@@ -46,3 +46,13 @@ Excluded: Binaries/j716f, vendor PE, generated FAT/FD/boot images, Apple payload
 raw DTBs, photos, raw device logs, device identifiers, VM details and credentials.
 Native display/storage/peripheral support is not implied by the working UEFI menu.
 TzDxe remains outside this phase.
+
+## P17M current test
+
+[Grouped chosen/stall/CPU-topology diagnostic](docs/V23P17_CHOSEN_TOPOLOGY.md)
+passed 45 actual-kernel and 31 linked-reader mocked checks plus image audits.
+Flashed only to boot_b; B active/bootable and reboot command success were verified.
+The first device photo confirms the P17 reader and a valid saturated circular
+console, with no Query/ARM or P17 kernel result. Explicit new linear session succeeded and INIT CRC reconstructs;
+fresh Query → ARM and one launch are next. P16 remains the latest verified kernel
+milestone; native timer IRQ integration remains separate.

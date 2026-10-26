@@ -1,0 +1,50 @@
+{
+  "version": "V23P17 TOPOLOGY TRACE r1",
+  "host_checks_passed": true,
+  "automatic_start": false,
+  "kernel_entry_requires_manual_arm": true,
+  "variants": {
+    "m": {
+      "version": "V23P17M",
+      "image": "j716f-mu-zui13-kernel-trace-v23p17m-boot.img",
+      "image_bytes": 8347648,
+      "image_sha256": "0cc610c5217561b86ea55f634c66409112ae7565acbab0c39551c87669f9657a",
+      "fd_sha256": "be11305a6502c6589c4c9665dcaf5e34c5fabed9c939d89bfe0007ec64865c68",
+      "payload_sha256": "633ec434480c63c58278f038d4901a69b69608d50d0bffc0f6e4d919d9d36c4c",
+      "kernel_sha256": "a997a9baffa268395a1d2dec49ceb10e851ea8ad8d30544323ba5ff2f7dde892",
+      "app_sha256": "db37389bca9e8fdaee1d647120df3cd33a32e2d126cc47e7a949e7e6c75a38ea",
+      "power_app_sha256": "5af712b62fd62f0cdd6702bafdfe149df68547a1a1c056948a3d5c5ffbfb833d",
+      "nonpayload_changes_vs_p8": [],
+      "compact_sec_matches_p8": true,
+      "host_checks_passed": true,
+      "hardware_verified": false,
+      "device_writes_performed": false
+    }
+  },
+  "kernel_logic_cases": 45,
+  "reader_logic_cases": 31,
+  "power_logic_cases_reused_for_identical_app": 22,
+  "hardware_verified": false,
+  "device_writes_performed": false,
+  "source_native_arch_timer_kernel": false,
+  "native_timer_driver_integrated": false,
+  "proposed_partition": "boot_b",
+  "next_variant": "m",
+  "scope": "Historical build validation snapshot; device launch/reader observations are separately summarized below.",
+  "device_launch_summary": {
+    "device_writes_performed": true,
+    "partition_images_flashed": [
+      "boot_b"
+    ],
+    "current_slot_before_reboot": "b",
+    "slot_unbootable_b_before_reboot": false,
+    "reboot_command_succeeded": true,
+    "initial_reader_observed": true,
+    "initial_reader_valid_saturated_ring": true,
+    "query_arm_kernel_observed": false,
+    "kernel_hardware_verified": false,
+    "evidence": "Companion UniXNU-j716f research/v23p17-chosen-topology.json",
+    "new_linear_session_observed": true,
+    "init_crc_reconstructed_match": true
+  }
+}
