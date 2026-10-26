@@ -41,10 +41,15 @@
     "reboot_command_succeeded": true,
     "initial_reader_observed": true,
     "initial_reader_valid_saturated_ring": true,
-    "query_arm_kernel_observed": false,
-    "kernel_hardware_verified": false,
+    "query_arm_kernel_observed": true,
+    "kernel_hardware_verified": true,
     "evidence": "Companion UniXNU-j716f research/v23p17-chosen-topology.json",
     "new_linear_session_observed": true,
-    "init_crc_reconstructed_match": true
+    "init_crc_reconstructed_match": true,
+    "kernel_verification_scope": "One bounded frozen-kernel P17M attempt with nine independently reconstructed CRCs and video-observed reboot retention. Deliberate terminal precedes boot CPU publication/max-CPU validation; no native provider, timer IRQ, scheduler or userspace qualification.",
+    "terminal_sctlr": "0x3454593d",
+    "nine_record_crcs_reconstructed_match": true,
+    "terminal_record_survived_observed_reset": true,
+    "reset_source_independently_verified": false
   }
 }

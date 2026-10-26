@@ -14,7 +14,7 @@ This is an early kernel bring-up port; a complete iPadOS boot is not established
 - P16 reached original WFE configure/init and misc returns, recording actual
   CNTKCTL_EL1=0x4f; all witnesses survived one video-observed reboot.
 
-P16 deliberately terminates before the original /chosen lookup. Native timer IRQ,
+P17 deliberately terminates before boot CPU publication/max-CPU validation. Native timer IRQ,
 GIC/ArmCpu driver operation, sustained initialization, scheduling, physical storage
 and userspace remain unverified. These are frozen-kernel diagnostics, not an
 integrated native timer platform. Reset source is independently unproven.
@@ -47,12 +47,12 @@ raw DTBs, photos, raw device logs, device identifiers, VM details and credential
 Native display/storage/peripheral support is not implied by the working UEFI menu.
 TzDxe remains outside this phase.
 
-## P17M current test
+## P17M current result
 
 [Grouped chosen/stall/CPU-topology diagnostic](docs/V23P17_CHOSEN_TOPOLOGY.md)
-passed 45 actual-kernel and 31 linked-reader mocked checks plus image audits.
-Flashed only to boot_b; B active/bootable and reboot command success were verified.
-The first device photo confirms the P17 reader and a valid saturated circular
-console, with no Query/ARM or P17 kernel result. Explicit new linear session succeeded and INIT CRC reconstructs;
-fresh Query → ARM and one launch are next. P16 remains the latest verified kernel
-milestone; native timer IRQ integration remains separate.
+reached all six witnesses and terminal SCTLR0x3454593d/M1 on boot_b. Nine CRCs
+match fresh ID1/ARM6303C7DA; full logical header0x380 and records survived one
+video-observed reboot. The terminal intentionally requests reset before boot CPU
+publication/max-CPU checks. P17 is the latest bounded kernel hardware milestone;
+native provider/timer IRQ/scheduler qualification is separate. Next review covers
+boot CPU validation, bootstrap/current-thread and rtclock_early_init boundaries.
