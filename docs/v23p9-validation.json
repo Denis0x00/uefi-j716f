@@ -1,0 +1,83 @@
+{
+  "version": "V23P9 KERNEL TRACE r1",
+  "host_checks_passed": true,
+  "automatic_start": false,
+  "kernel_entry_requires_manual_arm": true,
+  "variants": {
+    "e": {
+      "version": "V23P9E",
+      "image": "j716f-mu-zui13-kernel-trace-v23p9e-boot.img",
+      "image_bytes": 8351744,
+      "image_sha256": "16cdd727f7ff7b18012382957694a032252e8f0d1de3b3709d5c39c2a5e46308",
+      "fd_sha256": "f5917d8fce252885ca203ea4299298741e9b863ac32915e74e04f89016076ac2",
+      "payload_sha256": "2bd3accff8b8fec051204d2166afc3f7e256300924b2977b17967ea9ef6ce466",
+      "kernel_sha256": "e4cff266caa1626522369ab6e1fa8180d2274e594a94f10076cdad772451cc99",
+      "app_sha256": "a9a646c9f422063e78d2b31a27f8fe9b01e6035419782c34d72eac6d12af7e52",
+      "nonpayload_changes_vs_p8": [],
+      "compact_sec_matches_p8": true,
+      "host_checks_passed": true,
+      "hardware_verified": true,
+      "device_writes_performed": true,
+      "entry_record_survived_observed_reset": true,
+      "hardware_verification_scope": "One E kernel-entry record and matching ARM chain retained with valid header across the video-observed reboot; no MMU transition tested."
+    },
+    "m": {
+      "version": "V23P9M",
+      "image": "j716f-mu-zui13-kernel-trace-v23p9m-boot.img",
+      "image_bytes": 8351744,
+      "image_sha256": "8483ba0673b1d0100d1b8568c197cb1731de7be22439ba35603f1a964b6ac483",
+      "fd_sha256": "d3d3ac5af46fdb71834463c6d9391af94391e47f555448bbf5f72a1a7f34315f",
+      "payload_sha256": "5667fd6e8c3acec39ef60af20e8fbc1f5594fc2d521fbbcca594ac9dacd1bc50",
+      "kernel_sha256": "9cac0e31a44a59ab3f4e9ece50ef30a895403afa2a8137e8c78daa183c5d99d1",
+      "app_sha256": "a9a646c9f422063e78d2b31a27f8fe9b01e6035419782c34d72eac6d12af7e52",
+      "nonpayload_changes_vs_p8": [],
+      "compact_sec_matches_p8": true,
+      "host_checks_passed": true,
+      "hardware_verified": false,
+      "device_writes_performed": true,
+      "device_launch": {
+        "partition_images_flashed": [
+          "boot_b"
+        ],
+        "current_slot_before_reboot": "b",
+        "slot_unbootable_b_before_reboot": false,
+        "reboot_command_succeeded": true,
+        "image_sha256": "8483ba0673b1d0100d1b8568c197cb1731de7be22439ba35603f1a964b6ac483",
+        "hardware_verified": false,
+        "menu_only_launch": true,
+        "recording_ready_user_confirmed_for_this_launch": false
+      },
+      "kernel_entry_record_established": true,
+      "hardware_verification_scope": "M-session entry record retained in a later recovery reader snapshot; immediate first-reboot record state and MMU transition unverified",
+      "recovery_reader_summary": {
+        "photo_sha256": "4d1ec75f215c6c1530678b3ee21222e8690ed449555dbfb39e832e28f8f5f43e",
+        "id": 2,
+        "arm_crc32": "0xc2c22d94",
+        "entry_crc32": "0xdc7aa441",
+        "entry_sctlr": "0xc00808",
+        "now_valid": true,
+        "pre_mmu_hits": 0,
+        "post_mmu_hits": 0,
+        "map_failure_hits": 0,
+        "immediate_first_reboot_capture": false
+      }
+    }
+  },
+  "kernel_logic_cases": 23,
+  "reader_logic_cases": 12,
+  "hardware_verified": false,
+  "device_writes_performed": true,
+  "proposed_partition": "boot_b",
+  "device_observation": {
+    "authoritative_record": "UniXNU-j716f/research/v23p9-kernel-trace.json",
+    "video_sha256": "4e234245cd250f9b711970d4a9c06437919b3066ba54a174df8e2d1b6ce210ae",
+    "photo_sha256": "c7de59a1e977fd6c1a48e603369bcfa9ba032a32f0dc0d7a02c9692b035dac75",
+    "id": 2,
+    "arm_crc32": "0x47ccacb5",
+    "entry_crc32": "0xf17e59fc",
+    "entry_sctlr": "0xc00808",
+    "valid_header_survived_observed_reset": true,
+    "mmu_transition_tested": false
+  },
+  "status": "M recovery reader retains matching ARM and KERNEL_ENTRY only; no PRE/POST/MAP_FAILURE; immediate single-launch repeat required to separate the extra recovery path"
+}

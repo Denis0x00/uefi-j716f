@@ -1,0 +1,49 @@
+{
+  "version": "V23P13 MMU TRACE r1",
+  "host_checks_passed": true,
+  "automatic_start": false,
+  "kernel_entry_requires_manual_arm": true,
+  "variants": {
+    "p": {
+      "version": "V23P13P",
+      "image": "j716f-mu-zui13-kernel-trace-v23p13p-boot.img",
+      "image_bytes": 8347648,
+      "image_sha256": "61bbea03b0fafbf3b084827265f835322763d2b15a9a4530da0a2dae96b81b22",
+      "fd_sha256": "5d81dba9bed765a0d90b251dc5a370205d6cdf2c59919eeac63d50eddf6ebc1b",
+      "payload_sha256": "217e353b135f32b95d9743ff097b792c627aaa160c3a32bc4c8913a7106ea797",
+      "kernel_sha256": "69f2837f717ff20fd475479d7793e9f44d4d58a109e10a7e59d6edae39b57ba9",
+      "app_sha256": "15e257efcfa25bb8fa0016007512677a20f32ac03e9db3773dcd519136f2158a",
+      "power_app_sha256": "5af712b62fd62f0cdd6702bafdfe149df68547a1a1c056948a3d5c5ffbfb833d",
+      "nonpayload_changes_vs_p8": [],
+      "compact_sec_matches_p8": true,
+      "host_checks_passed": true,
+      "hardware_verified": false,
+      "device_writes_performed": false
+    },
+    "m": {
+      "version": "V23P13M",
+      "image": "j716f-mu-zui13-kernel-trace-v23p13m-boot.img",
+      "image_bytes": 8364032,
+      "image_sha256": "42e4aab7f3b8a5613d78e662c34e0327d1b97f78083b71d2a6cc18e74b966ccd",
+      "fd_sha256": "e171b97bd0b5e7a2f7d75418bd32def135271b0a7b77841a847e15b6575db826",
+      "payload_sha256": "78d635598bf2b03e4463e29541961ada72bbe530fa97826d53743f68e019c87b",
+      "kernel_sha256": "639f58f3497131991ad6ed75993a10a4c07d89e752d65697e4cc02d0c013d34a",
+      "app_sha256": "15e257efcfa25bb8fa0016007512677a20f32ac03e9db3773dcd519136f2158a",
+      "power_app_sha256": "5af712b62fd62f0cdd6702bafdfe149df68547a1a1c056948a3d5c5ffbfb833d",
+      "nonpayload_changes_vs_p8": [],
+      "compact_sec_matches_p8": true,
+      "host_checks_passed": true,
+      "hardware_verified": false,
+      "device_writes_performed": false
+    }
+  },
+  "kernel_logic_cases": 63,
+  "reader_logic_cases": 34,
+  "power_logic_cases_reused_for_identical_app": 22,
+  "hardware_verified": false,
+  "device_writes_performed": false,
+  "source_native_arch_timer_kernel": false,
+  "native_timer_driver_integrated": false,
+  "proposed_partition": "boot_b",
+  "next_variant": "m"
+}

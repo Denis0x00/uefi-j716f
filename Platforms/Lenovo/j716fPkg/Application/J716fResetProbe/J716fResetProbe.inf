@@ -1,0 +1,36 @@
+[Defines]
+  INF_VERSION = 0x00010005
+  BASE_NAME = J716fResetProbe
+  FILE_GUID = 1855fabd-73d0-4a8c-8d9f-2d67b56e091b
+  MODULE_TYPE = UEFI_APPLICATION
+  VERSION_STRING = 1.0
+  ENTRY_POINT = UefiMain
+
+[Sources]
+  Main.c
+  Font.c
+  Ring.h
+  Panel.h
+  Smc.S
+
+[Packages]
+  MdePkg/MdePkg.dec
+  ArmPkg/ArmPkg.dec
+
+[LibraryClasses]
+  UefiApplicationEntryPoint
+  UefiBootServicesTableLib
+  UefiRuntimeServicesTableLib
+  UefiLib
+  BaseLib
+  BaseMemoryLib
+  MemoryAllocationLib
+  PrintLib
+  ArmLib
+  DevicePathLib
+
+[Protocols]
+  gEfiGraphicsOutputProtocolGuid
+  gEfiLoadedImageProtocolGuid
+  gEfiResetArchProtocolGuid
+  gEfiResetNotificationProtocolGuid

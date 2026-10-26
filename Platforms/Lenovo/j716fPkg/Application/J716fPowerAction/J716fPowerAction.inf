@@ -1,0 +1,22 @@
+[Defines]
+  INF_VERSION = 0x00010005
+  BASE_NAME = J716fPowerAction
+  FILE_GUID = a840ea04-bca3-4568-bf03-12a4aa9f1121
+  MODULE_TYPE = UEFI_APPLICATION
+  VERSION_STRING = 1.0
+  ENTRY_POINT = UefiMain
+[Sources]
+  Main.c
+  Smc.S
+[Packages]
+  MdePkg/MdePkg.dec
+  ArmPkg/ArmPkg.dec
+[LibraryClasses]
+  UefiApplicationEntryPoint
+  UefiBootServicesTableLib
+  UefiLib
+  BaseLib
+  BaseMemoryLib
+  PrintLib
+[Protocols]
+  gEfiLoadedImageProtocolGuid

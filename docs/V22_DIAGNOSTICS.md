@@ -1,7 +1,10 @@
 # V22 paired post-MMU checkpoints
 
-Updated 2026-10-25. V22A and V22B built successfully and passed host artifact
-audits. Neither variant has been flashed or hardware-verified in this preparation.
+Updated 2026-10-25. Both variants were flashed only to boot_b and recorded.
+Magenta-to-screen-loss times were 20.245s (A) and 19.730s (B), one trial each;
+the intended 1s/3s response was absent. B ended in A-slot ZUI. Post-MMU
+execution and reset attribution remain unverified. See [V23](V23_DIAGNOSTICS.md).
+The original preparation metadata remains a historical build snapshot.
 
 ## Profiles
 

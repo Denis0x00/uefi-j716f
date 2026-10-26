@@ -1,0 +1,33 @@
+{
+  "version": "V23P14 INIT TRACE r1",
+  "host_checks_passed": true,
+  "automatic_start": false,
+  "kernel_entry_requires_manual_arm": true,
+  "variants": {
+    "m": {
+      "version": "V23P14M",
+      "image": "j716f-mu-zui13-kernel-trace-v23p14m-boot.img",
+      "image_bytes": 8343552,
+      "image_sha256": "76cdfe1805ca27784f377e1dd4325afad3ed125bf6db83c3f83d432b8abea6ef",
+      "fd_sha256": "412f4c760602dd50538384207193f5e03ee983a28f7612fd836f90ad2019cfa2",
+      "payload_sha256": "04e38905f976a58ffeaaaeca12a05a9358b6edb35031f95dcc2a1de2a51620e0",
+      "kernel_sha256": "f9032dad49bbec9ebae40b0d88faf3f0406078232fd7761566efdc3d87f348ab",
+      "app_sha256": "f1a4944e74f0782eb32d0b9c19b810ef80e0e5f7e741eda115526770bfceb6cd",
+      "power_app_sha256": "5af712b62fd62f0cdd6702bafdfe149df68547a1a1c056948a3d5c5ffbfb833d",
+      "nonpayload_changes_vs_p8": [],
+      "compact_sec_matches_p8": true,
+      "host_checks_passed": true,
+      "hardware_verified": false,
+      "device_writes_performed": false
+    }
+  },
+  "kernel_logic_cases": 38,
+  "reader_logic_cases": 31,
+  "power_logic_cases_reused_for_identical_app": 22,
+  "hardware_verified": false,
+  "device_writes_performed": false,
+  "source_native_arch_timer_kernel": false,
+  "native_timer_driver_integrated": false,
+  "proposed_partition": "boot_b",
+  "next_variant": "m"
+}

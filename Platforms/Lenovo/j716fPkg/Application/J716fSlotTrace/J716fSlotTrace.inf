@@ -1,0 +1,32 @@
+[Defines]
+  INF_VERSION = 0x00010005
+  BASE_NAME = J716fSlotTrace
+  FILE_GUID = 8e043cdd-d8a0-4569-aaf0-f3e326a1d912
+  MODULE_TYPE = UEFI_APPLICATION
+  VERSION_STRING = 1.0
+  ENTRY_POINT = UefiMain
+
+[Sources]
+  Main.c
+  Font.c
+  Ring.h
+  Trace.h
+  Panel.h
+  Smc.S
+
+[Packages]
+  MdePkg/MdePkg.dec
+  ArmPkg/ArmPkg.dec
+
+[LibraryClasses]
+  UefiApplicationEntryPoint
+  UefiBootServicesTableLib
+  UefiLib
+  BaseLib
+  BaseMemoryLib
+  MemoryAllocationLib
+  PrintLib
+  ArmLib
+
+[Protocols]
+  gEfiGraphicsOutputProtocolGuid

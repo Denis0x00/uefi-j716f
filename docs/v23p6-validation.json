@@ -1,0 +1,118 @@
+{
+  "version": "V23P6 RAMLOG r1",
+  "host_checks_passed": true,
+  "image": "j716f-mu-zui13-ramlog-v23p6-boot.img",
+  "image_sha256": "a939905b05f4db01aa88311f7e0a1f420ed0b95e39661a871e03108e903f82e3",
+  "image_bytes": 1699840,
+  "fd_sha256": "6df8ddcab5f26eee45ae6b262c93a9857f8dedc20e2e2c5d83245a7dca50225c",
+  "app_sha256": "0dec389d98f8cb0e63347f3c776634423eb06ef82a8c8a85a7174a9b08aa27af",
+  "payload_sha256": "deff3fffd3214519f4397826b9442f8fb84e904bf255dba57abcba268bf244ea",
+  "nonpayload_changes_vs_p5b": "Only reservation size 0x80000 -> 0x100000; one byte in SEC and four DXE modules; all other bytes and modules identical.",
+  "apriori_unchanged": true,
+  "sec_expanded_reservation_linked": true,
+  "console_base": "0xb00be000",
+  "console_bytes": "0x40000",
+  "automatic_start": false,
+  "kernel_included": false,
+  "hardware_verified": false,
+  "retention_verified": false,
+  "device_writes_performed": true,
+  "proposed_partition": "boot_b",
+  "limits": [
+    "No live header checked yet.",
+    "Firmware warm reset request is not proof of the physical reset type.",
+    "No XNU, counter, PSCI or sustained MMU-on result.",
+    "A full console ring overwrites only the oldest marker-length bytes on manual append."
+  ],
+  "device_operation": {
+    "partition": "boot_b",
+    "flash_succeeded": true,
+    "activate_b_succeeded": true,
+    "current_slot_after_activation": "b",
+    "slot_unbootable_b": "no",
+    "reboot_command_succeeded": true,
+    "header_verified": true,
+    "retention_verified": false,
+    "video_pending": false,
+    "append_verified": true,
+    "warm_reset_returned": true
+  },
+  "first_header_observation": {
+    "version": "V23P6 RAMLOG r1",
+    "image_sha256": "a939905b05f4db01aa88311f7e0a1f420ed0b95e39661a871e03108e903f82e3",
+    "video_sha256": "508b58195e18323f29a18cf3b982f437924ab6892edd73a56530eb7f7ff21ddb",
+    "video_seconds": 5.966666666666667,
+    "photo_sha256": "0e6891616edfca17a80d5fd13020e9a555304b2cd3066585c0da800c96ff45d7",
+    "observed": {
+      "menu_identity": true,
+      "test_app_visible": true,
+      "signature": "0x43474244",
+      "next": "0x37bd9",
+      "size": "0x37bd9",
+      "capacity": "0x3fff4",
+      "valid": true,
+      "markers_on_entry": 0,
+      "markers_now": 0,
+      "appended_this_run": 0,
+      "remaining_bytes_before_full": 33819
+    },
+    "live_header_verified": true,
+    "append_verified": false,
+    "retention_verified": false,
+    "recovery_readback_verified": false,
+    "xnu_progress_claimed": false,
+    "video_scope": "Menu then read-only app; no append or restart shown.",
+    "transcription_correction": "Enlarged photo and subsequent video confirm 00037BD9, superseding the earlier 0003FBD9 reading."
+  },
+  "append_reset_observation": {
+    "version": "V23P6 RAMLOG r1",
+    "image_sha256": "a939905b05f4db01aa88311f7e0a1f420ed0b95e39661a871e03108e903f82e3",
+    "video_sha256": "a8c67092ebe0eb36cf51e4a2cc806f9156214376829df95f841f7e84289fd0a4",
+    "video_seconds": 33.52168822553897,
+    "before": {
+      "next": "0x37bd9",
+      "size": "0x37bd9",
+      "markers": 0,
+      "appended_this_run": 0
+    },
+    "after_append": {
+      "next": "0x37c09",
+      "size": "0x37c09",
+      "markers": 1,
+      "appended_this_run": 1,
+      "header_valid": true,
+      "readback_message": "APPEND READBACK OK",
+      "bytes_added": 48
+    },
+    "timeline_samples": [
+      {
+        "pts": 2.002,
+        "frame": 60,
+        "observation": "Append readback OK; count now=1."
+      },
+      {
+        "pts": 14.008,
+        "frame": 420,
+        "observation": "Warm restart selected; prior append success message."
+      },
+      {
+        "pts": 15.01,
+        "frame": 450,
+        "observation": "Warm reset returned. Reset/retention NOT proven."
+      },
+      {
+        "pts": 28.018,
+        "frame": 840,
+        "observation": "Application returned to parent EFI diagnosis; START IMAGE, Success, code 0."
+      }
+    ],
+    "warm_reset_returned": true,
+    "actual_reboot_observed": false,
+    "append_verified": true,
+    "retention_verified": false,
+    "recovery_readback_verified": false,
+    "reset_failure_cause": "Unknown. Current app does not expose PSCI function/return codes or actual installed ResetSystem pointer.",
+    "efi_success_interpretation": "Normal successful application return; not proof of successful reset or XNU boot.",
+    "transcription_correction": "First-header next/size is 00037BD9, not 0003FBD9; free bytes were 33819."
+  }
+}

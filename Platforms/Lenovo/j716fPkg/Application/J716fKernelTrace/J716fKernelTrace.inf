@@ -1,0 +1,32 @@
+[Defines]
+  INF_VERSION = 0x00010005
+  BASE_NAME = J716fKernelTrace
+  FILE_GUID = 4d77b4e2-5da9-4c4a-a1d8-4adf2cb65029
+  MODULE_TYPE = UEFI_APPLICATION
+  VERSION_STRING = 1.0
+  ENTRY_POINT = UefiMain
+
+[Sources]
+  Main.c
+  Font.c
+  Ring.h
+  Trace.h
+  Panel.h
+  Smc.S
+
+[Packages]
+  MdePkg/MdePkg.dec
+  ArmPkg/ArmPkg.dec
+
+[LibraryClasses]
+  UefiApplicationEntryPoint
+  UefiBootServicesTableLib
+  UefiLib
+  BaseLib
+  BaseMemoryLib
+  MemoryAllocationLib
+  PrintLib
+  ArmLib
+
+[Protocols]
+  gEfiGraphicsOutputProtocolGuid
