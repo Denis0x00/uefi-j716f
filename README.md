@@ -38,6 +38,9 @@ must not be reused. Hardware diagnostic writes remain boot_b only.
 
 ## Build and publication boundaries
 
+See [Actions status and historical failures](docs/CI_STATUS_20261026.md) for the
+current source-check scope and the earlier all-device build failure.
+
 Included: platform source, source locks, diagnostic applications, configuration,
 and sanitized validation summaries. Full reproduction requires private vendor
 inputs and generated resources referenced by the selected profile.
