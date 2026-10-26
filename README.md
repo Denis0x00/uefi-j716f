@@ -56,3 +56,10 @@ video-observed reboot. The terminal intentionally requests reset before boot CPU
 publication/max-CPU checks. P17 is the latest bounded kernel hardware milestone;
 native provider/timer IRQ/scheduler qualification is separate. Next review covers
 boot CPU validation, bootstrap/current-thread and rtclock_early_init boundaries.
+
+## P18M prepared
+
+[Boot CPU/current-thread/early-clock grouped diagnostic](docs/V23P18_BOOTSTRAP_CLOCK.md)
+built and host audited: 50 actual-kernel and 31 linked-reader mocked cases.
+Unflashed; P17 remains the latest bounded hardware milestone. P18 deliberately
+requests reset after rtclock_early_init return. No native timer IRQ claim.
