@@ -8,6 +8,11 @@
 **截至 2026-10-27：固件已支持多轮早期内核诊断，尚未启动完整 iPadOS。**
 P21 为最新实机里程碑；P22 已构建并通过主机校验，按用户要求暂缓刷入。
 
+配套内核仓库正推进[原生 IRQ 观测候选](https://github.com/Denis0x00/UniXNU-j716f/blob/main/docs/NATIVE_IRQ_OBSERVER.md)：
+参照同 SM8250 的 pipa/umi，保留原始 timer dispatch 并记录进入、rtclock 返回及 EOI 后状态。
+本轮主机校验通过，完整内核编译待 CI；无预链接、持久化采集或实机 IRQ 结果。
+当前固件与 P22 读取器没有读取该内核静态观测数组的功能。
+
 ## 固件当前支持什么
 
 | 项目 | 已完成或已观察到 | 范围与限制 |
