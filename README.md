@@ -22,6 +22,13 @@ GIC/ArmCpu driver operation, sustained initialization, scheduling, physical stor
 and userspace remain unverified. These are frozen-kernel diagnostics, not an
 integrated native timer platform. Reset source is independently unproven.
 
+## P19M 待实机测试
+
+[startup/timer/CPU/processor分组诊断](docs/V23P19_STARTUP_INIT.md)已构建，
+57项内核机器码、6项依赖和31项链接reader主机检查通过，尚未刷入。
+保留原始startup回调及后续调用；processor_bootstrap返回后有意请求重启。
+P18仍是最新实机进度，timer IRQ/调度尚未验证。
+
 ## Sources and results
 
 - [Current progress and upstream/sheng comparison](docs/PROGRESS_AFTER_V23P16_20261026.md)

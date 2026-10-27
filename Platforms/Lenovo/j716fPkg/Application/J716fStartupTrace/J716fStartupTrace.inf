@@ -1,0 +1,32 @@
+[Defines]
+  INF_VERSION = 0x00010005
+  BASE_NAME = J716fStartupTrace
+  FILE_GUID = 934a3f9e-0177-4bb3-829c-1a2a830e4d19
+  MODULE_TYPE = UEFI_APPLICATION
+  VERSION_STRING = 1.0
+  ENTRY_POINT = UefiMain
+
+[Sources]
+  Main.c
+  Font.c
+  Ring.h
+  Trace.h
+  Panel.h
+  Smc.S
+
+[Packages]
+  MdePkg/MdePkg.dec
+  ArmPkg/ArmPkg.dec
+
+[LibraryClasses]
+  UefiApplicationEntryPoint
+  UefiBootServicesTableLib
+  UefiLib
+  BaseLib
+  BaseMemoryLib
+  MemoryAllocationLib
+  PrintLib
+  ArmLib
+
+[Protocols]
+  gEfiGraphicsOutputProtocolGuid

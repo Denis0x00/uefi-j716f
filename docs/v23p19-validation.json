@@ -1,0 +1,34 @@
+{
+  "version": "V23P19 STARTUP TRACE r1",
+  "host_checks_passed": true,
+  "automatic_start": false,
+  "kernel_entry_requires_manual_arm": true,
+  "variants": {
+    "m": {
+      "version": "V23P19M",
+      "image": "j716f-mu-zui13-kernel-trace-v23p19m-boot.img",
+      "image_bytes": 8355840,
+      "image_sha256": "7a68766b1f8c05a6bf373d93811c7d1eac30fa84604c4b324e0f9f81afebf7d8",
+      "fd_sha256": "704167b9613e2dbb6143cd65530f1be3f0528011a1eff16abaf087c2fcfa9ffb",
+      "payload_sha256": "e04b71a6e270c94689b243da95777b1313c008554747908f75ea4512098c398a",
+      "kernel_sha256": "4f15410b6de2620c35672c118efdd394d5fcfb02c201a1dd8e7083dc0e0ceec7",
+      "app_sha256": "2952e65e99cf32a90882206dcbde7649a83ed9962febb258868b40628c8c5a37",
+      "power_app_sha256": "5af712b62fd62f0cdd6702bafdfe149df68547a1a1c056948a3d5c5ffbfb833d",
+      "nonpayload_changes_vs_p8": [],
+      "compact_sec_matches_p8": true,
+      "host_checks_passed": true,
+      "hardware_verified": false,
+      "device_writes_performed": false
+    }
+  },
+  "kernel_logic_cases": 57,
+  "reader_logic_cases": 31,
+  "dependency_logic_cases": 6,
+  "power_logic_cases_reused_for_identical_app": 22,
+  "hardware_verified": false,
+  "device_writes_performed": false,
+  "source_native_arch_timer_kernel": false,
+  "native_timer_driver_integrated": false,
+  "proposed_partition": "boot_b",
+  "next_variant": "m"
+}
