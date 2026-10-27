@@ -6,7 +6,7 @@
 上游启动框架：[UniXNU](https://github.com/UniXNU/UniXNU)。
 
 **截至 2026-10-27：固件已支持多轮早期内核诊断，尚未启动完整 iPadOS。**
-P21 为最新内核实机里程碑；P22 现已仅刷入 boot_b，B 槽激活/可启动核对及重启命令成功，初始 reader 已确认：VALID 满环形、ID1/query0/armed0，须先新建线性会话。
+P21 为最新内核实机里程碑；P22 现已仅刷入 boot_b，B 槽激活/可启动核对及重启命令成功，显式线性会话已建立，INIT CRC 核对一致；ID1/query0/armed0，待 Query/ARM 及内核测试。
 
 配套内核仓库正推进[原生 IRQ 观测候选](https://github.com/Denis0x00/UniXNU-j716f/blob/main/docs/NATIVE_IRQ_OBSERVER.md)：
 参照同 SM8250 的 pipa/umi，保留原始 timer dispatch 并记录进入、rtclock 返回及 EOI 后状态。
@@ -24,7 +24,7 @@ P21 为最新内核实机里程碑；P22 现已仅刷入 boot_b，B 槽激活/�
 | 内存窗口 | 一个 256 MiB 窗口完成两轮读写 | 不代表全部 RAM 所有权或 DMA 可用 |
 | 诊断读取器 | 版本专用 Query/ARM、CRC、独立槽和重启后只读读取 | 保留结论限定于已记录的测试流程 |
 | 重启与关机菜单 | 已加入独立电源应用；22 项链接应用主机检查通过 | 新应用的全部实机行为，尤其 SYSTEM_OFF，仍待验证 |
-| 最新固件产物 | P22 两轮 UEFI 构建、读取器及最终镜像审计通过；现已刷入 boot_b | 初始 reader 已确认，须先新建线性会话；内核结果待采集 |
+| 最新固件产物 | P22 两轮 UEFI 构建、读取器及最终镜像审计通过；现已刷入 boot_b | 线性会话已建立，INIT CRC核对一致；内核结果待采集 |
 
 最新诊断菜单无倒计时、默认进入读取器；包含内核诊断、重启、关机和退出项。
 菜单电源操作使用经 Query 检查的直接 PSCI 调用，不假定旧 RESET2 路径可用。
@@ -134,7 +134,7 @@ P22 源码提交已有[通过记录](https://github.com/Denis0x00/uefi-j716f/act
 
 ## 测试顺序与后续工作
 
-1. P22 已仅刷 boot_b，初始 reader 已确认；先在当前 reader 新建线性会话并拍照核对，无需重复刷写。
+1. P22 已仅刷 boot_b，初始 reader 已确认；线性会话和 INIT CRC 已核对，接下来在同一 reader 执行 Query→ARM 并拍照，无需重复刷写。
 2. 同一版本重新 Query→ARM，核对 ID、CRC 与模板后只启动一次；连续录像。
 3. 重启后先进入 reader 保存完整页，先不 Query/ARM；若停住，先保存当前画面。
 4. P22 结果核对后继续原生平台预链接、单核驱动匹配、timebase/真实 IRQ 和调度验证。
