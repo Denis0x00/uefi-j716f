@@ -4,7 +4,7 @@ Mu-Silicium UEFI port for Lenovo Xiaoxin Pad Pro 2021 (TB-J716F, SM8250/Kona).
 Companion device repository: [UniXNU-j716f](https://github.com/Denis0x00/UniXNU-j716f).
 This is an early kernel bring-up port; a complete iPadOS boot is not established.
 
-## Current status — 2026-10-26
+## Current status — 2026-10-27
 
 - Device-tested UEFI menu, hardware keys, RAM FAT and DarwinBoot handoff.
 - One 256 MiB kernel allocation window passed two full read/write rounds.
@@ -13,8 +13,11 @@ This is an early kernel bring-up port; a complete iPadOS boot is not established
 - P15 reached first original PE_init_platform(0, bootArgs) entry and return.
 - P16 reached original WFE configure/init and misc returns, recording actual
   CNTKCTL_EL1=0x4f; all witnesses survived one video-observed reboot.
+- P18 reached original boot CPU publication/validation, current-thread setter and
+  rtclock_early_init return; all nine CRCs matched and survived one video-observed reboot.
 
-P17 deliberately terminates before boot CPU publication/max-CPU validation. Native timer IRQ,
+P18 deliberately terminates after early-clock return; cpu_bootstrap is a RET stub.
+Native timer IRQ,
 GIC/ArmCpu driver operation, sustained initialization, scheduling, physical storage
 and userspace remain unverified. These are frozen-kernel diagnostics, not an
 integrated native timer platform. Reset source is independently unproven.
@@ -24,6 +27,7 @@ integrated native timer platform. Reset source is independently unproven.
 - [Current progress and upstream/sheng comparison](docs/PROGRESS_AFTER_V23P16_20261026.md)
 - [P16 procedure and hardware observations](docs/V23P16_TIMER_WFE.md)
 - [P16 build validation](docs/v23p16-validation.json)
+- [P18 current hardware result](docs/V23P18_BOOTSTRAP_CLOCK.md)
 - [P13 MMU](docs/V23P13_MMU_CONTINUATION.md), [P14 early init](docs/V23P14_EARLY_INIT.md),
   [P15 platform init](docs/V23P15_PLATFORM_INIT.md)
 - [Power/reboot menu requirement](docs/NEXT_MENU_BUILD.md)
@@ -50,19 +54,23 @@ raw DTBs, photos, raw device logs, device identifiers, VM details and credential
 Native display/storage/peripheral support is not implied by the working UEFI menu.
 TzDxe remains outside this phase.
 
-## P17M current result
+## P17M independent historical result
 
 [Grouped chosen/stall/CPU-topology diagnostic](docs/V23P17_CHOSEN_TOPOLOGY.md)
 reached all six witnesses and terminal SCTLR0x3454593d/M1 on boot_b. Nine CRCs
 match fresh ID1/ARM6303C7DA; full logical header0x380 and records survived one
 video-observed reboot. The terminal intentionally requests reset before boot CPU
-publication/max-CPU checks. P17 is the latest bounded kernel hardware milestone;
-native provider/timer IRQ/scheduler qualification is separate. Next review covers
-boot CPU validation, bootstrap/current-thread and rtclock_early_init boundaries.
+publication/max-CPU checks. Its evidence remains separate from P18;
+native provider/timer IRQ/scheduler qualification is still pending.
 
-## P18M prepared
+## P18M current hardware result
 
 [Boot CPU/current-thread/early-clock grouped diagnostic](docs/V23P18_BOOTSTRAP_CLOCK.md)
 built and host audited: 50 actual-kernel and 31 linked-reader mocked cases.
-Unflashed; P17 remains the latest bounded hardware milestone. P18 deliberately
-requests reset after rtclock_early_init return. No native timer IRQ claim.
+Tested only on boot_b: all six witnesses and the terminal reached, actual SCTLR
+0x3454593d/M1. Nine CRCs bind fresh ID1/ARM209C5114 and match independent
+reconstruction; header0x380 and 14 records survived one continuous-video-observed
+reboot. P18 deliberately requests reset after rtclock_early_init return; reset
+source remains independently unproven. No native timer IRQ or full cpu_init claim.
+Next review covers original debug/timer_call/cpu_init/processor_bootstrap boundaries
+and stack/mapping lifetimes before a successor diagnostic.
