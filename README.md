@@ -17,6 +17,8 @@ This is an early kernel bring-up port; a complete iPadOS boot is not established
   rtclock_early_init return; all nine CRCs matched and survived one video-observed reboot.
 - P19 reached original debug/startup, timer_call_init, cpu_init and
   processor_bootstrap returns; nine CRCs matched and survived one video-observed reboot.
+- P20 reached original early arm_vm_init allocation/layout and arm_vm_prot_init return,
+  before new TCR/TTBR activation; nine CRCs matched and survived one video-observed reboot.
 
 P18 deliberately terminates after early-clock return; cpu_bootstrap is a RET stub.
 Native timer IRQ,
@@ -24,19 +26,21 @@ GIC/ArmCpu driver operation, sustained initialization, scheduling, physical stor
 and userspace remain unverified. These are frozen-kernel diagnostics, not an
 integrated native timer platform. Reset source is independently unproven.
 
-## P19M 最新实机结果
+## P19M 历史实机结果
 
 [startup/timer/CPU/processor分组诊断](docs/V23P19_STARTUP_INIT.md)已仅在boot_b完成测试：
 原始debug/startup、timer_call_init、cpu_init和processor_bootstrap返回，六槽及终点均到达。
 9条记录CRC独立匹配，终点SCTLR=0x3454593d（M1），日志经一次连续录像观察到的重启后保留。
-终点预设请求重启，复位来源未独立证明。下一步审查arm_init剩余流程及arm_vm_init的映射/栈生命周期；
+终点预设请求重启，复位来源未独立证明。P20已进一步验证原始arm_vm_init早期准备，见最新结果；
 timer IRQ、GIC、调度及用户态尚未验证。
 
-## P20M 待实机测试
+## P20M 最新实机结果
 
-[arm_vm_init早期VM诊断](docs/V23P20_VM_INIT.md)已构建，通过27项内核、5项依赖及31项链接reader主机检查；已仅刷入boot_b，重启命令成功，初始reader与fresh ID1 Query/ARM已确认，ARM CRC8DD10BB5重算匹配；内核测试待进行。
-继续原始VM入口、初始表分配、内核段处理和arm_vm_prot_init返回；在TCR/TTBR切换前主动终止。
-下一次切换需要完成日志、探针及栈在新表中的映射。P19实机结果保留。
+[arm_vm_init早期VM诊断](docs/V23P20_VM_INIT.md)已仅在boot_b完成测试：
+原始VM入口、早期根/上层表分配、内核段布局与vm_set_page_size、arm_vm_prot_init返回均到达。
+六槽L1/R1，9条CRC独立匹配；终点SCTLR=0x3454593d（M1），记录经一次连续录像观察到的重启后保留。
+终点在新TCR/TTBR切换之前主动请求重启，尚未完成arm_vm_init整体初始化。
+下一步审查新表完成与切换顺序，以及探针、栈和日志跨切换的映射/权限。
 
 ## Sources and results
 
