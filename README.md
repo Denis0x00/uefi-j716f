@@ -15,6 +15,8 @@ This is an early kernel bring-up port; a complete iPadOS boot is not established
   CNTKCTL_EL1=0x4f; all witnesses survived one video-observed reboot.
 - P18 reached original boot CPU publication/validation, current-thread setter and
   rtclock_early_init return; all nine CRCs matched and survived one video-observed reboot.
+- P19 reached original debug/startup, timer_call_init, cpu_init and
+  processor_bootstrap returns; nine CRCs matched and survived one video-observed reboot.
 
 P18 deliberately terminates after early-clock return; cpu_bootstrap is a RET stub.
 Native timer IRQ,
@@ -22,19 +24,20 @@ GIC/ArmCpu driver operation, sustained initialization, scheduling, physical stor
 and userspace remain unverified. These are frozen-kernel diagnostics, not an
 integrated native timer platform. Reset source is independently unproven.
 
-## P19M 待实机测试
+## P19M 最新实机结果
 
-[startup/timer/CPU/processor分组诊断](docs/V23P19_STARTUP_INIT.md)已构建，
-57项内核机器码、6项依赖和31项链接reader主机检查通过；现已仅刷入boot_b并成功发出重启命令，初始reader与fresh ID1 Query/ARM已确认，ARM CRC17BBA853重算匹配；内核测试待进行。
-保留原始startup回调及后续调用；processor_bootstrap返回后有意请求重启。
-P18仍是最新实机进度，timer IRQ/调度尚未验证。
+[startup/timer/CPU/processor分组诊断](docs/V23P19_STARTUP_INIT.md)已仅在boot_b完成测试：
+原始debug/startup、timer_call_init、cpu_init和processor_bootstrap返回，六槽及终点均到达。
+9条记录CRC独立匹配，终点SCTLR=0x3454593d（M1），日志经一次连续录像观察到的重启后保留。
+终点预设请求重启，复位来源未独立证明。下一步审查arm_init剩余流程及arm_vm_init的映射/栈生命周期；
+timer IRQ、GIC、调度及用户态尚未验证。
 
 ## Sources and results
 
 - [Current progress and upstream/sheng comparison](docs/PROGRESS_AFTER_V23P16_20261026.md)
 - [P16 procedure and hardware observations](docs/V23P16_TIMER_WFE.md)
 - [P16 build validation](docs/v23p16-validation.json)
-- [P18 current hardware result](docs/V23P18_BOOTSTRAP_CLOCK.md)
+- [P18 historical hardware result](docs/V23P18_BOOTSTRAP_CLOCK.md)
 - [P13 MMU](docs/V23P13_MMU_CONTINUATION.md), [P14 early init](docs/V23P14_EARLY_INIT.md),
   [P15 platform init](docs/V23P15_PLATFORM_INIT.md)
 - [Power/reboot menu requirement](docs/NEXT_MENU_BUILD.md)
@@ -70,7 +73,7 @@ video-observed reboot. The terminal intentionally requests reset before boot CPU
 publication/max-CPU checks. Its evidence remains separate from P18;
 native provider/timer IRQ/scheduler qualification is still pending.
 
-## P18M current hardware result
+## P18M historical hardware result
 
 [Boot CPU/current-thread/early-clock grouped diagnostic](docs/V23P18_BOOTSTRAP_CLOCK.md)
 built and host audited: 50 actual-kernel and 31 linked-reader mocked cases.
@@ -79,5 +82,4 @@ Tested only on boot_b: all six witnesses and the terminal reached, actual SCTLR
 reconstruction; header0x380 and 14 records survived one continuous-video-observed
 reboot. P18 deliberately requests reset after rtclock_early_init return; reset
 source remains independently unproven. No native timer IRQ or full cpu_init claim.
-Next review covers original debug/timer_call/cpu_init/processor_bootstrap boundaries
-and stack/mapping lifetimes before a successor diagnostic.
+P19 subsequently reached these original function returns; see the current result above.
