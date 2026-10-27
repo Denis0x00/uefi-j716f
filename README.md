@@ -19,6 +19,8 @@ This is an early kernel bring-up port; a complete iPadOS boot is not established
   processor_bootstrap returns; nine CRCs matched and survived one video-observed reboot.
 - P20 reached original early arm_vm_init allocation/layout and arm_vm_prot_init return,
   before new TCR/TTBR activation; nine CRCs matched and survived one video-observed reboot.
+- P21 reached original TTBR1/TTBR0 setter returns and post-TLBI/DSB/ISB stop;
+  six slots and nine CRCs retained over one video-observed reboot; full arm_vm_init return pending.
 
 P18 deliberately terminates after early-clock return; cpu_bootstrap is a RET stub.
 Native timer IRQ,
@@ -34,7 +36,7 @@ integrated native timer platform. Reset source is independently unproven.
 终点预设请求重启，复位来源未独立证明。P20已进一步验证原始arm_vm_init早期准备，见最新结果；
 timer IRQ、GIC、调度及用户态尚未验证。
 
-## P20M 最新实机结果
+## P20M 历史实机结果
 
 [arm_vm_init早期VM诊断](docs/V23P20_VM_INIT.md)已仅在boot_b完成测试：
 原始VM入口、早期根/上层表分配、内核段布局与vm_set_page_size、arm_vm_prot_init返回均到达。
@@ -42,12 +44,12 @@ timer IRQ、GIC、调度及用户态尚未验证。
 终点在新TCR/TTBR切换之前主动请求重启，尚未完成arm_vm_init整体初始化。
 下一步审查新表完成与切换顺序，以及探针、栈和日志跨切换的映射/权限。
 
-## P21M 待实机测试
+## P21M 最新实机结果
 
-[原始TTBR切换诊断](docs/V23P21_VM_SWITCH.md)已构建，通过26项内核、5项依赖和31项reader主机检查；已仅刷入boot_b，重启命令成功，初始reader、新会话及fresh ID1 Query/ARM已确认，ARM CRC145911AB重算匹配；单次内核测试待进行。
-以console专用子表桥接日志，继续原始TTBR1→TTBR0→TLBI/DSB/ISB后终止。
-主机walker已修正T1SZ=26的根索引；P20高地址探针/栈缺失误报已更正，原实机结果不变。
-原始媒体/二进制仅私有保存；下一轮仍仅boot_b、reader FIRST、fresh Query/ARM。
+[原始TTBR切换诊断](docs/V23P21_VM_SWITCH.md)已仅在boot_b完成有界测试：
+日志桥接、原始TTBR1/TTBR0设置返回及TLBI/DSB/ISB之后检查点均到达。
+六槽L1/R1，九条CRC独立匹配，SCTLR=0x3454593d（M1），记录经一次录像观察到的重启后保留。
+终点按设计请求重启，尚未让arm_vm_init整体返回；下一步审查剩余VM流程与日志子表生命周期。
 
 ## Sources and results
 
