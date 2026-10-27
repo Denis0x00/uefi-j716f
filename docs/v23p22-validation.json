@@ -1,0 +1,34 @@
+{
+  "version": "V23P22 VM RETURN TRACE r1",
+  "host_checks_passed": true,
+  "automatic_start": false,
+  "kernel_entry_requires_manual_arm": true,
+  "variants": {
+    "m": {
+      "version": "V23P22M",
+      "image": "j716f-mu-zui13-kernel-trace-v23p22m-boot.img",
+      "image_bytes": 8347648,
+      "image_sha256": "c49fb7542528ca3a8aca005a2f0f4fb304e6a43f379da65555a6525519e3ced2",
+      "fd_sha256": "878c16256f5f0662a9abe0ffeb44ad94e148f176aec0221adec18caf21814655",
+      "payload_sha256": "6c4a9691133c1e5724652f6ff2cfce36a525e6900fea4181e45cd3f018b2cf78",
+      "kernel_sha256": "e7c4b441c2486c9ec779b2b50fd0b1135168d16052d670cba2113013d34753fb",
+      "app_sha256": "ba7de3aee3a77e0c759212b0270022e9267d63474aaa8c23539384c2fe3a5d18",
+      "power_app_sha256": "5af712b62fd62f0cdd6702bafdfe149df68547a1a1c056948a3d5c5ffbfb833d",
+      "nonpayload_changes_vs_p8": [],
+      "compact_sec_matches_p8": true,
+      "host_checks_passed": true,
+      "hardware_verified": false,
+      "device_writes_performed": false
+    }
+  },
+  "kernel_logic_cases": 26,
+  "reader_logic_cases": 31,
+  "dependency_logic_cases": 8,
+  "power_logic_cases_reused_for_identical_app": 22,
+  "hardware_verified": false,
+  "device_writes_performed": false,
+  "source_native_arch_timer_kernel": false,
+  "native_timer_driver_integrated": false,
+  "proposed_partition": "boot_b",
+  "next_variant": "m"
+}
