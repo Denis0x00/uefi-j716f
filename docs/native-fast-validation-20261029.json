@@ -1,0 +1,36 @@
+{
+  "date": "2026-10-29",
+  "status": "native-fast-v1-v3-device-verified-v4-host-audited",
+  "companion_repository": "https://github.com/Denis0x00/UniXNU-j716f",
+  "logger_candidate_sha256": "1c19ee51d5388dcfbbaefd41dcf361a54ccee3d08d889f6f0e4bb6f69a08d892",
+  "uefi_package_paths": [
+    "Platforms/Lenovo/j716fPkg/j716f-native.dsc",
+    "Platforms/Lenovo/j716fPkg/j716f-native.fdf",
+    "Platforms/Lenovo/j716fPkg/Include/NATIVE_APRIORI.inc",
+    "Platforms/Lenovo/j716fPkg/Include/NATIVE_DXE.inc",
+    "Platforms/Lenovo/j716fPkg/Drivers/J716fNativeFatDxe",
+    "Platforms/Lenovo/j716fPkg/Application/J716fNativeFast"
+  ],
+  "images": {
+    "FAST-V1": {
+      "image_sha256": "eca22352580ea417b3e7b8a4fe66ebdb7292ba7abbbf6a7727aa6cd1fae09b73",
+      "kernel_sha256": "150c5c5f13a4337eb05218232f3a157429f0974ba49f71b4627789497132d074",
+      "device_result": "0:start_begin -> 43:BOOT_MAP_ERR (isolated T1SZ=26 L1 root mask)"
+    },
+    "FAST-V2": {
+      "image_sha256": "28463fde65f6459009849b41fb29dac205235ea13dc1de9b749dafc06680084f",
+      "kernel_sha256": "1d6867619ad5b280fc5bbda45c6f4e54234547b54fd91fc98ae443d5aa252c16",
+      "device_result": "0..3 -> 44:PERM_MAP_ERR -> 41:EL1_SYNC_FLT (isolated pre-TTBR1_EL1 _phystokv)"
+    },
+    "FAST-V3": {
+      "image_sha256": "d367d4ee3fa10c04b84a2837b1d33d301d9b2d39763cd806eaf0abf0c3cf55e8",
+      "kernel_sha256": "a0b548d0f89c264e3d9c5ba81069a8792434e7791e59d5057ed725ed24bd7242",
+      "device_result": "0:start_begin -> 1:boot_pt_map -> 2:arm_init -> 3:vm_entry -> 4:vm_perm_map -> 5:vm_ttbr_sw (TTBR1_EL1=0xd4229000) -> 6:pmap_boot -> 7:vm_done (8/8 valid records, zero faults)"
+    },
+    "FAST-V4": {
+      "image_sha256": "8ac335978a17f3369e45735736bec962a0171a86c257ef300f44bbb58409e428",
+      "kernel_sha256": "2a45d7d00e4801d870646dfd333d888e5dfe2f2d7499a8493f392f4dc3ffa978",
+      "device_result": "host-audited (21 post-vm_done, kdbg, IOKit, and panic slots instrumented)"
+    }
+  }
+}
