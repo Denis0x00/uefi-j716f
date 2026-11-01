@@ -1,0 +1,20 @@
+__pycache__
+.vscode
+Build
+Conf
+
+bootpayload.bin
+BootShim.bin
+BootShim.elf
+
+Mu-*.*
+*:Zone.Identifier
+
+# Local J716F vendor inputs and generated resources.
+Binaries/j716f/
+Platforms/Lenovo/j716fPkg/Resources/*.fat
+out/
+*.fd
+*.img
+*.bin
+*.dtb

@@ -1,0 +1,33 @@
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+[Defines]
+  INF_VERSION = 0x00010019
+  BASE_NAME = J716fMenuBdsDxe
+  FILE_GUID = CBB36FE7-A3C0-4E7A-B229-A3149FF114A5
+  MODULE_TYPE = DXE_DRIVER
+  VERSION_STRING = 0.1
+  ENTRY_POINT = J716fMenuBdsInitialize
+[Sources]
+  J716fMenuBds.c
+[Packages]
+  MdePkg/MdePkg.dec
+  MdeModulePkg/MdeModulePkg.dec
+  UniXNUPkg/UniXNUPkg.dec
+[LibraryClasses]
+  DebugLib
+  DevicePathLib
+  MemoryAllocationLib
+  PcdLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+  UefiLib
+[Pcd]
+  gUniXNUPkgTokenSpaceGuid.PcdUniXNUApplicationFile
+[Guids]
+  gEfiEndOfDxeEventGroupGuid
+[Protocols]
+  gEfiBdsArchProtocolGuid
+  gEfiFirmwareVolume2ProtocolGuid
+  gEfiSimpleTextOutProtocolGuid
+  gEfiSimpleTextInProtocolGuid
+[Depex]
+  TRUE

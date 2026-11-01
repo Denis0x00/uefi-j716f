@@ -1,0 +1,50 @@
+--- a/UefiCpuPkg/Library/CpuExceptionHandlerLib/AArch64/CpuExceptionHandlerLib.c
++++ b/UefiCpuPkg/Library/CpuExceptionHandlerLib/AArch64/CpuExceptionHandlerLib.c
+@@ -303,6 +303,47 @@
+   }
+ 
+   mRecursiveException = TRUE;
++
++  // Capture the first exception before any frame/stack walk or console call.
++  // This diagnostic build deliberately halts without resuming the faulting code.
++  ArmDisableInterrupts ();
++  SerialPortWrite ((UINT8 *)"\f", 1);
++  CharCount = AsciiSPrint (Buffer, sizeof (Buffer), "J716F FIRST FAULT V7 TYPE=%d\n", ExceptionType);
++  SerialPortWrite ((UINT8 *)Buffer, CharCount);
++  CharCount = AsciiSPrint (Buffer, sizeof (Buffer), "ELR=%016lx LR=%016lx\n",
++                          SystemContext.SystemContextAArch64->ELR, SystemContext.SystemContextAArch64->LR);
++  SerialPortWrite ((UINT8 *)Buffer, CharCount);
++  CharCount = AsciiSPrint (Buffer, sizeof (Buffer), "ESR=%016lx FAR=%016lx\n",
++                          SystemContext.SystemContextAArch64->ESR, SystemContext.SystemContextAArch64->FAR);
++  SerialPortWrite ((UINT8 *)Buffer, CharCount);
++  CharCount = AsciiSPrint (Buffer, sizeof (Buffer), "SP=%016lx SPSR=%016lx\n",
++                          SystemContext.SystemContextAArch64->SP, SystemContext.SystemContextAArch64->SPSR);
++  SerialPortWrite ((UINT8 *)Buffer, CharCount);
++  CharCount = AsciiSPrint (Buffer, sizeof (Buffer), "X0=%016lx X1=%016lx\n",
++                          SystemContext.SystemContextAArch64->X0, SystemContext.SystemContextAArch64->X1);
++  SerialPortWrite ((UINT8 *)Buffer, CharCount);
++  CharCount = AsciiSPrint (Buffer, sizeof (Buffer), "X2=%016lx X3=%016lx\n",
++                          SystemContext.SystemContextAArch64->X2, SystemContext.SystemContextAArch64->X3);
++  SerialPortWrite ((UINT8 *)Buffer, CharCount);
++  // The raw context above remains visible if the optional image lookup faults.
++  DEBUG_CODE_BEGIN ();
++  {
++    UINTN  FaultImageBase = 0;
++    UINTN  FaultHeaders = 0;
++    CHAR8  *FaultPdb;
++
++    FaultPdb = GetImageName (SystemContext.SystemContextAArch64->ELR, &FaultImageBase, &FaultHeaders);
++    CharCount = AsciiSPrint (Buffer, sizeof (Buffer), "IMAGE=%a\n",
++                            FaultPdb != NULL ? BaseName (FaultPdb) : "<no PDB>");
++    SerialPortWrite ((UINT8 *)Buffer, CharCount);
++    CharCount = AsciiSPrint (Buffer, sizeof (Buffer), "BASE=%016lx OFFSET=%08lx\n", FaultImageBase,
++                            FaultImageBase != 0 ? SystemContext.SystemContextAArch64->ELR - FaultImageBase : 0);
++    SerialPortWrite ((UINT8 *)Buffer, CharCount);
++  }
++  DEBUG_CODE_END ();
++  SerialPortWrite ((UINT8 *)"V7 CAPTURE COMPLETE - HALTED\n", sizeof ("V7 CAPTURE COMPLETE - HALTED\n") - 1);
++  CpuDeadLoop ();
++  return;
+ 
+   CharCount = AsciiSPrint (Buffer, sizeof (Buffer), "\n\n%a Exception at 0x%016lx\n", mExceptionTypeString[ExceptionType], SystemContext.SystemContextAArch64->ELR);
+   SerialPortWrite ((UINT8 *)Buffer, CharCount);
