@@ -1,11 +1,16 @@
 #include <Library/BaseMemoryLib.h>
 #include <Library/CacheMaintenanceLib.h>
 #include <Library/MemoryMapHelperLib.h>
+#include <Library/RamLogLib.h>
 #include <Library/SerialPortLib.h>
 #include <Library/TimerLib.h>
 
+#include <Library/FrameBufferHandoff.h>
+
 #include "FrameBuffer.h"
 #include "Font.h"
+
+FB_GEOMETRY  mFbGeometry;
 
 inline
 STATIC
@@ -73,7 +78,7 @@ DrawGlyph (
   IN UINT32  FontScale)
 {
   // Calculate Stride
-  UINTN Stride = (FB_WIDTH - (FONT_WIDTH * FontScale)) * FB_BPP;
+  UINTN Stride = FB_PITCH - (FONT_WIDTH * FontScale) * FB_BPP;
 
   // Split Glyph
   UINT32 TopGlyph    = (UINT32)(Glyph >> 32);
@@ -97,6 +102,9 @@ DrawGlyph (
   }
 }
 
+UINT8
+GetFontScale ();
+
 VOID
 AdvanceNewLine (
   IN EFI_PHYSICAL_ADDRESS       FbBase,
@@ -111,26 +119,38 @@ AdvanceNewLine (
   CurrentPosition->XPos  = 0;
   CurrentPosition->YPos += 1;
 
-  // Verify Y Position
-  if (CurrentPosition->YPos >= MaxPosition.YPos) {
-    // Clear Frame Buffer
-    ZeroMem ((VOID *)FbBase, FB_WIDTH * FB_HEIGHT * FB_BPP);
+  // Stop at the Bottom when the oldest Lines must stay readable
+  if (CurrentPosition->YPos >= MaxPosition.YPos && FB_FREEZE) {
+    CurrentPosition->YPos = FB_FROZEN_YPOS;
+    return;
+  }
 
-    // Reset X & Y Position
-    CurrentPosition->XPos = 0;
+  // Wrap to the Top, keeping the previous Screen visible
+  if (CurrentPosition->YPos >= MaxPosition.YPos) {
     CurrentPosition->YPos = 0;
   }
+
+  // Clear the Line about to be written and the next one, a blank Separator
+  // between the newest and the oldest visible Lines
+  UINTN  LineBytes = (UINTN)(FONT_HEIGHT - 4) * GetFontScale () * FB_PITCH;
+  UINT32 NextYPos  = (CurrentPosition->YPos + 1 < MaxPosition.YPos) ? CurrentPosition->YPos + 1 : 0;
+  ZeroMem ((VOID *)(mFbGeometry.Base + CurrentPosition->YPos * LineBytes), LineBytes);
+  ZeroMem ((VOID *)(mFbGeometry.Base + NextYPos * LineBytes), LineBytes);
 }
 
 UINT8
 GetFontScale ()
 {
+  // Use the Platform Scale when set
+  if (FB_SCALE != 0) {
+    return FB_SCALE;
+  }
+
   // Get Smaller Display Dimension
   UINT32 ShorterDimension = (FB_WIDTH < FB_HEIGHT) ? FB_WIDTH : FB_HEIGHT;
 
-  // Keep diagnostic traces readable in photographs. The J716F panel is
-  // 1600 pixels high, selecting scale 5 on the target panel.
-  return (ShorterDimension < 320) ? 1 : (UINT8)(ShorterDimension / 320);
+  // Return Calculated Font Scale
+  return (ShorterDimension < 426) ? 1 : (UINT8)(ShorterDimension / 426);
 }
 
 VOID
@@ -173,6 +193,11 @@ WriteFrameBuffer (
   // Get Frame Buffer Positions
   GetFbPositions (FbBase, FbLength, GlyphFontScale, &CurrentPosition, &MaxPosition);
 
+  // Ignore everything after the Log froze
+  if (CurrentPosition->YPos == FB_FROZEN_YPOS) {
+    return;
+  }
+
   // Skip Invalid ACSII Characters
   if (Character >= 127) {
     return;
@@ -181,8 +206,9 @@ WriteFrameBuffer (
   // Handle Control Characters
   if (Character < 32) {
     if (Character == '\f') {
-      // Start a diagnostic page without losing its first lines at page wrap.
-      ZeroMem ((VOID *)FbBase, FB_WIDTH * FB_HEIGHT * FB_BPP);
+      // Form feed: clear the whole screen and start again at the top left, so a
+      // message that matters (the hand-off to a kernel) fills the screen.
+      ZeroMem ((VOID *)mFbGeometry.Base, (UINTN)FB_PITCH * FB_HEIGHT);
       CurrentPosition->XPos = 0;
       CurrentPosition->YPos = 0;
     } else if (Character == '\n') {
@@ -207,8 +233,8 @@ WriteFrameBuffer (
   UINTN GlyphHeight = (FONT_HEIGHT - 4) * GlyphFontScale;
 
   // Set Glyph Pixels
-  Pixels  = (VOID *)FbBase;
-  Pixels += (UINTN)CurrentPosition->YPos * GlyphHeight * (FB_WIDTH * FB_BPP);
+  Pixels  = (VOID *)mFbGeometry.Base;
+  Pixels += (UINTN)CurrentPosition->YPos * GlyphHeight * FB_PITCH;
   Pixels += (UINTN)CurrentPosition->XPos * GlyphWidth  * FB_BPP;
 
   // Draw Glyph
@@ -244,6 +270,30 @@ GetFrameBufferMemory (
   return EFI_SUCCESS;
 }
 
+STATIC
+VOID
+LoadGeometry (
+  IN EFI_PHYSICAL_ADDRESS  FbBase,
+  IN UINT64                FbLength)
+{
+  CONST volatile FB_HANDOFF *Handoff;
+
+  // Build-time Default
+  mFbGeometry.Base       = (UINTN)FbBase;
+  mFbGeometry.Width      = FixedPcdGet32 (PcdFrameBufferWidth);
+  mFbGeometry.Height     = FixedPcdGet32 (PcdFrameBufferHeight);
+  mFbGeometry.PitchBytes = mFbGeometry.Width * FB_BPP;
+
+  // Handed-off Geometry, valid only once its Magic is set
+  Handoff = (CONST volatile FB_HANDOFF *)(UINTN)(FbBase + FbLength - FB_HANDOFF_OFFSET);
+  if (Handoff->Magic == FB_HANDOFF_MAGIC) {
+    mFbGeometry.Base       = (UINTN)Handoff->Base;
+    mFbGeometry.Width      = Handoff->Width;
+    mFbGeometry.Height     = Handoff->Height;
+    mFbGeometry.PitchBytes = Handoff->PitchBytes;
+  }
+}
+
 UINTN
 EFIAPI
 SerialPortWrite (
@@ -254,12 +304,6 @@ SerialPortWrite (
   EFI_PHYSICAL_ADDRESS FbBase;
   UINT64               FbLength;
 
-  // Get Frame Buffer Memory
-  Status = GetFrameBufferMemory (&FbBase, &FbLength);
-  if (EFI_ERROR (Status)) {
-    return 0;
-  }
-
   // Get Interrupts State
   BOOLEAN InterruptState = ArmGetInterruptState ();
 
@@ -267,6 +311,22 @@ SerialPortWrite (
   if (InterruptState) {
     ArmDisableInterrupts ();
   }
+
+  // Keep a Copy in Memory first: a Platform Instance may restart here on an ASSERT
+  RamLogWrite (Buffer, NumberOfBytes);
+
+  // Get Frame Buffer Memory
+  Status = GetFrameBufferMemory (&FbBase, &FbLength);
+  if (EFI_ERROR (Status)) {
+    if (InterruptState) {
+      ArmEnableInterrupts ();
+    }
+
+    return 0;
+  }
+
+  // Use the Geometry of the Frame Buffer that is really scanned out
+  LoadGeometry (FbBase, FbLength);
 
   // Write Debug Message to Frame Buffer
   for (UINTN i = 0; i < NumberOfBytes; i++) {
@@ -279,7 +339,7 @@ SerialPortWrite (
   }
 
   // Flush Frame Buffer
-  WriteBackInvalidateDataCacheRange ((VOID *)FbBase, FbLength);
+  WriteBackInvalidateDataCacheRange ((VOID *)mFbGeometry.Base, (UINTN)FB_PITCH * FB_HEIGHT);
 
   return NumberOfBytes;
 }

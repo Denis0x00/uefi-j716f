@@ -183,6 +183,7 @@
   DmaLib|EmbeddedPkg/Library/CoherentDmaLib/CoherentDmaLib.inf
   HobLib|MdePkg/Library/DxeHobLib/DxeHobLib.inf
   RamManagerLib|SiliciumNullPkg/Library/RamManagerLibNull/RamManagerLibNull.inf
+  RamLogLib|SiliciumNullPkg/Library/RamLogLibNull/RamLogLibNull.inf
   MemoryAllocationHelperLib|SiliciumPkg/Library/MemoryAllocationHelperLib/MemoryAllocationHelperLib.inf
 
   #

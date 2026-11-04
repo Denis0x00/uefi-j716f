@@ -25,10 +25,11 @@
   INF UniXNUPkg/Driver/UniXNUDxe/UniXNUDxe.inf
   INF UniXNUPkg/Driver/UniXNURamDiskDxe/UniXNURamDiskDxe.inf
   INF j716fPkg/Drivers/J716fKeysDxe/J716fKeysDxe.inf
-  INF j716fPkg/Drivers/J716fEntryFatDxe/J716fEntryFatDxe.inf
   INF MdeModulePkg/Universal/Disk/DiskIoDxe/DiskIoDxe.inf
   INF MdeModulePkg/Universal/Disk/UnicodeCollation/EnglishDxe/EnglishDxe.inf
   INF FatPkg/EnhancedFatDxe/Fat.inf
   INF DarwinBootPkg/Driver/DarwinBoot.inf
   INF j716fPkg/Drivers/J716fIoConsoleBdsDxe/J716fIoConsoleBdsDxe.inf
   INF UniXNUPkg/Application/UniXNU/UniXNU.inf
+
+  INF UniXNUPkg/Driver/AdvancedLogDxe/AdvancedLogDxe.inf

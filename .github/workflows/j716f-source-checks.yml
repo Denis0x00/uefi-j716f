@@ -65,39 +65,39 @@ jobs:
               json.loads(path.read_text())
           config = tomllib.loads(Path('Resources/Configs/j716f.toml').read_text())
           assert config['boot_image']['header_version'] == 2
-          assert (board / 'j716f-loader-v12.dsc').is_file()
-          assert (board / 'j716f-loader-v12.fdf').is_file()
-          assert (board / 'j716f-memory-v13.dsc').is_file()
-          assert (board / 'j716f-memory-v13.fdf').is_file()
-          survey = (board / 'Applications/J716fMemoryProbe/J716fMemoryProbe.c').read_text()
-          assert 'Snapshot (' in survey and 'GetMemoryMap' in survey
-          assert '->ExitBootServices (' not in survey and '->Boot (' not in survey
+          assert (board / 'j716f.dsc').is_file()
+          assert (board / 'j716f.fdf').is_file()
+          dsc_text = (board / 'j716f.dsc').read_text()
+          dxe_text = (board / 'Include/ENTRY_V15_DXE.inc').read_text()
+          for required in ('UniXNUDxe.inf', 'UniXNURamDiskDxe.inf', 'DarwinBoot.inf', 'J716fInheritedFbDxe.inf', 'J716fKeysDxe.inf', 'J716fIoConsoleBdsDxe.inf'):
+              assert required in dsc_text and required in dxe_text, f'Missing {required} in j716f DSC/DXE'
           print('J716F Python, JSON and boot-image configuration syntax passed')
           PY
 
-      - name: Check V14 isolation and window boundary policy
+      - name: Check J716F SM8250 memory map and descriptor non-overlap policy
         run: |
           python3 - <<'PY'
-          import hashlib
+          import re
           from pathlib import Path
           board = Path('Platforms/Lenovo/j716fPkg')
-          old = board / 'Library/MemoryMapLib/MemoryMapLib.c'
-          assert hashlib.sha256(old.read_bytes()).hexdigest() == '13e388ecf73e2caf4ae3e38890cf1ccac28194e26b415199e2bc5ed171ab14bb'
-          new = board / 'Library/J716fWindowMemoryMapLib/MemoryMapLib.c'
-          added = '  {"V14 Window Candidate", 0xD0000000, 0x18000000, AddMem, SYS_MEM, SYS_MEM_CAP, Conv, WRITE_BACK_XN},\n'
-          assert new.read_text().replace(added, '') == old.read_text()
-          app = board / 'Applications/J716fMemoryWindowProbe'
-          menu = board / 'Library/J716fWindowTraceUniXNULib'
-          assert (app / 'IoResult.h').read_bytes() == (menu / 'IoResult.h').read_bytes()
-          source = (app / 'J716fMemoryWindowProbe.c').read_text()
-          assert 'WriteBackInvalidateDataCacheRange' in source and 'gBS->FreePages' in source
-          assert '->ExitBootServices (' not in source and '->Boot (' not in source
-          assert 'Report->Version == 2' in (menu / 'Main.c').read_text()
+          mmap = (board / 'Library/MemoryMapLib/MemoryMapLib.c').read_text()
+          pattern = re.compile(r'\{\s*"([^"]+)"\s*,\s*(0x[0-9A-Fa-f]+)\s*,\s*(0x[0-9A-Fa-f]+)\s*,')
+          regions = [(name, int(base, 16), int(size, 16)) for name, base, size in pattern.findall(mmap)]
+          assert len(regions) >= 45, f'Unexpected region count: {len(regions)}'
+          by_name = {name: (base, size) for name, base, size in regions}
+          assert by_name['USB30_PRIM'] == (0x0A600000, 0x0011B000)
+          assert by_name['AOP CMD DB'] == (0x80860000, 0x00020000)
+          assert by_name['Display Reserved'] == (0x9C000000, 0x02400000)
+          assert by_name['Boot Log'] == (0xB0000000, 0x00080000)
+          assert by_name['DXE Heap'] == (0xC0000000, 0x0E000000)
+          assert by_name['UEFI FD'] == (0xCE000000, 0x00700000)
+          assert by_name['XNU Window'] == (0xD0000000, 0x20000000)
+          assert by_name['High RAM'] == (0xFFC20000, 0xF83E0000)
+          sorted_dram = sorted([r for r in regions if r[1] >= 0x80000000], key=lambda r: r[1])
+          for (n1, b1, s1), (n2, b2, s2) in zip(sorted_dram, sorted_dram[1:]):
+              assert b1 + s1 <= b2, f'DRAM overlap between {n1} (0x{b1:x}+0x{s1:x}) and {n2} (0x{b2:x})'
+          print(f'Verified {len(regions)} J716F SM8250 memory descriptors ({len(sorted_dram)} non-overlapping DRAM regions)')
           PY
-          clang -std=c11 -Wall -Wextra -Werror -fsanitize=undefined -fsanitize-trap=undefined \
-            -I Platforms/Lenovo/j716fPkg/Applications/J716fMemoryWindowProbe \
-            Platforms/Lenovo/j716fPkg/Tests/WindowPolicyTest.c -o /tmp/j716f-window-policy
-          /tmp/j716f-window-policy
 
       - name: Verify the Python build entry point can execute on Linux
         run: |

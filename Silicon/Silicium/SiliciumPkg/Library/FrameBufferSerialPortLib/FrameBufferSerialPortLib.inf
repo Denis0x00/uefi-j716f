@@ -19,6 +19,7 @@
   BaseMemoryLib
   CacheMaintenanceLib
   MemoryMapHelperLib
+  RamLogLib
   TimerLib
 
 [FixedPcd]
@@ -26,3 +27,5 @@
   gSiliciumPkgTokenSpaceGuid.PcdFrameBufferHeight
   gSiliciumPkgTokenSpaceGuid.PcdFrameBufferColorDepth
   gSiliciumPkgTokenSpaceGuid.PcdFrameBufferDelay
+  gSiliciumPkgTokenSpaceGuid.PcdFrameBufferFontScale
+  gSiliciumPkgTokenSpaceGuid.PcdFrameBufferFreezeWhenFull

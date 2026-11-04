@@ -8,6 +8,44 @@
 #include "FrameBuffer.h"
 #include "Font.h"
 
+
+#define J716F_LOG_MAGIC 0x474F4C4A // 'JLOG'
+#define J716F_LOG_BASE  0xB0000000ULL
+#define J716F_LOG_MAX   (512 * 1024 - 32)
+
+typedef struct {
+  UINT32 Magic;
+  UINT32 Length;
+  UINT32 MaxCapacity;
+  UINT32 Reserved;
+  CHAR8  Buffer[];
+} J716F_BOOT_LOG_HDR;
+
+STATIC
+VOID
+RecordLogToMemory (
+  IN CONST UINT8 *Buffer,
+  IN UINTN       NumberOfBytes
+  )
+{
+  volatile J716F_BOOT_LOG_HDR *Hdr = (volatile J716F_BOOT_LOG_HDR *)J716F_LOG_BASE;
+  if (Hdr->Magic != J716F_LOG_MAGIC || Hdr->MaxCapacity != J716F_LOG_MAX) {
+    Hdr->Magic = J716F_LOG_MAGIC;
+    Hdr->Length = 0;
+    Hdr->MaxCapacity = J716F_LOG_MAX;
+    Hdr->Reserved = 0;
+  }
+  UINT32 CurLen = Hdr->Length;
+  if (CurLen < J716F_LOG_MAX) {
+    UINT32 ToCopy = (UINT32)NumberOfBytes;
+    if (CurLen + ToCopy > J716F_LOG_MAX) {
+      ToCopy = J716F_LOG_MAX - CurLen;
+    }
+    CopyMem ((VOID *)(J716F_LOG_BASE + 16 + CurLen), Buffer, ToCopy);
+    Hdr->Length = CurLen + ToCopy;
+  }
+}
+
 inline
 STATIC
 UINT8*
@@ -398,6 +436,7 @@ SerialPortWrite (
   TraceTzAssert = !TzAssertTraced &&
     J716fBufferContains (Buffer, NumberOfBytes, "ERROR: C90000002:V03000007", sizeof ("ERROR: C90000002:V03000007") - 1) &&
     J716fBufferContains (Buffer, NumberOfBytes, "6925FAD3-E243-4B69-AD61-3F978C8ABC60", sizeof ("6925FAD3-E243-4B69-AD61-3F978C8ABC60") - 1);
+  RecordLogToMemory (Buffer, NumberOfBytes);
   if (TraceTzAssert) {
     TzAssertTraced = TRUE;
     J716fTzAssertTrace (FbBase, FbLength, Buffer, NumberOfBytes);

@@ -8,11 +8,6 @@
 #  SPDX-License-Identifier: BSD-2-Clause-Patent
 ##
 
-################################################################################
-#
-# Defines Section - statements that will be processed to create a Makefile.
-#
-################################################################################
 [Defines]
   PLATFORM_NAME                  = j716f
   PLATFORM_GUID                  = F8033398-C96B-45AC-B35D-10223A06A3A6
@@ -67,30 +62,52 @@
   #
   gQcomPkgTokenSpaceGuid.PcdPlatformType|"LA"
 
-[LibraryClasses]
   #
-  # Memory Libraries
+  # Debug and Version
   #
+  gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"J716F UniXNU"
+  gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x80000000
+  gUniXNUPkgTokenSpaceGuid.PcdUniXNUDebugLevel|0
+  gUniXNUPkgTokenSpaceGuid.PcdUniXNUDeviceModel|"j716f"
+  gAdvLoggerPkgTokenSpaceGuid.PcdAdvancedLoggerPages|0x100
+  gAdvLoggerPkgTokenSpaceGuid.PcdAdvancedLoggerBase|0x00000000
+  gEfiMdeModulePkgTokenSpaceGuid.PcdEmuVariableNvModeEnable|TRUE
+  gEfiMdeModulePkgTokenSpaceGuid.PcdCapsuleInRamSupport|FALSE
+
+[PcdsFeatureFlag]
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSupportUpdateCapsuleReset|FALSE
+  gEfiMdeModulePkgTokenSpaceGuid.PcdSupportProcessCapsuleAtRuntime|FALSE
+
+[LibraryClasses.common]
   MemoryMapLib|j716fPkg/Library/MemoryMapLib/MemoryMapLib.inf
   SerialPortLib|j716fPkg/Library/J716fFrameBufferSerialPortLib/FrameBufferSerialPortLib.inf
-
-  #
-  # QCOM Libraries
-  #
   ConfigurationMapLib|j716fPkg/Library/ConfigurationMapLib/ConfigurationMapLib.inf
-
-[Components]
-  #
-  # ACPI Tables
-  #
-
-
-[LibraryClasses]
   UniXNULib|UniXNUPkg/Library/UniXNULib/UniXNULib.inf
   FdtLib|MdePkg/Library/BaseFdtLib/BaseFdtLib.inf
+  DebugLib|MdePkg/Library/BaseDebugLibSerialPort/BaseDebugLibSerialPort.inf
+  AdvancedLoggerHdwPortLib|AdvLoggerPkg/Library/AdvancedLoggerHdwPortLib/AdvancedLoggerHdwPortLib.inf
+  AdvancedLoggerAccessLib|AdvLoggerPkg/Library/AdvancedLoggerAccessLib/AdvancedLoggerAccessLib.inf
+  QrEncoderLib|MsGraphicsPkg/Library/QrEncoderLib/QrEncoderLib.inf
+  AssertLib|AdvLoggerPkg/Library/AssertLib/AssertLib.inf
+
+[LibraryClasses.common.SEC]
+  DebugLib|MdePkg/Library/BaseDebugLibSerialPort/BaseDebugLibSerialPort.inf
+
+[LibraryClasses.common.DXE_CORE]
+  DebugLib|MdePkg/Library/BaseDebugLibSerialPort/BaseDebugLibSerialPort.inf
+
+[LibraryClasses.common.DXE_DRIVER, LibraryClasses.common.UEFI_APPLICATION, LibraryClasses.common.UEFI_DRIVER]
+  # AdvancedLoggerLib removed
+
+[LibraryClasses.common.DXE_RUNTIME_DRIVER]
+  # AdvancedLoggerLib runtime removed
 
 [Components]
   UniXNUPkg/Application/UniXNU/UniXNU.inf
   UniXNUPkg/Driver/UniXNUDxe/UniXNUDxe.inf
+  UniXNUPkg/Driver/UniXNURamDiskDxe/UniXNURamDiskDxe.inf
+  UniXNUPkg/Driver/AdvancedLogDxe/AdvancedLogDxe.inf
   DarwinBootPkg/Driver/DarwinBoot.inf
-  j716fPkg/Drivers/J716fScmCompatDxe/J716fScmCompatDxe.inf
+  j716fPkg/Drivers/J716fInheritedFbDxe/J716fInheritedFbDxe.inf
+  j716fPkg/Drivers/J716fKeysDxe/J716fKeysDxe.inf
+  j716fPkg/Drivers/J716fIoConsoleBdsDxe/J716fIoConsoleBdsDxe.inf
