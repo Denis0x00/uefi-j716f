@@ -65,6 +65,8 @@ jobs:
               json.loads(path.read_text())
           config = tomllib.loads(Path('Resources/Configs/j716f.toml').read_text())
           assert config['boot_image']['header_version'] == 2
+          dtb = Path('Resources/DTBs/j716f.dtb')
+          assert dtb.is_file() and dtb.stat().st_size == 728300 and dtb.read_bytes()[:4] == b'\xd0\x0d\xfe\xed'
           assert (board / 'j716f.dsc').is_file()
           assert (board / 'j716f.fdf').is_file()
           dsc_text = (board / 'j716f.dsc').read_text()

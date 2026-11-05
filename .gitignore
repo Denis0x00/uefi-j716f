@@ -18,3 +18,4 @@ out/
 *.img
 *.bin
 *.dtb
+!Resources/DTBs/j716f.dtb
