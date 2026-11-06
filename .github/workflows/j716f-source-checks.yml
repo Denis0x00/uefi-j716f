@@ -103,7 +103,7 @@ jobs:
 
       - name: Verify the Python build entry point can execute on Linux
         run: |
-          python3 -m pip install coloredlogs==15.0.1
+          python3 -m pip install --break-system-packages coloredlogs==15.0.1 || python3 -m pip install coloredlogs==15.0.1
           ./build_uefi.py --help
 
       - name: Summary

@@ -1,27 +1,13 @@
-# J716F platform package
+# J716F Platform Package (`j716fPkg`)
 
-This package contains the board-specific Mu-Silicium platform sources for
-TB-J716F. It is a diagnostic port for UEFI/UniXNU bring-up.
+Board-specific Mu-Silicium UEFI platform package for the Lenovo Xiaoxin Pad Pro 2021 (`TB-J716F` / `j716f`, Qualcomm SM8250-AC).
 
-The memory map and DTB reservations are evidence from the stock ZUI 13.0.430
-environment. V14 qualified one 256 MiB window on hardware; this does not
-validate ownership of all RAM. The entry profiles carry a local experimental
-kernel/ADT payload. Physical UFS, a root volume and userspace remain unverified.
+## Active Modules
 
-Vendor binaries and generated FAT resources are local build inputs and are
-ignored by the public repository. See the top-level README before building.
-
-## UniXNU payload integration
-
-The V15 DSC/FDF declares `UniXNURamDiskDxe` together with DiskIoDxe and FAT support, as required by the current UniXNU firmware guide. The existing embedded FAT volume remains enabled for the V15 entry diagnostic until the standard Android initrd handoff is rebuilt and verified.
-
-The recorded `j716f-entry-v21.dsc` preserves the built diagnostic profile,
-which omits those additional initrd integration declarations and uses the
-existing embedded FAT with an empty Android ramdisk. See the top-level
-[V21 diagnostics](../../../docs/V21_DIAGNOSTICS.md) for the profile,
-artifact hashes, PMIC baseline and device verification scope.
-
-## Native candidate 40458123294 (`j716f-native.dsc` & `J716fNativeFast`)
-
-- `j716f-native.dsc` / `j716f-native.fdf` and `Drivers/J716fNativeFatDxe` define the dedicated firmware profile for prelinked native candidate `40458123294`.
-- `Application/J716fNativeFast` provides the 3-second cold/dirty ARM (`FastArm.c`), 4-second 8-frame QR session exporter and raw physical scanner (`FastRead.c`), confirmed PSCI reset/poweroff (`FastPower.c`), and the XNU ARM64 VM fixes (`NativeMapFixed.h`, `NativeVmMapFixed.h`) verified through `7:vm_done` on hardware. See [NATIVE_FAST_UEFI_20261029.md](../../../docs/NATIVE_FAST_UEFI_20261029.md).
+- **`j716f.dsc` / `j716f.fdf`**: Platform build description and flash layout (`SILICIUM_UEFI.fd` at `0xce000000`, size `0x700000`).
+- **`Drivers/J716fInheritedFbDxe`**: Publishes the bootloader-initialized `2560x1600` BGRX8888 GOP framebuffer at `0x9c000000`.
+- **`Drivers/J716fKeysDxe`**: Polls PM8150/PM8150B SPMI PON keys (`Power`, `Volume Up`, `Volume Down`) for UEFI menu navigation.
+- **`Drivers/J716fIoConsoleBdsDxe`**: Connects graphics console, RAM disk FAT volume (`UniXNURamDiskDxe`), `DarwinBoot`, and the `UniXNU` boot application.
+- **`Library/MemoryMapLib`**: SM8250-AC / J716F physical memory map (`0x80000000..0x200000000`, including `0x9c000000` display, `0xb0000000` boot log, `0xce000000` UEFI FD, and `0xd0000000` XNU window).
+- **`Library/J716fFrameBufferSerialPortLib`**: Early framebuffer text console for SEC/DXE diagnostics.
+- **`Library/ConfigurationMapLib`**: Qualcomm platform configuration map descriptors.

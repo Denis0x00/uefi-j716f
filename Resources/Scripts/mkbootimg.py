@@ -562,6 +562,19 @@ def parse_cmdline():
         assert len(args.cmdline) <= BOOT_ARGS_SIZE
         assert len(args.extra_cmdline) <= BOOT_EXTRA_ARGS_SIZE
 
+    if args.header_version == 2 and args.dtb is None and args.kernel is not None:
+        kernel_bytes = args.kernel.read()
+        args.kernel.seek(0)
+        pos = kernel_bytes.rfind(b'\xd0\x0d\xfe\xed')
+        while pos != -1:
+            if pos + 8 <= len(kernel_bytes) and int.from_bytes(kernel_bytes[pos + 4:pos + 8], 'big') == len(kernel_bytes) - pos:
+                dtb_tmp = tempfile.TemporaryFile()
+                dtb_tmp.write(kernel_bytes[pos:])
+                dtb_tmp.seek(0)
+                args.dtb = dtb_tmp
+                break
+            pos = kernel_bytes.rfind(b'\xd0\x0d\xfe\xed', 0, pos)
+
     return args
 
 
