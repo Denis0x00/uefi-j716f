@@ -20,9 +20,9 @@ The DSC and FDF include `UniXNURamDiskDxe`, DiskIoDxe and FAT support so the boo
 | --- | --- | --- |
 | UEFI Menu & GOP | Verified | 2560x1600 BGRX8888 Simple FrameBuffer at `0x9c000000` (`J716fInheritedFbDxe`) |
 | Buttons & Keys | Verified | PM8150/PM8150B SPMI PON Power, Vol+, Vol- key support (`J716fKeysDxe`) |
-| Memory Map | Verified | 6 GiB / 8 GiB physical DRAM map (`0x80000000..0x1f8000000`), `0xb0000000` boot log, `0xce000000` UEFI FD, `0xd0000000` XNU window |
+| Memory Map | Verified | 6 GiB / 8 GiB physical DRAM map (`0x80000000..0x1f8000000`), `0x80860000` AOP CMD DB, `0xb0000000` boot log, `0xce000000` UEFI FD, `0xd0000000` XNU window |
 | BootShim & A/B slot | Verified | BootShim header, `Resources/DTBs/j716f.dtb` (728,300 bytes), safe Boot Slot B targeting |
-| DarwinBoot Loader | Verified | Mu-Silicium FDT handoff, `UniXNURamDiskDxe` 96 MiB FAT payload ramdisk (`J716fIoConsoleBdsDxe`) |
+| DarwinBoot Loader | Verified | Mu-Silicium FDT handoff, `UniXNURamDiskDxe` 96 MiB FAT payload ramdisk (`J716fIoConsoleBdsDxe`) with `kernel.macho`, `trustcache.bin`, `root.dmg` & runtime addons |
 
 ## License
 
