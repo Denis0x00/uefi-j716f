@@ -1,0 +1,11 @@
+[Defines]
+  INF_VERSION = 0x00010005
+  BASE_NAME = EarlyLogSecLibNull
+  FILE_GUID = 54602366-3C70-42D9-B34F-F80AC0CA4178
+  MODULE_TYPE = BASE
+  LIBRARY_CLASS = EarlyLogSecLib|SEC
+[Sources]
+  EarlyLogSecLibNull.c
+[Packages]
+  MdePkg/MdePkg.dec
+  SiliciumPkg/SiliciumPkg.dec

@@ -66,9 +66,22 @@
   # Debug and Version
   #
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"J716F UniXNU"
+!if $(TARGET) == DEBUG
+  # Keep firmware warnings/errors and UniXNU's default DEBUG_INFO messages.
+  gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x80000042
+  gUniXNUPkgTokenSpaceGuid.PcdUniXNUDebugLevel|0x00000040
+!else
   gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x80000000
   gUniXNUPkgTokenSpaceGuid.PcdUniXNUDebugLevel|0
+!endif
   gUniXNUPkgTokenSpaceGuid.PcdUniXNUDeviceModel|"j716f"
+!ifdef J716F_MENU_DIAGNOSTIC
+!if $(J716F_MENU_DIAGNOSTIC) == 1
+  # Explicit diagnostic policy for both built-in and loaded configurations.
+  gUniXNUPkgTokenSpaceGuid.PcdUniXNUBuiltinMenuWaitForInput|TRUE
+  gUniXNUPkgTokenSpaceGuid.PcdUniXNUDiagnosticMenuHold|TRUE
+!endif
+!endif
   gAdvLoggerPkgTokenSpaceGuid.PcdAdvancedLoggerPages|0x100
   gAdvLoggerPkgTokenSpaceGuid.PcdAdvancedLoggerBase|0x00000000
   gEfiMdeModulePkgTokenSpaceGuid.PcdEmuVariableNvModeEnable|TRUE
@@ -80,6 +93,7 @@
 
 [LibraryClasses.common]
   MemoryMapLib|j716fPkg/Library/MemoryMapLib/MemoryMapLib.inf
+  RamLogLib|j716fPkg/Library/J716fRamLogLib/J716fRamLogLib.inf
   SerialPortLib|j716fPkg/Library/J716fFrameBufferSerialPortLib/FrameBufferSerialPortLib.inf
   ConfigurationMapLib|j716fPkg/Library/ConfigurationMapLib/ConfigurationMapLib.inf
   UniXNULib|UniXNUPkg/Library/UniXNULib/UniXNULib.inf
@@ -91,23 +105,50 @@
   AssertLib|AdvLoggerPkg/Library/AssertLib/AssertLib.inf
 
 [LibraryClasses.common.SEC]
+  EarlyLogSecLib|j716fPkg/Library/J716fEarlyLogSecLib/J716fEarlyLogSecLib.inf
+  EarlyHandoffLib|j716fPkg/Library/J716fEarlyHandoffLib/J716fEarlyHandoffLib.inf
+  # The menu stage only publishes its own FV; no inherited XBL protocols.
+  PlatformPeiLib|j716fPkg/Library/J716fPlatformPeiLib/PlatformPeiLib.inf
+  # Sec.c calls BaseDebugLibSerialPortConstructor directly before DXE.
   DebugLib|MdePkg/Library/BaseDebugLibSerialPort/BaseDebugLibSerialPort.inf
 
 [LibraryClasses.common.DXE_CORE]
+!if $(TARGET) == DEBUG
+  # The DxeCore constructor allocates the log and installs its protocol.
+  DebugLib|AdvLoggerPkg/Library/BaseDebugLibAdvancedLogger/BaseDebugLibAdvancedLogger.inf
+  AdvancedLoggerLib|AdvLoggerPkg/Library/AdvancedLoggerLib/DxeCore/AdvancedLoggerLib.inf
+!else
   DebugLib|MdePkg/Library/BaseDebugLibSerialPort/BaseDebugLibSerialPort.inf
+!endif
 
 [LibraryClasses.common.DXE_DRIVER, LibraryClasses.common.UEFI_APPLICATION, LibraryClasses.common.UEFI_DRIVER]
-  # AdvancedLoggerLib removed
+!if $(TARGET) == DEBUG
+  DebugLib|AdvLoggerPkg/Library/BaseDebugLibAdvancedLogger/BaseDebugLibAdvancedLogger.inf
+  AdvancedLoggerLib|AdvLoggerPkg/Library/AdvancedLoggerLib/Dxe/AdvancedLoggerLib.inf
+!endif
 
 [LibraryClasses.common.DXE_RUNTIME_DRIVER]
-  # AdvancedLoggerLib runtime removed
+!if $(TARGET) == DEBUG
+  DebugLib|AdvLoggerPkg/Library/BaseDebugLibAdvancedLogger/BaseDebugLibAdvancedLogger.inf
+  AdvancedLoggerLib|AdvLoggerPkg/Library/AdvancedLoggerLib/Runtime/AdvancedLoggerLib.inf
+!endif
 
 [Components]
+  # Built for explicit manual EFI payload entries; never automatically dispatched.
+  j716fPkg/Application/J716fEarlyLogProbe/J716fEarlyLogProbe.inf
   UniXNUPkg/Application/UniXNU/UniXNU.inf
   UniXNUPkg/Driver/UniXNUDxe/UniXNUDxe.inf
   UniXNUPkg/Driver/UniXNURamDiskDxe/UniXNURamDiskDxe.inf
-  UniXNUPkg/Driver/AdvancedLogDxe/AdvancedLogDxe.inf
+  UniXNUPkg/Driver/AdvancedLogDxe/AdvancedLogDxe.inf {
+    <PcdsFixedAtBuild>
+      # QrEncoderLib INFO traces share the panel with the QR image. Keep
+      # exporter errors while other modules retain the full boot diagnostics.
+      gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x80000000
+  }
   DarwinBootPkg/Driver/DarwinBoot.inf
   j716fPkg/Drivers/J716fInheritedFbDxe/J716fInheritedFbDxe.inf
   j716fPkg/Drivers/J716fKeysDxe/J716fKeysDxe.inf
+!if $(TARGET) == DEBUG
+  j716fPkg/Drivers/J716fHandoffDiagnosticsDxe/J716fHandoffDiagnosticsDxe.inf
+!endif
   j716fPkg/Drivers/J716fIoConsoleBdsDxe/J716fIoConsoleBdsDxe.inf

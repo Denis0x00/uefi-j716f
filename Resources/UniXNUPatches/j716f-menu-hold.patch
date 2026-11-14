@@ -1,0 +1,210 @@
+diff --git a/package/UniXNUPkg/Library/UniXNULib/Config.c b/package/UniXNUPkg/Library/UniXNULib/Config.c
+index ed39c6b..bc8d487 100644
+--- a/package/UniXNUPkg/Library/UniXNULib/Config.c
++++ b/package/UniXNUPkg/Library/UniXNULib/Config.c
+@@ -1580,6 +1580,11 @@ UniXNUConfigLoad (
+     if (!EFI_ERROR (Status)) {
+       ApplyRoot (Config, Root);
+       TomlFree (Root);
++      if (PcdGetBool (PcdUniXNUBuiltinMenuWaitForInput)) {
++        Config->Timeout       = -1;
++        Config->RotateSeconds = 0;
++        UniXNULog ("config: built-in diagnostic menu waits for input");
++      }
+     }
+ 
+     if (AddFallbackLoaders (Config, ImageHandle) == 0) {
+diff --git a/package/UniXNUPkg/Library/UniXNULib/Menu.c b/package/UniXNUPkg/Library/UniXNULib/Menu.c
+index e3e4619..7fac689 100644
+--- a/package/UniXNUPkg/Library/UniXNULib/Menu.c
++++ b/package/UniXNUPkg/Library/UniXNULib/Menu.c
+@@ -7,6 +7,10 @@
+   - Any key press stops both the countdown and the rotation.
+   - The countdown always boots the default entry; rotation is display only.
+ 
++  PcdUniXNUDiagnosticMenuHold is an opt-in firmware diagnostic override. It
++  disables automatic selection for every config and polls input with Stall,
++  including when no physical input or working timer event is available.
++
+   Copyright (c) 2026, UniXNU contributors. All rights reserved.
+   SPDX-License-Identifier: BSD-2-Clause-Patent
+ **/
+@@ -100,6 +104,7 @@ UniXNUMenuRun (
+   UINTN          Previous;
+   UINTN          Index;
+   BOOLEAN        HasInput;
++  BOOLEAN        DiagnosticHold;
+   BOOLEAN        UserActive;
+   INTN           RemainingMs;
+   UINTN          RotateMs;
+@@ -107,11 +112,15 @@ UniXNUMenuRun (
+   INTN           LastShownSecond;
+   UINTN          Count;
+ 
+-  Count    = Config->EntryCount;
+-  Selected = Config->DefaultIndex;
+-  HasInput = (CountInputDevices () > 0);
++  Count          = Config->EntryCount;
++  Selected       = Config->DefaultIndex;
++  DiagnosticHold = PcdGetBool (PcdUniXNUDiagnosticMenuHold);
++  HasInput       = DiagnosticHold ? ((gST->ConIn != NULL) && (gST->ConIn->ReadKeyStroke != NULL))
++                                 : (CountInputDevices () > 0);
+ 
+-  if (!Countdown) {
++  if (DiagnosticHold) {
++    RemainingMs = -1;
++  } else if (!Countdown) {
+     RemainingMs = HasInput ? -1 : (INTN)Config->FallbackTimeout * 1000;
+   } else if (Config->Timeout < 0) {
+     RemainingMs = HasInput ? -1 : (INTN)Config->FallbackTimeout * 1000;
+@@ -119,8 +128,8 @@ UniXNUMenuRun (
+     RemainingMs = Config->Timeout * 1000;
+   }
+ 
+-  RotateMs = Config->RotateSeconds * 1000;
+-  if (!HasInput && (RotateMs == 0)) {
++  RotateMs = DiagnosticHold ? 0 : Config->RotateSeconds * 1000;
++  if (!DiagnosticHold && !HasInput && (RotateMs == 0)) {
+     RotateMs = DEFAULT_ROTATE_SEC * 1000;
+   }
+ 
+@@ -132,7 +141,8 @@ UniXNUMenuRun (
+   UniXNUUiDrawStatus (
+     Ui,
+     1,
+-    HasInput ? L"Up/Down: select    Enter: boot    1-9: boot entry    Esc: stop timer"
++    DiagnosticHold ? L"Diagnostic hold: Up/Down selects; Enter/1-9 runs; no automatic boot"
++    : HasInput ? L"Up/Down: select    Enter: boot    1-9: boot entry    Esc: stop timer"
+              : L"No input device: the default entry boots when the timer ends"
+     );
+   if (Ui->Notice[0] != L'\0') {
+@@ -148,23 +158,32 @@ UniXNUMenuRun (
+     HasInput ? "yes" : "no",
+     (UINT32)RotateMs
+     );
++  if (DiagnosticHold) {
++    UniXNULog (
++      "menu: diagnostic hold enabled; input reflects ConIn callback availability; enumeration skipped; explicit key selection required; poll %u ms",
++      TICK_MS
++      );
++  }
+ 
+   if (RemainingMs == 0) {
+     UniXNULog ("menu: timeout 0, booting default");
+     return Config->DefaultIndex;
+   }
+ 
+-  Status = gBS->CreateEvent (EVT_TIMER, TPL_CALLBACK, NULL, NULL, &Timer);
+-  if (EFI_ERROR (Status)) {
+-    return Config->DefaultIndex;
+-  }
++  Timer      = NULL;
++  EventCount = 0;
++  if (!DiagnosticHold) {
++    Status = gBS->CreateEvent (EVT_TIMER, TPL_CALLBACK, NULL, NULL, &Timer);
++    if (EFI_ERROR (Status)) {
++      return Config->DefaultIndex;
++    }
+ 
+-  gBS->SetTimer (Timer, TimerPeriodic, EFI_TIMER_PERIOD_MILLISECONDS (TICK_MS));
++    gBS->SetTimer (Timer, TimerPeriodic, EFI_TIMER_PERIOD_MILLISECONDS (TICK_MS));
+ 
+-  EventCount = 0;
+-  Events[EventCount++] = Timer;
+-  if (gST->ConIn != NULL) {
+-    Events[EventCount++] = gST->ConIn->WaitForKey;
++    Events[EventCount++] = Timer;
++    if (gST->ConIn != NULL) {
++      Events[EventCount++] = gST->ConIn->WaitForKey;
++    }
+   }
+ 
+   UserActive      = FALSE;
+@@ -173,14 +192,31 @@ UniXNUMenuRun (
+   for ( ; ;) {
+     INTN  Second = (RemainingMs < 0) ? -1 : (RemainingMs + 999) / 1000;
+ 
+-    if (Second != LastShownSecond) {
++    if (!DiagnosticHold && (Second != LastShownSecond)) {
+       DrawCountdown (Ui, Config, RemainingMs, HasInput);
+       LastShownSecond = Second;
+     }
+ 
+-    Status = gBS->WaitForEvent (EventCount, Events, &Signaled);
+-    if (EFI_ERROR (Status)) {
+-      break;
++    if (DiagnosticHold) {
++      //
++      // Do not depend on WaitForKey, physical-device enumeration or timer
++      // events during bring-up. Recheck ConIn each pass so a console that
++      // appears later can still take over. Errors keep the menu visible.
++      // Stall bounds polling even for a broken or absent input protocol.
++      //
++      gBS->Stall (TICK_MS * 1000);
++      if ((gST->ConIn == NULL) || (gST->ConIn->ReadKeyStroke == NULL) ||
++          EFI_ERROR (gST->ConIn->ReadKeyStroke (gST->ConIn, &Key)))
++      {
++        continue;
++      }
++
++      Signaled = 1;
++    } else {
++      Status = gBS->WaitForEvent (EventCount, Events, &Signaled);
++      if (EFI_ERROR (Status)) {
++        break;
++      }
+     }
+ 
+     Previous = Selected;
+@@ -202,7 +238,7 @@ UniXNUMenuRun (
+         }
+       }
+     } else {
+-      if (EFI_ERROR (gST->ConIn->ReadKeyStroke (gST->ConIn, &Key))) {
++      if (!DiagnosticHold && EFI_ERROR (gST->ConIn->ReadKeyStroke (gST->ConIn, &Key))) {
+         continue;
+       }
+ 
+@@ -242,8 +278,11 @@ UniXNUMenuRun (
+     }
+   }
+ 
+-  gBS->SetTimer (Timer, TimerCancel, 0);
+-  gBS->CloseEvent (Timer);
++  if (Timer != NULL) {
++    gBS->SetTimer (Timer, TimerCancel, 0);
++    gBS->CloseEvent (Timer);
++  }
++
+   return Selected;
+ }
+ 
+diff --git a/package/UniXNUPkg/Library/UniXNULib/UniXNULib.inf b/package/UniXNUPkg/Library/UniXNULib/UniXNULib.inf
+index 7a395a8..83925de 100644
+--- a/package/UniXNUPkg/Library/UniXNULib/UniXNULib.inf
++++ b/package/UniXNUPkg/Library/UniXNULib/UniXNULib.inf
+@@ -69,3 +69,5 @@
+ [Pcd]
+   gUniXNUPkgTokenSpaceGuid.PcdUniXNUDebugLevel
+   gUniXNUPkgTokenSpaceGuid.PcdUniXNUConfigPath
++  gUniXNUPkgTokenSpaceGuid.PcdUniXNUBuiltinMenuWaitForInput
++  gUniXNUPkgTokenSpaceGuid.PcdUniXNUDiagnosticMenuHold
+diff --git a/package/UniXNUPkg/UniXNUPkg.dec b/package/UniXNUPkg/UniXNUPkg.dec
+index bdf8d38..6c2244c 100644
+--- a/package/UniXNUPkg/UniXNUPkg.dec
++++ b/package/UniXNUPkg/UniXNUPkg.dec
+@@ -50,3 +50,14 @@
+ 
+   ## ASCII model name reported by menu plugins that export device files.
+   gUniXNUPkgTokenSpaceGuid.PcdUniXNUDeviceModel|"UniXNU"|VOID*|0x00000004
++
++  ## Keep the built-in diagnostic menu still and wait for input. A valid
++  #  external configuration keeps its own timeout and rotation settings.
++  #  Without an input device, the menu retains its fallback timeout.
++  gUniXNUPkgTokenSpaceGuid.PcdUniXNUBuiltinMenuWaitForInput|FALSE|BOOLEAN|0x00000005
++
++  ## Diagnostic firmware only: every menu waits for an explicit selection,
++  #  including loaded configurations and menus with no input device. Polls
++  #  ConIn every 100 ms using Stall; never falls back to automatic selection
++  #  on missing input or a timer/event failure. Normal builds leave FALSE.
++  gUniXNUPkgTokenSpaceGuid.PcdUniXNUDiagnosticMenuHold|FALSE|BOOLEAN|0x00000006

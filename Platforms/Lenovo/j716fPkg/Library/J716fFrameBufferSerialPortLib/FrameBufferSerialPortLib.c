@@ -2,47 +2,27 @@
 #include <Library/CacheMaintenanceLib.h>
 #include <Library/MemoryMapHelperLib.h>
 #include <Library/PrintLib.h>
+#include <Library/RamLogLib.h>
 #include <Library/SerialPortLib.h>
 #include <Library/TimerLib.h>
 
 #include "FrameBuffer.h"
 #include "Font.h"
+#include "../J716fRamLogLib/DisplayOwnership.h"
 
 
-#define J716F_LOG_MAGIC 0x474F4C4A // 'JLOG'
-#define J716F_LOG_BASE  0xB0000000ULL
-#define J716F_LOG_MAX   (512 * 1024 - 32)
-
-typedef struct {
-  UINT32 Magic;
-  UINT32 Length;
-  UINT32 MaxCapacity;
-  UINT32 Reserved;
-  CHAR8  Buffer[];
-} J716F_BOOT_LOG_HDR;
+// Each linked console instance owns its cursor; display/dfps RAM is not storage.
+STATIC EFI_FRAME_BUFFER_POSITION mCurrentPosition;
+STATIC BOOLEAN                   mPositionInitialized = FALSE;
 
 STATIC
 VOID
-RecordLogToMemory (
-  IN CONST UINT8 *Buffer,
-  IN UINTN       NumberOfBytes
-  )
+InitializePosition (VOID)
 {
-  volatile J716F_BOOT_LOG_HDR *Hdr = (volatile J716F_BOOT_LOG_HDR *)J716F_LOG_BASE;
-  if (Hdr->Magic != J716F_LOG_MAGIC || Hdr->MaxCapacity != J716F_LOG_MAX) {
-    Hdr->Magic = J716F_LOG_MAGIC;
-    Hdr->Length = 0;
-    Hdr->MaxCapacity = J716F_LOG_MAX;
-    Hdr->Reserved = 0;
-  }
-  UINT32 CurLen = Hdr->Length;
-  if (CurLen < J716F_LOG_MAX) {
-    UINT32 ToCopy = (UINT32)NumberOfBytes;
-    if (CurLen + ToCopy > J716F_LOG_MAX) {
-      ToCopy = J716F_LOG_MAX - CurLen;
-    }
-    CopyMem ((VOID *)(J716F_LOG_BASE + 16 + CurLen), Buffer, ToCopy);
-    Hdr->Length = CurLen + ToCopy;
+  if (!mPositionInitialized) {
+    mCurrentPosition.XPos = 0;
+    mCurrentPosition.YPos = 0;
+    mPositionInitialized = TRUE;
   }
 }
 
@@ -153,7 +133,7 @@ AdvanceNewLine (
   // Verify Y Position
   if (CurrentPosition->YPos >= MaxPosition.YPos) {
     // Clear Frame Buffer
-    ZeroMem ((VOID *)FbBase, FB_WIDTH * FB_HEIGHT * FB_BPP);
+    ZeroMem ((VOID *)FbBase, (UINTN)FbLength);
 
     // Reset X & Y Position
     CurrentPosition->XPos = 0;
@@ -182,7 +162,7 @@ GetFbPositions (
   EFI_FRAME_BUFFER_POSITION LocalMaxPosition;
 
   // Get Current Position
-  *CurrentPosition = (EFI_FRAME_BUFFER_POSITION *)(FbBase + FbLength - sizeof (EFI_FRAME_BUFFER_POSITION));
+  *CurrentPosition = &mCurrentPosition;
 
   // Calculate Max Positions
   LocalMaxPosition.XPos = FB_WIDTH  / ((FONT_WIDTH  + 1) * FontScale);
@@ -201,6 +181,8 @@ WriteFrameBuffer (
   EFI_FRAME_BUFFER_POSITION *CurrentPosition;
   EFI_FRAME_BUFFER_POSITION  MaxPosition;
   UINT8                     *Pixels;
+  UINTN                      Offset;
+  UINTN                      GlyphBytes;
 
   // Set Glyph Font
   STATIC CONST UINT64 GlyphFont[] = GLYPH_FONT;
@@ -211,6 +193,18 @@ WriteFrameBuffer (
   // Get Frame Buffer Positions
   GetFbPositions (FbBase, FbLength, GlyphFontScale, &CurrentPosition, &MaxPosition);
 
+  if ((MaxPosition.XPos == 0) || (MaxPosition.YPos == 0) ||
+      (FbLength != (UINT64)FB_WIDTH * FB_HEIGHT * FB_BPP)) {
+    return;
+  }
+
+  // Validate state before either rendering or advancing a line.
+  if ((CurrentPosition->XPos >= MaxPosition.XPos) ||
+      (CurrentPosition->YPos >= MaxPosition.YPos)) {
+    CurrentPosition->XPos = 0;
+    CurrentPosition->YPos = 0;
+  }
+
   // Skip Invalid ACSII Characters
   if (Character >= 127) {
     return;
@@ -220,7 +214,7 @@ WriteFrameBuffer (
   if (Character < 32) {
     if (Character == '\f') {
       // Start a diagnostic page without losing its first lines at page wrap.
-      ZeroMem ((VOID *)FbBase, FB_WIDTH * FB_HEIGHT * FB_BPP);
+      ZeroMem ((VOID *)FbBase, (UINTN)FbLength);
       CurrentPosition->XPos = 0;
       CurrentPosition->YPos = 0;
     } else if (Character == '\n') {
@@ -245,9 +239,13 @@ WriteFrameBuffer (
   UINTN GlyphHeight = (FONT_HEIGHT - 4) * GlyphFontScale;
 
   // Set Glyph Pixels
-  Pixels  = (VOID *)FbBase;
-  Pixels += (UINTN)CurrentPosition->YPos * GlyphHeight * (FB_WIDTH * FB_BPP);
-  Pixels += (UINTN)CurrentPosition->XPos * GlyphWidth  * FB_BPP;
+  Offset = (UINTN)CurrentPosition->YPos * GlyphHeight * (FB_WIDTH * FB_BPP) +
+           (UINTN)CurrentPosition->XPos * GlyphWidth * FB_BPP;
+  GlyphBytes = ((GlyphHeight - 1) * FB_WIDTH + FONT_WIDTH * GlyphFontScale) * FB_BPP;
+  if ((Offset > FbLength) || (GlyphBytes > FbLength - Offset)) {
+    return;
+  }
+  Pixels = (UINT8 *)(UINTN)FbBase + Offset;
 
   // Draw Glyph
   DrawGlyph (Pixels, Glyph, GlyphFontScale);
@@ -267,17 +265,38 @@ GetFrameBufferMemory (
   OUT UINT64               *Length)
 {
   EFI_MEMORY_REGION_DESCRIPTOR FbRegion;
+  EFI_STATUS                   Status;
+  UINT64                       ImageBytes;
 
-  // Locate "Display Reserved" Memory Region
-  LocateMemoryRegionByName ("Display Reserved", &FbRegion);
-  LocateMemoryRegionByName ("Display_Reserved", &FbRegion);
-  if (!FbRegion.Address && !FbRegion.Length) {
-    return EFI_NOT_FOUND;
+  if ((Base == NULL) || (Length == NULL)) {
+    return EFI_INVALID_PARAMETER;
+  }
+
+  ZeroMem (&FbRegion, sizeof (FbRegion));
+  Status = LocateMemoryRegionByName ("Display Reserved", &FbRegion);
+  if (EFI_ERROR (Status)) {
+    Status = LocateMemoryRegionByName ("Display_Reserved", &FbRegion);
+  }
+  if (EFI_ERROR (Status)) {
+    return Status;
+  }
+
+  // Same static, tightly packed geometry as J716fInheritedFbDxe. This bounds
+  // early writes; actual scanout/stride still needs hardware verification.
+  if ((FbRegion.Address != 0x9C000000ULL) || (FB_WIDTH != 2560) ||
+      (FB_HEIGHT != 1600) || (FixedPcdGet8 (PcdFrameBufferColorDepth) != 32)) {
+    return EFI_UNSUPPORTED;
+  }
+  ImageBytes = (UINT64)FB_WIDTH * FB_HEIGHT * FB_BPP;
+  // cont_splash ends at 0x9e300000; dfps is the following 1 MiB. Keep the
+  // entire reservation in the memory map, but expose only the image here.
+  if ((ImageBytes > FbRegion.Length) || (ImageBytes > 0x02300000ULL)) {
+    return EFI_UNSUPPORTED;
   }
 
   // Pass Frame Buffer Memory
   *Base   = FbRegion.Address;
-  *Length = FbRegion.Length;
+  *Length = ImageBytes;
 
   return EFI_SUCCESS;
 }
@@ -418,25 +437,45 @@ SerialPortWrite (
   UINT64               FbLength;
   STATIC BOOLEAN       TzAssertTraced = FALSE;
   BOOLEAN              TraceTzAssert;
+  BOOLEAN              InterruptState;
 
-  // Get Frame Buffer Memory
-  Status = GetFrameBufferMemory (&FbBase, &FbLength);
-  if (EFI_ERROR (Status)) {
+  if ((Buffer == NULL) || (NumberOfBytes == 0)) {
     return 0;
   }
 
   // Get Interrupts State
-  BOOLEAN InterruptState = ArmGetInterruptState ();
+  InterruptState = ArmGetInterruptState ();
 
   // Disable Interrupts
   if (InterruptState) {
     ArmDisableInterrupts ();
   }
 
+  // Keep early diagnostics even when the framebuffer descriptor is rejected.
+  RamLogWrite (Buffer, NumberOfBytes);
+
+  // All independently linked instances consult the same boot-scoped lease.
+  // Keep RAM diagnostics while the application owns the panel, including
+  // direct serial, form-feed, wrap and TZ trace paths. Never flush stale pixels.
+  if (!J716fSerialMayDraw ()) {
+    if (InterruptState) {
+      ArmEnableInterrupts ();
+    }
+    return NumberOfBytes;
+  }
+
+  Status = GetFrameBufferMemory (&FbBase, &FbLength);
+  if (EFI_ERROR (Status)) {
+    if (InterruptState) {
+      ArmEnableInterrupts ();
+    }
+    return 0;
+  }
+  InitializePosition ();
+
   TraceTzAssert = !TzAssertTraced &&
     J716fBufferContains (Buffer, NumberOfBytes, "ERROR: C90000002:V03000007", sizeof ("ERROR: C90000002:V03000007") - 1) &&
     J716fBufferContains (Buffer, NumberOfBytes, "6925FAD3-E243-4B69-AD61-3F978C8ABC60", sizeof ("6925FAD3-E243-4B69-AD61-3F978C8ABC60") - 1);
-  RecordLogToMemory (Buffer, NumberOfBytes);
   if (TraceTzAssert) {
     TzAssertTraced = TRUE;
     J716fTzAssertTrace (FbBase, FbLength, Buffer, NumberOfBytes);
@@ -505,5 +544,27 @@ EFI_STATUS
 EFIAPI
 SerialPortInitialize ()
 {
+  EFI_PHYSICAL_ADDRESS FbBase;
+  UINT64               FbLength;
+  EFI_STATUS           Status;
+  BOOLEAN              InterruptState;
+  STATIC CONST CHAR8   FrameBufferUnavailable[] =
+    "J716F: framebuffer validation failed; continuing with RAM log only\n";
+
+  InitializePosition ();
+  Status = GetFrameBufferMemory (&FbBase, &FbLength);
+  if (EFI_ERROR (Status)) {
+    InterruptState = ArmGetInterruptState ();
+    if (InterruptState) {
+      ArmDisableInterrupts ();
+    }
+    RamLogWrite ((CONST UINT8 *)FrameBufferUnavailable, sizeof (FrameBufferUnavailable) - 1);
+    if (InterruptState) {
+      ArmEnableInterrupts ();
+    }
+  }
+
+  // RAM logging remains usable without a validated display. The write path
+  // checks the framebuffer again and rejects drawing if it is unavailable.
   return EFI_SUCCESS;
 }

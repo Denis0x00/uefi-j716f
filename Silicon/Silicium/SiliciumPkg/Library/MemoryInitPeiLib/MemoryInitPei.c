@@ -10,6 +10,7 @@
 #include <Library/MemoryMapLib.h>
 #include <Library/DebugLib.h>
 #include <Library/HobLib.h>
+#include <Library/EarlyHandoffLib.h>
 
 VOID
 BuildMemoryTypeInformationHob ();
@@ -118,6 +119,14 @@ MemoryPeim (
 
   // Get Memory Map
   GetMemoryMap (&MemoryDescriptor, &MemoryDescriptorCount);
+
+  // Replace the static map only after the SEC input validation has completed.
+  // Split Conventional entries before HOB emission, never add overlapping
+  // allocation HOBs after the MMU allocator has already used the heap.
+  Status = ApplyEarlyHandoffMemoryMap (&MemoryDescriptor, &MemoryDescriptorCount);
+  if (EFI_ERROR (Status)) {
+    return Status;
+  }
 
   DEBUG ((EFI_D_WARN, "MMU: %u regions\n", (UINT32)MemoryDescriptorCount));
 

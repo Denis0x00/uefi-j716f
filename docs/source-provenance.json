@@ -1,0 +1,2697 @@
+{
+  "schema_version": 1,
+  "base_repository": "https://github.com/Denis0x00/uefi-j716f.git",
+  "base_revision": "d1d183b79d28329f46fc18a67eea9c2a51a9b939",
+  "source_snapshot": "Final r22 firmware source; includes r9 display ownership fix",
+  "upstream_gitlinks": {
+    "Binaries": "a1501e0c2e642d6ac0d8f52c85af2a67b75a7799",
+    "Common/Mu": "b8d46c71610318e36a661819e1e3c0b8bdda413a",
+    "Common/Mu_OEM_Sample": "b70b4b7bb02c43bf9db2172dfb3ed0457e2361d6",
+    "Mu_Basecore": "3c9c7b2e211e62d2a954ad760a36fe05adc43aa3",
+    "Silicium-ACPI": "1c8bd63a7ffcaecf3c8764a6b01a11e053457543",
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/openssl": "67b5686b4419b4cb8caa502711c41815f5279751"
+  },
+  "active_firmware_submodules": {
+    "Common/Mu": {
+      "commit": "b8d46c71610318e36a661819e1e3c0b8bdda413a",
+      "working_tree_clean": true
+    },
+    "Common/Mu_OEM_Sample": {
+      "commit": "b70b4b7bb02c43bf9db2172dfb3ed0457e2361d6",
+      "working_tree_clean": true
+    }
+  },
+  "modified_active_submodule_patches": [],
+  "advanced_logger_source": "Unmodified pinned Common/Mu; QR-view changes are in the separate UniXNU package dependency",
+  "retained_upstream_source_resources": {
+    "Resources/DTBs/j716f.dtb": {
+      "bytes": 728300,
+      "sha256": "2c0d57deb7f99a081fe4994535c51ca0362bf44b6ad5422a7300f01496f6b3ec",
+      "upstream_blob": "dff8b247ea37b349c21244318ffc117d4f08b8ef",
+      "source_revision": "d1d183b79d28329f46fc18a67eea9c2a51a9b939"
+    },
+    "Silicon/Silicium/SiliciumPkg/Applications/UFP/ufpdevicefw.efi": {
+      "bytes": 443904,
+      "sha256": "72de25543341ba515be3872749b5fe7501468019acb6d8d997ae4a5bb19493fa",
+      "upstream_blob": "81f6070fc5198b5ecbe848befb4a20d617234d20",
+      "source_revision": "d1d183b79d28329f46fc18a67eea9c2a51a9b939"
+    },
+    "Silicon/Silicium/SiliciumPkg/Include/Resources/BootLogo.bmp": {
+      "bytes": 91078,
+      "sha256": "daf81fcaaae58853f9fa0e8a5fdaec7f44b1ba1d7596ebb7f329ceaa84afd6b8",
+      "upstream_blob": "65aac18ec2ba89e9ad6229be78b295a2d431de36",
+      "source_revision": "d1d183b79d28329f46fc18a67eea9c2a51a9b939"
+    },
+    "Silicon/Silicium/SiliciumPkg/Include/Resources/MassStorage.bmp": {
+      "bytes": 251078,
+      "sha256": "d8db6a75dd779e7a8ef610341bd08b54b9df1c1e91c5fd94e63f504f4ba52564",
+      "upstream_blob": "48a93e9da244025eb4bbd85f193e5d9a158ad475",
+      "source_revision": "d1d183b79d28329f46fc18a67eea9c2a51a9b939"
+    },
+    "Silicon/Silicium/SiliciumPkg/Include/Resources/NoBootOS.bmp": {
+      "bytes": 91078,
+      "sha256": "d602b490756db178117647f4032e6556694e9eff1b0db8044c87d225feba5ed7",
+      "upstream_blob": "1b0b98cd2a94bcbbf68eb1e48b2ac9eb06403a65",
+      "source_revision": "d1d183b79d28329f46fc18a67eea9c2a51a9b939"
+    },
+    "Silicon/Silicium/SiliciumPkg/Include/Resources/SecureBoot/SiPolicy.p7b": {
+      "bytes": 8633,
+      "sha256": "531477810e7c3a9f1e4d5e6d171508ce1caa88bd5aab0131abd8f1b92dd81a23",
+      "upstream_blob": "37c6bf5f0e29d868b487ee6150a722461fafd868",
+      "source_revision": "d1d183b79d28329f46fc18a67eea9c2a51a9b939"
+    }
+  },
+  "external_package_source_identities": {
+    "package/UniXNUPkg/Driver/AdvancedLogDxe/AdvancedLogDxe.c": {
+      "bytes": 16208,
+      "sha256": "aa76c504a222cb79982dee09ab3cb913b33382da19cf07c68b99ddd9cf9d3745",
+      "normalized_lf": {
+        "bytes": 16208,
+        "sha256": "aa76c504a222cb79982dee09ab3cb913b33382da19cf07c68b99ddd9cf9d3745"
+      }
+    },
+    "package/UniXNUPkg/Driver/AdvancedLogDxe/AdvancedLogDxe.inf": {
+      "bytes": 1212,
+      "sha256": "77dced57e7fad55121dbab8241db5bf92e2f31e396925bac91b65d2e5649b2de",
+      "normalized_lf": {
+        "bytes": 1212,
+        "sha256": "77dced57e7fad55121dbab8241db5bf92e2f31e396925bac91b65d2e5649b2de"
+      }
+    },
+    "package/UniXNUPkg/Library/UniXNULib/Main.c": {
+      "bytes": 4898,
+      "sha256": "2ef56f687d207b09a8fe1d67699f16581cb87166af8897b56d613d6458ec6290",
+      "normalized_lf": {
+        "bytes": 4898,
+        "sha256": "2ef56f687d207b09a8fe1d67699f16581cb87166af8897b56d613d6458ec6290"
+      }
+    },
+    "package/UniXNUPkg/Library/UniXNULib/Menu.c": {
+      "bytes": 14643,
+      "sha256": "c354ed4ac95d3ab8f82ff7af0dd317ba10e53cdc55f3fae0c44f75162fa93518",
+      "normalized_lf": {
+        "bytes": 14643,
+        "sha256": "c354ed4ac95d3ab8f82ff7af0dd317ba10e53cdc55f3fae0c44f75162fa93518"
+      }
+    },
+    "package/UniXNUPkg/Library/UniXNULib/Ui.c": {
+      "bytes": 27007,
+      "sha256": "7f5a2773424a5a8cc68c12d061744ffd80c2847aa6595625740f41e0b5ea6792",
+      "normalized_lf": {
+        "bytes": 27007,
+        "sha256": "7f5a2773424a5a8cc68c12d061744ffd80c2847aa6595625740f41e0b5ea6792"
+      }
+    },
+    "package/UniXNUPkg/Library/UniXNULib/Config.c": {
+      "bytes": 45702,
+      "sha256": "fa8b9c2289f2bd06ec57c95fa11ae697713b2b626e44d8abf320950a277f08a2",
+      "normalized_lf": {
+        "bytes": 45702,
+        "sha256": "fa8b9c2289f2bd06ec57c95fa11ae697713b2b626e44d8abf320950a277f08a2"
+      }
+    },
+    "package/UniXNUPkg/Library/UniXNULib/UniXNULib.inf": {
+      "bytes": 2052,
+      "sha256": "3a100bd96eb2e73da1073c98c417605ca0d5df8cd417fe93038ba80107036226",
+      "normalized_lf": {
+        "bytes": 2052,
+        "sha256": "3a100bd96eb2e73da1073c98c417605ca0d5df8cd417fe93038ba80107036226"
+      }
+    },
+    "package/UniXNUPkg/UniXNUPkg.dec": {
+      "bytes": 2930,
+      "sha256": "6a7055bf3b9234df86e0b961986da42c79bb0f84d8f0bb88f37abb17db2cf297",
+      "normalized_lf": {
+        "bytes": 2930,
+        "sha256": "6a7055bf3b9234df86e0b961986da42c79bb0f84d8f0bb88f37abb17db2cf297"
+      }
+    }
+  },
+  "edk2_feed": {
+    "repository": "https://github.com/microsoft/mu_basecore.git",
+    "expected_commit": "cfb93724a06ff86ff5ba971413368a7809ee42a5",
+    "source": "Pinned UniXNU main feed, not this root Mu_Basecore gitlink",
+    "observed_commit": "cfb93724a06ff86ff5ba971413368a7809ee42a5",
+    "working_tree_clean": true,
+    "gitlinks": {
+      "BaseTools/Source/C/BrotliCompress/brotli": "e230f474b87134e8c6c85b630084c612057f253e",
+      "MdeModulePkg/Library/BrotliCustomDecompressLib/brotli": "e230f474b87134e8c6c85b630084c612057f253e",
+      "MdeModulePkg/Universal/RegularExpressionDxe/oniguruma": "4ef89209a239c1aea328cf13c05a2807e5c146d1",
+      "MdePkg/Library/BaseFdtLib/libfdt": "cfff805481bdea27f900c32698171286542b8d3c",
+      "MdePkg/Library/MipiSysTLib/mipisyst": "370b5944c046bab043dd8b133727b2135af7747a",
+      "SecurityPkg/DeviceSecurity/SpdmLib/libspdm": "f55cf6d48ec69b4ac60a63903e9c6a2cb0fd155d",
+      "UnitTestFrameworkPkg/Library/CmockaLib/cmocka": "1cc9cde3448cdd2e000886a26acf1caac2db7cf1",
+      "UnitTestFrameworkPkg/Library/GoogleTestLib/googletest": "86add13493e5c881d7e4ba77fb91c1f57752b3a4",
+      "UnitTestFrameworkPkg/Library/SubhookLib/subhook": "83d4e1ebef3588fae48b69a7352cc21801cb70bc"
+    }
+  },
+  "generated_boot_fd_kernel_images_included": false,
+  "private_logs_or_inputs_included": false,
+  "source_manifest_before_documentation_refresh": {
+    ".gitattributes": {
+      "bytes": 466,
+      "sha256": "75d99283d287896e835306d1dbc0cc87e0de0f97ee10900d53d7a394b52c5b98"
+    },
+    ".github/dependabot.yml": {
+      "bytes": 1181,
+      "sha256": "6e2dd7d62f5d69d90b6e246413508b8d5b81c03dcd19e04749ba51ccdf8cd0a4"
+    },
+    ".github/ISSUE_TEMPLATE/error-bug-report.md": {
+      "bytes": 684,
+      "sha256": "d60398575ade01a4c750c22411e0726140b5d086efeacbbb8f6aae8e5618bffb"
+    },
+    ".github/PULL_REQUEST_TEMPLATE/device-support.md": {
+      "bytes": 793,
+      "sha256": "0f5d12c7e12e9f416077b047c35e64960500c777786c97c39f15c59f686171cd"
+    },
+    ".github/PULL_REQUEST_TEMPLATE/generic-changes.md": {
+      "bytes": 331,
+      "sha256": "7afa981c628612353316a48d5e60946b437e19a946f68447a0f567c7dc3fc159"
+    },
+    ".github/pull_request_template.md": {
+      "bytes": 190,
+      "sha256": "f654291067e94a1456d1a33e65c8c2be19342811006c1bb652f9539e72761631"
+    },
+    ".github/workflows/j716f-source-checks.yml": {
+      "bytes": 5703,
+      "sha256": "85c3f585353f38112bcdb4ca8fa2778ca2fbfb92e95c26fe7e47dcff3e1a957a"
+    },
+    ".gitignore": {
+      "bytes": 266,
+      "sha256": "2f9802acfdf135cacf24664ccb8a1de8e226d8bf4cf21e7f91e7d780759a9635"
+    },
+    ".gitmodules": {
+      "bytes": 824,
+      "sha256": "86fb199bcc333e142654fe47c3dd9c7f946bdced8dd3835bd5a40573302dc1aa"
+    },
+    "BootShim/BootShim.S": {
+      "bytes": 814,
+      "sha256": "0c4f6ac80d5d63cd02f6f0670eb14dfc5c97b411a15ebbd880684c91c280c5d2"
+    },
+    "BootShim/Makefile": {
+      "bytes": 411,
+      "sha256": "d37dba407edd88f7596d909ed6f30d3bba60e3c318c47143815e2eb085f89a32"
+    },
+    "build_active_devices.sh": {
+      "bytes": 2173,
+      "sha256": "1f8f392c39bfa3b689dc4165f747ba4c06d88eeaa8f61fc4d97dd6849226c05e"
+    },
+    "build_uefi.py": {
+      "bytes": 17354,
+      "sha256": "36715b49e0c981e98fc36466849b731c875f2ebcd8ecbd118bda5841748fe56f"
+    },
+    "Building.md": {
+      "bytes": 3718,
+      "sha256": "d4fe545c18f490c85524d57275b85228d14b9f112c6cc3f17036579dce30c43f"
+    },
+    "LICENSE": {
+      "bytes": 1884,
+      "sha256": "2b031880c646006165194888f9814806719ab4c91c26d330c4eb71e1983f0187"
+    },
+    "pip-requirements.txt": {
+      "bytes": 586,
+      "sha256": "d95a7ecdbca9e7f25dba184eb73b16ae6b9ce2eb61eaebbd3561c1a434a71aae"
+    },
+    "Platforms/Lenovo/j716fPkg/Application/J716fEarlyLogProbe/J716fEarlyLogProbe.c": {
+      "bytes": 6201,
+      "sha256": "1fa679c51a705ad81dab94e461bb1218cd23b7158a44bcdafe40d810fa2e9f72"
+    },
+    "Platforms/Lenovo/j716fPkg/Application/J716fEarlyLogProbe/J716fEarlyLogProbe.inf": {
+      "bytes": 564,
+      "sha256": "aaffa7c517f4f14b3cfd6ce01b2e4ac25add26dc7a66ce015eefce7e790cb5ea"
+    },
+    "Platforms/Lenovo/j716fPkg/DeviceBuild.py": {
+      "bytes": 7857,
+      "sha256": "959df3a67b994bfaebfa4a8eaddb9310c62959b646710dc58c10e35f16ee1a6f"
+    },
+    "Platforms/Lenovo/j716fPkg/Drivers/J716fHandoffDiagnosticsDxe/J716fEarlyLogImport.c": {
+      "bytes": 3371,
+      "sha256": "4894d28d972d62bcd3f2e0632b0ab009c44dfe70b46d1bfd5d17774aab15702e"
+    },
+    "Platforms/Lenovo/j716fPkg/Drivers/J716fHandoffDiagnosticsDxe/J716fHandoffDiagnostics.c": {
+      "bytes": 21166,
+      "sha256": "a4fb8281da72435f970ef038ffa4618099624c7d65df50c572aaf9489b988c6d"
+    },
+    "Platforms/Lenovo/j716fPkg/Drivers/J716fHandoffDiagnosticsDxe/J716fHandoffDiagnosticsDxe.inf": {
+      "bytes": 870,
+      "sha256": "98f6ea5cd77885651060e1f7eb07455bebb98003de016ac94fe8e4ef7856282c"
+    },
+    "Platforms/Lenovo/j716fPkg/Drivers/J716fHandoffDiagnosticsDxe/README.md": {
+      "bytes": 3420,
+      "sha256": "e25361e23847abded34e7f94dab66d92e3c032b21f2851a4e4a00cf414dedd66"
+    },
+    "Platforms/Lenovo/j716fPkg/Drivers/J716fHandoffDiagnosticsDxe/tests/test_diagnostics.py": {
+      "bytes": 19737,
+      "sha256": "14d23310685d9ae5fa92e2d09357d80a992d4a2b12dbe0a5b91fb20cb8db19f3"
+    },
+    "Platforms/Lenovo/j716fPkg/Drivers/J716fInheritedFbDxe/J716fInheritedFb.c": {
+      "bytes": 4937,
+      "sha256": "43188f9f1fc129a4978c09e6a75593fbacb89a80f28d12e861dd487d566c00cd"
+    },
+    "Platforms/Lenovo/j716fPkg/Drivers/J716fInheritedFbDxe/J716fInheritedFbDxe.inf": {
+      "bytes": 822,
+      "sha256": "cab0f55354cbe9d6e90bb2e109fef35998cbc200a34388cb2a2e12dffecd5a57"
+    },
+    "Platforms/Lenovo/j716fPkg/Drivers/J716fIoConsoleBdsDxe/J716fIoConsoleBds.c": {
+      "bytes": 6912,
+      "sha256": "b46c66c0e35c88800b033419b36fce33c5f34f168e79df85b9cc984b5ec86401"
+    },
+    "Platforms/Lenovo/j716fPkg/Drivers/J716fIoConsoleBdsDxe/J716fIoConsoleBdsDxe.inf": {
+      "bytes": 856,
+      "sha256": "92d2efed1dacf489a7658ebe1d859c1880002b31b278e19a0c11fc2b4a55f19d"
+    },
+    "Platforms/Lenovo/j716fPkg/Drivers/J716fKeysDxe/J716fInput.h": {
+      "bytes": 2600,
+      "sha256": "202cc50af7688fa033f2fc63acb83dbd128a9b00324239f637b053fe4ab35266"
+    },
+    "Platforms/Lenovo/j716fPkg/Drivers/J716fKeysDxe/J716fKeys.c": {
+      "bytes": 2074,
+      "sha256": "0d5b260b9d81cb366789a098f46de8ec74624ced689e695fbd9494dba83022c3"
+    },
+    "Platforms/Lenovo/j716fPkg/Drivers/J716fKeysDxe/J716fKeysDxe.c": {
+      "bytes": 8932,
+      "sha256": "8385eecfd7ad43fc5b735306a2812d2cb997bed63388c6ca14d1990689ac0b14"
+    },
+    "Platforms/Lenovo/j716fPkg/Drivers/J716fKeysDxe/J716fKeysDxe.inf": {
+      "bytes": 728,
+      "sha256": "c8aee477353c457b7b393bb6ab860e197f4ae96f24a559c7688e2247abea8355"
+    },
+    "Platforms/Lenovo/j716fPkg/Drivers/J716fKeysDxe/J716fSpmi.c": {
+      "bytes": 3024,
+      "sha256": "d83bdaccba84d58c753edc14ff5af701729b7cd88f96263f4c68f5bb32fa2466"
+    },
+    "Platforms/Lenovo/j716fPkg/Drivers/J716fKeysDxe/reference-lock.json": {
+      "bytes": 691,
+      "sha256": "a47e6bacf40687a380d8d8ecdb8c4c5538b5b40dd8cf4e790da1863592ce2304"
+    },
+    "Platforms/Lenovo/j716fPkg/Include/ENTRY_V15_APRIORI.inc": {
+      "bytes": 2230,
+      "sha256": "129fc2de8c86c9921a17aa2f7b02074915fd73ce5cd878be8e98208434da46c8"
+    },
+    "Platforms/Lenovo/j716fPkg/Include/ENTRY_V15_DXE.inc": {
+      "bytes": 2248,
+      "sha256": "63bc47be8ec0d31d7d5460cb1800ce467dee8a409d4ae517865116516370b14f"
+    },
+    "Platforms/Lenovo/j716fPkg/Include/J716fEarlyLog.h": {
+      "bytes": 16638,
+      "sha256": "d871825f16e72b3923420b3c0aa54e5d5a2291e5c0272d582ce05f9a22a86d16"
+    },
+    "Platforms/Lenovo/j716fPkg/Include/J716fEarlyLogHob.h": {
+      "bytes": 603,
+      "sha256": "5328942829f9ceca5ef9b2b750556899d136c84987382c3c2f05c9c50e009def"
+    },
+    "Platforms/Lenovo/j716fPkg/Include/J716fEarlyLogRegion.h": {
+      "bytes": 708,
+      "sha256": "7d2d0d99db7f2d64d4ed60342017c74f09f68c482ad6672b454054fca78d7353"
+    },
+    "Platforms/Lenovo/j716fPkg/Include/J716fEarlyLogText.h": {
+      "bytes": 3766,
+      "sha256": "06fd9123f29c1da7637edd483794939d73febe1b6822ffbaeec39fb03fe6209b"
+    },
+    "Platforms/Lenovo/j716fPkg/j716f.dsc": {
+      "bytes": 6241,
+      "sha256": "20e042637bae7aa2dbc6ca58d7e00e62365322dcb202319265f9506c6b97e2a9"
+    },
+    "Platforms/Lenovo/j716fPkg/j716f.fdf": {
+      "bytes": 2374,
+      "sha256": "576d5efb304d646b4c409e543deddc46b54556d85ee79e81126a16699acb310b"
+    },
+    "Platforms/Lenovo/j716fPkg/J716fEarlyLog.dec": {
+      "bytes": 295,
+      "sha256": "84485812344a74a50ffe07b5b94be2a4c12d616620b6aebb5d4092beb1e240b0"
+    },
+    "Platforms/Lenovo/j716fPkg/Library/ConfigurationMapLib/ConfigurationMapLib.c": {
+      "bytes": 1543,
+      "sha256": "8f5450844b6eb86cf2f32dbd1cd36a12dc14ec358098a416a4048f5253dd9f30"
+    },
+    "Platforms/Lenovo/j716fPkg/Library/ConfigurationMapLib/ConfigurationMapLib.inf": {
+      "bytes": 385,
+      "sha256": "5e1388e8bc4d83fd33994da18d8d33a885a23d085928096212b9e9806770cef1"
+    },
+    "Platforms/Lenovo/j716fPkg/Library/J716fEarlyHandoffLib/J716fEarlyHandoff.c": {
+      "bytes": 12129,
+      "sha256": "41cf156fd525285787e98f8d72f36063f4355195c06e223fd9a7260ecefa7c16"
+    },
+    "Platforms/Lenovo/j716fPkg/Library/J716fEarlyHandoffLib/J716fEarlyHandoffLib.inf": {
+      "bytes": 396,
+      "sha256": "701ef4eaeea665a371b398be3bd4059f6392ba7e71c33e4ece4bcf5186522661"
+    },
+    "Platforms/Lenovo/j716fPkg/Library/J716fEarlyHandoffLib/README.md": {
+      "bytes": 3803,
+      "sha256": "8516b2ce7337ba24b404f79263f21e798cc6a3ddd76ab2f7307085f389116dd7"
+    },
+    "Platforms/Lenovo/j716fPkg/Library/J716fEarlyHandoffLib/tests/harness.c": {
+      "bytes": 21075,
+      "sha256": "f52758234f23f51fc61cd4631af42a53fd470cfb0c25c03464538159463566ae"
+    },
+    "Platforms/Lenovo/j716fPkg/Library/J716fEarlyHandoffLib/tests/harness_asan.c": {
+      "bytes": 10129,
+      "sha256": "1f302a5e84fc0eee78eecd963b10fed4a8c667831e8b0e4432ae403f3611341b"
+    },
+    "Platforms/Lenovo/j716fPkg/Library/J716fEarlyHandoffLib/tests/hob_capture.h": {
+      "bytes": 703,
+      "sha256": "268d3563951b18aff73f5947ba39499070213d19c831eb50c84f4bd410f4822e"
+    },
+    "Platforms/Lenovo/j716fPkg/Library/J716fEarlyHandoffLib/tests/host_shim.h": {
+      "bytes": 3398,
+      "sha256": "0e86e3ad43873af047bde3fae5462bc9533115688c8ba820ae25b3e8e9968aae"
+    },
+    "Platforms/Lenovo/j716fPkg/Library/J716fEarlyHandoffLib/tests/README.md": {
+      "bytes": 3338,
+      "sha256": "53f55f790162026edc5c26ff53cb6604055747d5f7283c569ab11e72d1073b1d"
+    },
+    "Platforms/Lenovo/j716fPkg/Library/J716fEarlyHandoffLib/tests/test_early_handoff.py": {
+      "bytes": 6237,
+      "sha256": "7dc3a31dc3c3f9a720ce38ea61aeec998cf9f2f07508471dced713a1f55073dd"
+    },
+    "Platforms/Lenovo/j716fPkg/Library/J716fEarlyLogSecLib/J716fEarlyLogSecLib.c": {
+      "bytes": 1594,
+      "sha256": "98ffc42601169b9f1251c19288889e46757e2f0ed915f9ed74045fb2dd470c95"
+    },
+    "Platforms/Lenovo/j716fPkg/Library/J716fEarlyLogSecLib/J716fEarlyLogSecLib.inf": {
+      "bytes": 434,
+      "sha256": "b425600dd9d5d6c972c6b40339d2b6cde4ab6cc2ece5e6eaf705cd4098a1d52b"
+    },
+    "Platforms/Lenovo/j716fPkg/Library/J716fFrameBufferSerialPortLib/Font.h": {
+      "bytes": 3692,
+      "sha256": "d2a3687db67b069f4e34a961e17fd28b0242986e3fa8dd8a7545cab70834fa8e"
+    },
+    "Platforms/Lenovo/j716fPkg/Library/J716fFrameBufferSerialPortLib/FrameBuffer.h": {
+      "bytes": 459,
+      "sha256": "92916a1eedb81dc86324ff66a8d87e63d188897fecbb068ae77f08506dd40fd8"
+    },
+    "Platforms/Lenovo/j716fPkg/Library/J716fFrameBufferSerialPortLib/FrameBufferSerialPortLib.c": {
+      "bytes": 15069,
+      "sha256": "2670f5381aa0098be224e1b720b14ffc1dc31e65f0a7ccfc15afd532ed32a722"
+    },
+    "Platforms/Lenovo/j716fPkg/Library/J716fFrameBufferSerialPortLib/FrameBufferSerialPortLib.inf": {
+      "bytes": 777,
+      "sha256": "c9a3914fb67d42b76e76eee49ff43b219c9758c036c9d06a66c9d4d6542da358"
+    },
+    "Platforms/Lenovo/j716fPkg/Library/J716fPlatformPeiLib/PlatformPei.c": {
+      "bytes": 486,
+      "sha256": "758938b3126744e24e93225298cfe88c1acf343c6f0c22a7ac77ed5e39179fd3"
+    },
+    "Platforms/Lenovo/j716fPkg/Library/J716fPlatformPeiLib/PlatformPeiLib.inf": {
+      "bytes": 636,
+      "sha256": "67352fd9c953317b25968376905a8249fd38c25b27cd168e741108b27bce9a81"
+    },
+    "Platforms/Lenovo/j716fPkg/Library/J716fRamLogLib/DisplayOwnership.h": {
+      "bytes": 682,
+      "sha256": "8ea631c5e1bc0b05ed393cd2ddf0441a02f4d57e1399c5a8c5bfb12643b42303"
+    },
+    "Platforms/Lenovo/j716fPkg/Library/J716fRamLogLib/J716fRamLogLib.c": {
+      "bytes": 6969,
+      "sha256": "cc468f7c3d151e57acfd126f06faa4f5665e2c08b698c86f9bba7ed2df36869b"
+    },
+    "Platforms/Lenovo/j716fPkg/Library/J716fRamLogLib/J716fRamLogLib.inf": {
+      "bytes": 575,
+      "sha256": "de3d9cb34996190645c9af523e1d94593b24807e71b819c6acca77d7377e35aa"
+    },
+    "Platforms/Lenovo/j716fPkg/Library/MemoryMapLib/MemoryMapLib.c": {
+      "bytes": 5209,
+      "sha256": "22b33ddfc23c6878e2ed6fdc708a400867b029e2b12e4a182722480c333a01ef"
+    },
+    "Platforms/Lenovo/j716fPkg/Library/MemoryMapLib/MemoryMapLib.inf": {
+      "bytes": 392,
+      "sha256": "317485b2aaa78ae0594b42fd9705dff520290542f3dd906ed233911ba641ff1a"
+    },
+    "Platforms/Lenovo/j716fPkg/memory-map.json": {
+      "bytes": 6921,
+      "sha256": "36997d11e9d34123e846ffd2185b8ab0db5f35ff1858526c3bf2bc010a73fe1d"
+    },
+    "Platforms/Lenovo/j716fPkg/README.md": {
+      "bytes": 1125,
+      "sha256": "9dfff8f7a66ab177f119f32af6dae7fd6a70a46dfe3ba5653fb2a97783d7803e"
+    },
+    "README.md": {
+      "bytes": 1880,
+      "sha256": "03f47947d54671a14a0f3d34838377000b06825faa758200bba5086cbc4da1f2"
+    },
+    "Resources/Configs/j716f.toml": {
+      "bytes": 370,
+      "sha256": "427ed1766a61aa7be75e40ca8e294219f917f17c84eb7f3db64ef93465577ec7"
+    },
+    "Resources/DTBs/j716f.dtb": {
+      "bytes": 728300,
+      "sha256": "2c0d57deb7f99a081fe4994535c51ca0362bf44b6ad5422a7300f01496f6b3ec"
+    },
+    "Resources/MuPatches/AsmMacroLib.patch": {
+      "bytes": 688,
+      "sha256": "6f5ab2045f013567dc1b81456d16c94facfa3411d08b1c3413ba67ff0579218e"
+    },
+    "Resources/MuPatches/Auth-Service.patch": {
+      "bytes": 1306,
+      "sha256": "8cdc202688f20e294d53f1152865ed983a9ad748eb193bcc257e1d5a0c9fd01f"
+    },
+    "Resources/MuPatches/Boot-Manager.patch": {
+      "bytes": 4774,
+      "sha256": "046fce99f57ce81ebbdba26600d554d5915160d0a9a22bee76bde36012184469"
+    },
+    "Resources/MuPatches/Timer.patch": {
+      "bytes": 2406,
+      "sha256": "ab1c580b6424817d07409adba66adc5b95935143e11f173f2d0649ae1bca27ef"
+    },
+    "Resources/MuPatches/Usb-Bus.patch": {
+      "bytes": 727,
+      "sha256": "73fc360f91259b7d76cce3ecbaecc37f973d054ece2678dc672469635bce45f1"
+    },
+    "Resources/ramdisk": {
+      "bytes": 5,
+      "sha256": "b5a2c96250612366ea272ffac6d9744aaf4b45aacd96aa7cfcb931ee3b558259"
+    },
+    "Resources/Scripts/mkbootimg.py": {
+      "bytes": 27649,
+      "sha256": "18375f6804c5ea0b8ba41121c2a04509ffa0211750c127bd394a486c4f137475"
+    },
+    "setup_env.sh": {
+      "bytes": 2611,
+      "sha256": "3dbdabe6e157e4e2cb7eb7ad664e3a8e1f824fec01dbde702fee787008eb4e88"
+    },
+    "Silicon/Qualcomm/KonaPkg/KonaPkg.dsc.inc": {
+      "bytes": 2013,
+      "sha256": "99e80dd57212cb7262e55e2b595e28dc1c54d0d52526ba26539e4411d9896564"
+    },
+    "Silicon/Qualcomm/KonaPkg/Library/AcpiTableUpdateLib/AcpiTableUpdate.c": {
+      "bytes": 4736,
+      "sha256": "5ff87bfa154449fb28d978f14465176ae03f206048c1f7929e65b3d68ec9e23f"
+    },
+    "Silicon/Qualcomm/KonaPkg/Library/AcpiTableUpdateLib/AcpiTableUpdateLib.inf": {
+      "bytes": 695,
+      "sha256": "96c0c28559480058e82940ddda40668550ed13631578245a22577eabc8e7d92d"
+    },
+    "Silicon/Qualcomm/KonaPkg/Library/PlatformSecLib/AArch64/PlatformHelper.S": {
+      "bytes": 212,
+      "sha256": "a550e2262b9426ae46e2e1da5225ec57d1a1740c0ed79845c06c5f4ed6137db8"
+    },
+    "Silicon/Qualcomm/KonaPkg/Library/PlatformSecLib/PlatformRegisters.h": {
+      "bytes": 257,
+      "sha256": "8dfd40c79d41d55bbceca2f29e255158fdadf847f8ad347e8e11c8832af14027"
+    },
+    "Silicon/Qualcomm/KonaPkg/Library/PlatformSecLib/PlatformSec.c": {
+      "bytes": 926,
+      "sha256": "edefc16cb567dea168b2749295fc34947231364c29e08968d1903337a6ed9f9b"
+    },
+    "Silicon/Qualcomm/KonaPkg/Library/PlatformSecLib/PlatformSecLib.inf": {
+      "bytes": 666,
+      "sha256": "229ebe61d2c4ae0e263bd0c90a6f698501c73b2558fe1bc388713a6450c76528"
+    },
+    "Silicon/Qualcomm/QcomPkg/Applications/MassStorage/MassStorage.c": {
+      "bytes": 5902,
+      "sha256": "634f38342e84e691bd13a6f5599fadca6f06ceb8d56a1c81a1357d8146a4bff7"
+    },
+    "Silicon/Qualcomm/QcomPkg/Applications/MassStorage/MassStorage.h": {
+      "bytes": 685,
+      "sha256": "9401ccbf51096bb2539126cf7f3a1fde65ddceb464e44b0fb74a5ea65758807b"
+    },
+    "Silicon/Qualcomm/QcomPkg/Applications/MassStorage/MassStorage.inf": {
+      "bytes": 913,
+      "sha256": "1672d1f417e43eca3a28e0b62fb8323b624ad6c4034b8d529eb47f47d383b626"
+    },
+    "Silicon/Qualcomm/QcomPkg/Drivers/DisplayReEnablerDxe/DisplayReEnablerDxe.c": {
+      "bytes": 1192,
+      "sha256": "7a74b4ec6fffa5d9546d57772f6cbaf4fb0103c0557c07851c39e6f90739baab"
+    },
+    "Silicon/Qualcomm/QcomPkg/Drivers/DisplayReEnablerDxe/DisplayReEnablerDxe.inf": {
+      "bytes": 551,
+      "sha256": "c046d6140ad4467af090ea362fde5917c24fbbcae32c6443339f8ecc2002a8e7"
+    },
+    "Silicon/Qualcomm/QcomPkg/Drivers/IortDtDxe/IortDtDxe.c": {
+      "bytes": 2001,
+      "sha256": "4c13abda05fec54d933fe53f8800181546f69b684811d3b15821d531ec07d236"
+    },
+    "Silicon/Qualcomm/QcomPkg/Drivers/IortDtDxe/IortDtDxe.inf": {
+      "bytes": 537,
+      "sha256": "27e4fb8a3d5d42357dcf5d2bf99b1ff8a025617c590bea3a88cef6e6b11ae1d6"
+    },
+    "Silicon/Qualcomm/QcomPkg/Extra.fdf.inc": {
+      "bytes": 91,
+      "sha256": "4e624a0bf106361a99f90e658ff78a07a9875f3a0357b47559e1ed183b8eb89f"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Library/ArmSmmuDetachLib.h": {
+      "bytes": 409,
+      "sha256": "0c7cad99681e8adc6dd77ac2592d2c019fb70b9c1459eaed9d919524924afb3b"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Library/ConfigurationMapHelperLib.h": {
+      "bytes": 1367,
+      "sha256": "ff836706760633411ff01d595d4dd33baa5f3a4f80c67b8b8a343c6a31938c69"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Library/ConfigurationMapLib.h": {
+      "bytes": 730,
+      "sha256": "36c259fe1c8326c5ba7bc522b7b73a9709b62d1ac37cb102b0d33e0d90d3142c"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Library/RfsProtectionLib.h": {
+      "bytes": 136,
+      "sha256": "badf9ece8bf9e0522efd7dffb2b15708fa244f7e3370c78f9a6f7505de0df503"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Protocol/DDRDetails.h": {
+      "bytes": 4831,
+      "sha256": "d77ca9f05571e8c21ff3ed6d316ab9a809a847e2bd8d6bbeec4950c69ef65140"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Protocol/EFIASN1X509.h": {
+      "bytes": 6186,
+      "sha256": "9bc21fd48ba6953c4a46570c5fbbed3bf10ddcf334b763cdc6ab8f461beb1ec5"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Protocol/EFICardInfo.h": {
+      "bytes": 6680,
+      "sha256": "10c61dff206f9e56ac9a6e22344b29b16c1f311a6ecea880e5be46ab0cf059cc"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Protocol/EFIChargerEx.h": {
+      "bytes": 7430,
+      "sha256": "4f6154a81852aa08a41425b46252fa36ee83f4349bfac61f88ca4303dd2b539b"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Protocol/EFIChipInfo.h": {
+      "bytes": 28638,
+      "sha256": "67101cbc45701d3db8e35cf8381d7b1c683f45512b5d46de3558823c2b59ea09"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Protocol/EFIChipInfoTypes.h": {
+      "bytes": 9594,
+      "sha256": "13684e04a677fcdefdd752fe6158dcca8ff713615dd887e789b861f3a972b5a9"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Protocol/EFIClock.h": {
+      "bytes": 38358,
+      "sha256": "4a215bb2111a0ffca8cca53651ee08178b2ea7333b16bd3325bec9a898cb8cee"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Protocol/EFIDDRGetConfig.h": {
+      "bytes": 13539,
+      "sha256": "eb58f474d933f9934aede76421a7ae9c1190765e63af8b35d5837b987bf2357f"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Protocol/EFIDisplayPwr.h": {
+      "bytes": 5786,
+      "sha256": "22a942c9a536dd765e09255ebfe0da72f744290b023c7709e90311d56c355635"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Protocol/EFIDisplayUtils.h": {
+      "bytes": 11878,
+      "sha256": "8066dd2e753ac568f55025aec19b2e8c0ab24a015ec447c9569b4dee31870662"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Protocol/EFIEraseBlock.h": {
+      "bytes": 4984,
+      "sha256": "2822d9968e5c1d1a7f3e9825d81c14d509202421acff6f1c31f0fec37a8459f0"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Protocol/EFIKernelInterface.h": {
+      "bytes": 22779,
+      "sha256": "e499b097f6ae4163860fa60a3fb3cdce8ab2862679c8e72096c8acce3eab887f"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Protocol/EFILimits.h": {
+      "bytes": 5830,
+      "sha256": "970a7764bf480277975a0a8b6ffaeb878598f3c29bd2c2a7c0bc631a41f7fab5"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Protocol/EFIListenerDef.h": {
+      "bytes": 700,
+      "sha256": "622a1a720acb010e502c84f73f2ba25c0ab36b747d130f2c989180fe64ce19ee"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Protocol/EFIMdtp.h": {
+      "bytes": 5576,
+      "sha256": "6c665bba0f472b45ac55d93fd5696c6abb41ecb730f0124e22fb297f46ad1f7a"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Protocol/EFINandPartiGuid.h": {
+      "bytes": 4424,
+      "sha256": "85bcd508cddaa987ccc7a98f3dc09d6805127f40fda273df60a24bab5a2854c5"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Protocol/EFIPlatformInfo.h": {
+      "bytes": 8005,
+      "sha256": "e0ac5d0ee2209b61b526662b7a6de4cde0e9e1a2149f25af6965bd56ff7c4ecb"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Protocol/EFIPlatformInfoTypes.h": {
+      "bytes": 7490,
+      "sha256": "e55d6d4e2d79ed0822a3372906897fcccf7790ee130823ab4919a6d62bc8c9eb"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Protocol/EFIPmicPon.h": {
+      "bytes": 6488,
+      "sha256": "9775abee75d98ccf0007874550c96632adddacde86db695e7ff45e366b18adc2"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Protocol/EFIPmicVersion.h": {
+      "bytes": 10390,
+      "sha256": "c49ae56e89e3390f56e0ccbed3a361ab1ba82e0e4fc4268c650493a77abda2fe"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Protocol/EFIQseecom.h": {
+      "bytes": 5875,
+      "sha256": "f3c8776054b7ae61e8beaef55f7c3af56e959216927057d83ebd4c174c0b08e2"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Protocol/EFIRamPartition.h": {
+      "bytes": 8123,
+      "sha256": "b2a65a39131c51f8867335fc8131a4a3c4ed6dcae96e808108bc670f6cfb3dae"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Protocol/EFIResetReason.h": {
+      "bytes": 6299,
+      "sha256": "92169cb3b89010702fe33efb8dfad46b69c5203501769f3bc2c0b29dfe3a96cf"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Protocol/EFIRng.h": {
+      "bytes": 6098,
+      "sha256": "3d9a1d411d9acfd678f8aecd864d4d4bc565b08208fab13965cf2af6d3d39320"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Protocol/EFIScm.h": {
+      "bytes": 14496,
+      "sha256": "aff2ad4a55e9837b7a9b487f586ecd210c1b4980abf029c7dbc908e58f853f40"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Protocol/EFIScmModeSwitch.h": {
+      "bytes": 3815,
+      "sha256": "e812792c031e8ec57a2596ea727f0248463958bf46ed1b0aa2c3343019ab5b6d"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Protocol/EFISecRSA.h": {
+      "bytes": 9174,
+      "sha256": "8c0f0c271be081b1594f2ab1cb619818cc35197143d2e804c759ed9559b40240"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Protocol/EFISmem.h": {
+      "bytes": 789,
+      "sha256": "15566c69f35988753c705fbad2ed2e097217c06ea703acd674077a464ce5d361"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Protocol/EFIUbiFlasher.h": {
+      "bytes": 8799,
+      "sha256": "0e29f3772da07932afdd8220bf2a0835d4e694a6e1410fb1d55f6596749d2ac8"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Protocol/EFIUsbDevice.h": {
+      "bytes": 14512,
+      "sha256": "3dbe2ad2fad2ac4e76882c4870fb9a7e3a7a54309e0fbac089ec6c3cc3d3b146"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Protocol/EFIUsbEx.h": {
+      "bytes": 6686,
+      "sha256": "071be72c72cc500325127f49b1ef771158458d5ac3c5129b6d575d6c19a31969"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Protocol/EFIUsbfnIo.h": {
+      "bytes": 40609,
+      "sha256": "648c009a83fb419d4a6b5e3b815d0d9277541f6040baa960d6f3b0ede21ce5aa"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Protocol/EFIUsbMsd.h": {
+      "bytes": 3393,
+      "sha256": "43d71c16950f86611fe5349ec26902e96ccf306836709189438b54898df3c90e"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Protocol/EFIVerifiedBoot.h": {
+      "bytes": 10265,
+      "sha256": "29bd56595b53e339d41d7fc362efd88aac8fba0049817bce135fdc91aa9c8a95"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Protocol/scm_sip_interface.h": {
+      "bytes": 190764,
+      "sha256": "b44e28ccce1d757a8fb33243ce18205bd6154866bd644befa905044570de7506"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Protocol/Source.txt": {
+      "bytes": 100,
+      "sha256": "d95c1bf815e6fece4e45beeecb36d1328281d4ebd429172c7d91b87847efa836"
+    },
+    "Silicon/Qualcomm/QcomPkg/Include/Protocol/UsbEx.h": {
+      "bytes": 6066,
+      "sha256": "f067c57efeabefb9d3bc5d7e1933fd536648c6e969f734435260af1e48e63e4d"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/ArmSmmuDetachLib/ArmSmmuDetachLib.c": {
+      "bytes": 5916,
+      "sha256": "430e6b079f6702e0a66f1f080b371af9efc941ba939ce168bacac6b3c07a16cf"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/ArmSmmuDetachLib/ArmSmmuDetachLib.inf": {
+      "bytes": 542,
+      "sha256": "d3179c3f9dcc9b6e40e0c8df541f5584dcb59a48cd5d1e504a48a5ad5909795b"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/ArmSmmuDetachLib/ArmSmmuDetachLibInternal.h": {
+      "bytes": 2043,
+      "sha256": "06c652ae183770312641e62477241ce69ab846460c63ee2453f06efa0ab4ec2f"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/ArmSmmuDetachLib/SmmuIo.c": {
+      "bytes": 1987,
+      "sha256": "a3fb9c73013a3e02a9ec1187b4af350a70f55c24bb0d62115f5b5243c97fd5f9"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/ArmSmmuDetachLib/SmmuV2.h": {
+      "bytes": 2946,
+      "sha256": "404b525d79413044777b5a8b4b82a826bc061d040d259022d25548f06926e167"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/ConfigurationMapHelperLib/ConfigurationMapHelperLib.c": {
+      "bytes": 1678,
+      "sha256": "2b3a5c3f858bcf1a261f705f7ea0eec76383c246c3dd4c65d960a22e6c424d62"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/ConfigurationMapHelperLib/ConfigurationMapHelperLib.inf": {
+      "bytes": 484,
+      "sha256": "d935272516006f3d9676a4aa6a88fa3b68d80dc1e8ad1bca1b62d810ca96e131"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/ErrataPatchesLib/ErrataPatchesLib.c": {
+      "bytes": 1618,
+      "sha256": "93abd8ce8412034885ed2295b2833dbd7c7eee12781d6848faa6cb6c4afbe37a"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/ErrataPatchesLib/ErrataPatchesLib.inf": {
+      "bytes": 473,
+      "sha256": "f37b61299f4cd5a7408effd13c10fc1d835e242774131d119317801d1611b9bd"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/ErrataPatchesLib/Reference/ACTLR_EL1/ShellCode.c": {
+      "bytes": 8668,
+      "sha256": "9b9868cb076c17d773803a4d77c5a42e2ce23517b5a9c19469a463a53e6d7560"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/ErrataPatchesLib/Reference/AMCNTENSET0_EL0/ShellCode.c": {
+      "bytes": 8518,
+      "sha256": "3dee6caacac89bfa9b942387f827c1c4e9062bdc29afc5ed7f1e8d7bfd2572af"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/ErrataPatchesLib/Reference/IRM/ShellCode.c": {
+      "bytes": 7428,
+      "sha256": "457f0c1b92bc9b49258a72a332b052b2442124a620227b13436808c308c0ed8f"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/ErrataPatchesLib/Reference/IRM_X8/ShellCode.c": {
+      "bytes": 7240,
+      "sha256": "4b52b807ef7797b35ec078adc53f1da96f44f37e754ac7c681eab1f4d039ad0c"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/ErrataPatchesLib/Reference/PSCI_MEMPROTECT/ShellCode.c": {
+      "bytes": 9232,
+      "sha256": "6d50aa0324ae337717897f75a7340cc25ddfd26f7260586b7cc8d09d579acae3"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/ErrataPatchesLib/ShellCode.h": {
+      "bytes": 8890,
+      "sha256": "165752581639a365f3bfcbf1dca730caca7fae13a2fc7f30d0f0a5562a9165af"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/PlatformBootManagerLib/PlatformBootManager.c": {
+      "bytes": 1893,
+      "sha256": "d367183efe317e1c92958ab97761dae236efdf478b44fbc01c67f82c303367ff"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/PlatformBootManagerLib/PlatformBootManagerLib.inf": {
+      "bytes": 612,
+      "sha256": "490cf4c369cfdda4faf9f7388fb48e74190e2ffca0d82eb4b10ff934a5c2b84d"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/PlatformBootOptionsLib/PlatformBootOptions.c": {
+      "bytes": 1005,
+      "sha256": "b56fdd27d64ddc4118fd29fce53f70f88c613c69242e28c00fd2306d6be50fe3"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/PlatformBootOptionsLib/PlatformBootOptionsLib.inf": {
+      "bytes": 575,
+      "sha256": "c22726ed245ca0381d95916e829938d0dec8554b310d176be227fe9cd63409c1"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/PlatformPeiLib/Include/FvList.h": {
+      "bytes": 333,
+      "sha256": "0f88f0fa0fe3ca8038d774a9d3ce55dda3f01fef99628d9a4223cd0f25a49423"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/PlatformPeiLib/PlatformPei.c": {
+      "bytes": 3845,
+      "sha256": "6e13139a9e2812a896178ee059fb1e5e70970a5baf40ee5339079be8e5a95525"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/PlatformPeiLib/PlatformPei.h": {
+      "bytes": 665,
+      "sha256": "d0bbc0165d4d721c2f7d5508bbf75ce6151eb2109105bdb1e75b035e57bad7d0"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/PlatformPeiLib/PlatformPeiLib.inf": {
+      "bytes": 1123,
+      "sha256": "998c90ecbeca27683bad9673b0863b5d13ca324d473c139765345ec3cbf382ff"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/PlatformPeiLib/SerialPort.c": {
+      "bytes": 190,
+      "sha256": "cdf39d007d192107e9d70e3c2824db0a2e14a5d0dc8e5dab48129b85d5c8de5d"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/PlatformPeiLib/ShimLibraries/EFISerialPort.h": {
+      "bytes": 2976,
+      "sha256": "53986b1296ae2c6065f16cb8ef3444ee338aae51149803f4b18e34d51bf8cf2a"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/PlatformPeiLib/ShimLibraries/EFIShim.h": {
+      "bytes": 1559,
+      "sha256": "e552d65b677ff0674a8249ce3b1051a8eeec1ada755927da251cb8984239abbc"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/PlatformPeiLib/ShimLibraries/EFIUefiConfig.h": {
+      "bytes": 3729,
+      "sha256": "a97069d8ac300ec7a80f04e0bf341178f1fb1cc255bd11a133c49083a6c468e0"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/PlatformPeiLib/ShimLoader.c": {
+      "bytes": 1684,
+      "sha256": "5378fa6d0273b332e5e6e178c1b9c5793283e5b1f67cf13ce4e2628c0144c209"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/PlatformPeiLib/UefiConfig.c": {
+      "bytes": 730,
+      "sha256": "fb19a33a2a0427b04da52a8a85dc0dc6d4de12b6a7fa885f3764d64f34cc2cd9"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/PlatformPeiLib/XblProtocols.c": {
+      "bytes": 4028,
+      "sha256": "c79d3cef46c60466751f7e79e3b26837fb2a292738dfa58bcaa9fb9084db67fe"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/RamManagerLib/RamManager.c": {
+      "bytes": 2416,
+      "sha256": "a857d76eb2e34dd0b7ebace3dd01bc63d3ccaaf4a3e3feb7d903a13fd3cce12f"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/RamManagerLib/RamManagerLib.inf": {
+      "bytes": 606,
+      "sha256": "15144b9a138b55919c19826bacef0f8c303154085a51d381f0f0e7b642a6e361"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/RfsProtectionLib/RfsProtection.c": {
+      "bytes": 4684,
+      "sha256": "6ee7e63a049a983f3d5390b3f489e6ee419cb574f4d8d5d6c933dc47b016a0fc"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/RfsProtectionLib/RfsProtectionLib.inf": {
+      "bytes": 727,
+      "sha256": "52ca66ad4228fd92f6bc28b45ec8b3d0da2951c49150a228ce25b28833c8541c"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/SmBiosTableLib/SmBiosTable.c": {
+      "bytes": 4113,
+      "sha256": "b90533de39afb7d7642a974d1e7cbb713f9fa0bb85ecce69f3c95f3c8541aea5"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/SmBiosTableLib/SmBiosTable.h": {
+      "bytes": 822,
+      "sha256": "df097949c7806b6b1a1a46cba7898f733d9d98b2d8c90fbf2c2ef06511a924c3"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/SmBiosTableLib/SmBiosTableLib.inf": {
+      "bytes": 847,
+      "sha256": "3b7992306e647910c60b431f3380cbac259458f4a20dd7cbda786f2f141a0579"
+    },
+    "Silicon/Qualcomm/QcomPkg/Library/SmBiosTableLib/Utils.c": {
+      "bytes": 5684,
+      "sha256": "2a9b9d3fcf2a20d6396a3621bedffbbe4eecaf6316b40f2a931c554ea60663ff"
+    },
+    "Silicon/Qualcomm/QcomPkg/QcomPkg.dec": {
+      "bytes": 10432,
+      "sha256": "6f117c5e5120e16e3f63b574f50e468daeb0c71d9f4c47dd19eff9222ee9b362"
+    },
+    "Silicon/Qualcomm/QcomPkg/QcomPkg.dsc.inc": {
+      "bytes": 1872,
+      "sha256": "5f68deef53401b7b51b7a69d40f779a7bc514789e75f31a31abb9ad2fa110bb8"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/BaseCryptLib.inf": {
+      "bytes": 3482,
+      "sha256": "8f29f9ac7f3c41872983bd9b7b144d335542d1ff3ff0f1e839cf60916565d3e2"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/BaseCryptLib.uni": {
+      "bytes": 844,
+      "sha256": "d31c08875fea36062e84477619f6b9ff9e417de3015f28e3c93c54c71068bc03"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Bn/CryptBn.c": {
+      "bytes": 10839,
+      "sha256": "dd85907f8bd06199c0d306bce7d766852dd72639ece8902171d82eb24dc921be"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Bn/CryptBnNull.c": {
+      "bytes": 9544,
+      "sha256": "d1a3a8aef0ab2f1606affc0160f498cb60ab7c6773736cf69bd0ac6120163f60"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Cipher/CryptAeadAesGcm.c": {
+      "bytes": 7544,
+      "sha256": "7df367e099a3e83cbcbbeb5390a97d273c54cbfec3477fbb52743714f2ecf4df"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Cipher/CryptAeadAesGcmNull.c": {
+      "bytes": 3702,
+      "sha256": "8f671da60993ed1a681ec01b67c471d56a49b0398f67baa520769b7bd1201285"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Cipher/CryptAes.c": {
+      "bytes": 5954,
+      "sha256": "decc997caa9d086fd88cd3794418710350aae45b92c9254aada842518f84dd1b"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Cipher/CryptAesNull.c": {
+      "bytes": 2597,
+      "sha256": "d3411c8b27e349a36886000c78f6eaa907e917a326bf77b2efca38970e1feb8b"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Hash/CryptCShake256.c": {
+      "bytes": 8233,
+      "sha256": "c64d0f224d0ef6a775fcb149c94d3d62f6a936b5136ba9f6181974ca0edbaf62"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Hash/CryptDispatchApDxe.c": {
+      "bytes": 1210,
+      "sha256": "2eb56bf1829e8fdd8e4ab7800997d280005a2c84f5f38e03891018ee9101e61d"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Hash/CryptDispatchApMm.c": {
+      "bytes": 633,
+      "sha256": "0864ee50269ffcd4650200462b92e9c8753c7c50bedda83055d73f4214697d1b"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Hash/CryptDispatchApPei.c": {
+      "bytes": 1534,
+      "sha256": "d9254df5afa8c069afb13a1457bcfdadcf7069657cbaccbb9e1f2101ac8ec653"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Hash/CryptMd5.c": {
+      "bytes": 5254,
+      "sha256": "b5fc831b0fa8dd3881eb507c2348309bc066a333018da5491224792bae5cb5e1"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Hash/CryptMd5Null.c": {
+      "bytes": 3948,
+      "sha256": "64924578f8b2e5824f1bef947211b309376787d2cd56875fc9b0478b506a1a30"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Hash/CryptParallelHash.c": {
+      "bytes": 6706,
+      "sha256": "295d07b0a7dace9c76c120958ebbc98a6bd450014d7da8cafc4035210a3fd3a4"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Hash/CryptParallelHash.h": {
+      "bytes": 6742,
+      "sha256": "8c23fe7b367a6a2926dd4f0fca040f94a22a8e7fc06291747ca0e66bfe06f12c"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Hash/CryptParallelHashNull.c": {
+      "bytes": 1209,
+      "sha256": "c19d053bfff685fa03b5447cace333c21962edc03c17b6ae0f1d2987f34d14d8"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Hash/CryptSha1.c": {
+      "bytes": 5497,
+      "sha256": "3b0330b1d1e2d5bd330ee749c4df0d28bd5bfde48f346e5f599b0cf681416908"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Hash/CryptSha1Null.c": {
+      "bytes": 4148,
+      "sha256": "b053c41598e79a584da9ba97c8eca248850cdd8c725b5dc21ae630b3378cc7f5"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Hash/CryptSha256.c": {
+      "bytes": 5631,
+      "sha256": "1180f4c2431ee21ba1214e493e204483cb721490b9a9ad0a908dca7fdad3da54"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Hash/CryptSha256Null.c": {
+      "bytes": 4229,
+      "sha256": "78793fb842aed99b5af6b6697f5e797b2046461cb4f1b47f41aecd6c2440c832"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Hash/CryptSha3.c": {
+      "bytes": 4211,
+      "sha256": "2dfd7e10559a7d9e10ca03405023b27992f0a5b697b02857cc39e027cfef1225"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Hash/CryptSha512.c": {
+      "bytes": 11247,
+      "sha256": "bf491004c6819a361f5db37e39b5e5bd7c4bb2440199e7f52d069c93c81483f7"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Hash/CryptSha512Null.c": {
+      "bytes": 5932,
+      "sha256": "f1c79413d6e5c05c1fbe30b02b9fa1969d08a9a04c3334c652a153bc979f3799"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Hash/CryptSm3.c": {
+      "bytes": 5359,
+      "sha256": "dafb5854fdecb44dda018eddb5143918df9de1ea01bbbea02612776f680e1b2f"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Hash/CryptSm3Null.c": {
+      "bytes": 4129,
+      "sha256": "948de3d49bd6363a09297dbbbbe6ea68a867b19815ea9e00d51333e2248158d4"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Hash/CryptXkcp.c": {
+      "bytes": 2596,
+      "sha256": "0cc50535250badccebc1367b19072a7d616df9f63ee321aace71e83a65cd05f1"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Hmac/CryptHmac.c": {
+      "bytes": 19968,
+      "sha256": "573c9c6f293db2049619492944b0f2f33110f92bb41210d29753a8cb06bd0405"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Hmac/CryptHmacNull.c": {
+      "bytes": 9182,
+      "sha256": "d8ef703b8c24951a15272e4000300dfb97a4f7565db2930244fbe8b82f2912ce"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Info/CryptInfo.c": {
+      "bytes": 1972,
+      "sha256": "570c450e72b74f7bf9546b677cd87e84f994a1dd91b28c01e2325d34d5cc0910"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/InternalCryptLib.h": {
+      "bytes": 2064,
+      "sha256": "605d1f1673ef5b87471790336e35050d76ba5dd892c9cf34ae2c258a1bb5ef49"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Kdf/CryptHkdf.c": {
+      "bytes": 11495,
+      "sha256": "42782eacc33783e9b48ee91823760f70c8699f5eadce0cb68d5e84060ef06141"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Kdf/CryptHkdfNull.c": {
+      "bytes": 5361,
+      "sha256": "1e1f0ec98b01d66273e6e313c66fb12ca743cbc6d8d24c349d6a08cbf26dcc8b"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/PeiCryptLib.inf": {
+      "bytes": 2661,
+      "sha256": "475cee60a52a0f90df315de8d3e349fc45961e6425b55e99447321643eca4e0c"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/PeiCryptLib.uni": {
+      "bytes": 1434,
+      "sha256": "b2b76e8130460c0fb45f818a6f5a75aa025388579167316ee2c7fa5d524bbdd4"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Pem/CryptPem.c": {
+      "bytes": 7260,
+      "sha256": "5ce5aa15226b4331212ec24bffe4ceb5ae3750cd4bbb11d4fcd3565020cca4e4"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Pem/CryptPemNull.c": {
+      "bytes": 2061,
+      "sha256": "2fc984148bbad3a18ed4d451385156874a1796e8b863272164bf4eb5df341a06"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Pk/CryptAuthenticode.c": {
+      "bytes": 5638,
+      "sha256": "92e1ed9cf9d5d4f2d244c029c170de4d0231c2fa7927be80e1ffa20f6a50ec91"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Pk/CryptAuthenticodeNull.c": {
+      "bytes": 1506,
+      "sha256": "74f5f118e0d7c860af586e0192b6b984a2e1871fde13287792d95d23bf5f2d38"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Pk/CryptDh.c": {
+      "bytes": 15869,
+      "sha256": "443ff1233f23bddf0d2f36d1c5c76ec06452391b85753aa1966dfb8ea33d3af2"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Pk/CryptDhNull.c": {
+      "bytes": 3552,
+      "sha256": "112f1713b8b267350daa3b24e46d53e2a72d7f675427f09233cb5dbe2b246c7c"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Pk/CryptEc.c": {
+      "bytes": 31491,
+      "sha256": "68acbeb9e1d9b648f699fb9c3226a5b17f83427225177d3194bddf6bd46a19f8"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Pk/CryptEcNull.c": {
+      "bytes": 16271,
+      "sha256": "e5c9c8b9e2be5370e06e2ab76153f6e6cb21837cb3a52474119789e915b10a68"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Pk/CryptEcPkeyCtx.h": {
+      "bytes": 596,
+      "sha256": "80d6741d1017053a6d44437c1938bd4ec281f17fac03dd9d5b2fc7f9e9ed43d2"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Pk/CryptPkcs1Oaep.c": {
+      "bytes": 19354,
+      "sha256": "2243317b9746347c2570ecea41d8914cbc150f8498ef5253663e8a6ebd7d10d6"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Pk/CryptPkcs1OaepNull.c": {
+      "bytes": 6611,
+      "sha256": "a2be51be2e398e0792baed6d7f0adb7d70049e388afea8e9c781a95f351e3e4b"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Pk/CryptPkcs5Pbkdf2.c": {
+      "bytes": 3098,
+      "sha256": "157ca14886a2a3b8f7bc6fcc7ceea5cc8099a3bc9259817f1fce1dbfdf8f1b8d"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Pk/CryptPkcs5Pbkdf2Null.c": {
+      "bytes": 1733,
+      "sha256": "70da0abf9d6007982fe868fe405aa39e0b04b9d28caaba2aacc617682d06fb5a"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Pk/CryptPkcs7Encrypt.c": {
+      "bytes": 4881,
+      "sha256": "29dcc9d035113b91c6ed868a6d37c7487b454b41b24efd63eadb215592a189dd"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Pk/CryptPkcs7Sign.c": {
+      "bytes": 6380,
+      "sha256": "b339fe4e9ca8751863fecfc98fd39a8792eb7d35c3eaefc86050c7d7b49d7863"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Pk/CryptPkcs7SignNull.c": {
+      "bytes": 2218,
+      "sha256": "852beeb2c4172589f3ff5da256904d807b4eb1584c43aea23c114970d4cc3fd6"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Pk/CryptPkcs7VerifyBase.c": {
+      "bytes": 4480,
+      "sha256": "7eb4de131d575a03c76b270b9730b1e522714b71e415742f3c09d47da0c49ac6"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Pk/CryptPkcs7VerifyCommon.c": {
+      "bytes": 22809,
+      "sha256": "e1390b241cc99f750b61748efd5f644f1e1209b6d21fff8805700655816bc67d"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Pk/CryptPkcs7VerifyEku.c": {
+      "bytes": 13274,
+      "sha256": "4a6a9fd12877104aaaf4c9d2e7573507938a7ea30a90a0a446c86aabcc322534"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Pk/CryptPkcs7VerifyEkuNull.c": {
+      "bytes": 5470,
+      "sha256": "6ea38a5d5e91e32a368a996e85feed395420e8bc707cb9b342edccff4b1c02fd"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Pk/CryptPkcs7VerifyEkuRuntime.c": {
+      "bytes": 2370,
+      "sha256": "863079405e3450649093fcbb0572ee3152b24a3c742961bc4ac7596b5a0c80ae"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Pk/CryptPkcs7VerifyNull.c": {
+      "bytes": 5496,
+      "sha256": "b1d39878362aea3dc3a79b36633b3c70d80455260180a19fc7f7095a1a11e6f9"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Pk/CryptPkcs7VerifyRuntime.c": {
+      "bytes": 1208,
+      "sha256": "e9b98f633fd4a4c86763dcba664a56f199bdc734f91877646b157f03fa5e7475"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Pk/CryptRsaBasic.c": {
+      "bytes": 13911,
+      "sha256": "26c817eac93813dd6280f565c649d4bce44dfb6d5a413e95522df08a2151f3f8"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Pk/CryptRsaBasicNull.c": {
+      "bytes": 3100,
+      "sha256": "bc31c5560f37971d491c516cea43e91ac06202bff8f9784e11dd71b7ce0d16a2"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Pk/CryptRsaExt.c": {
+      "bytes": 11828,
+      "sha256": "d7fa68dc0c1e396c506401594ed4a9b2ab9dd4ddd7b636af837faf370ad927ec"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Pk/CryptRsaExtNull.c": {
+      "bytes": 3110,
+      "sha256": "fa843d0c255e66ea600b887f4fec92b95c08ea00d71b1b2a695e57de3e17380a"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Pk/CryptRsaPkeyCtx.h": {
+      "bytes": 2384,
+      "sha256": "2491f48761fac054d5d7a9ee736cfe343a32fba46312ad61e1862bd65875bfe1"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Pk/CryptRsaPss.c": {
+      "bytes": 3893,
+      "sha256": "0c0820d36c3239fa5baf12a04ffc61dbb5b0d435214809fa5265589c63686faf"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Pk/CryptRsaPssNull.c": {
+      "bytes": 1489,
+      "sha256": "1e1734c44351a37c9c7cff4700b0cd452adce87e245d8728f23f8415e06fadac"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Pk/CryptRsaPssSign.c": {
+      "bytes": 4812,
+      "sha256": "78d3def4b77991be5e2ecb6e2b4a5f81632f9a0dd9c376021d67c884510f980e"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Pk/CryptRsaPssSignNull.c": {
+      "bytes": 2306,
+      "sha256": "7214c5c4e34514990486fe72f3f3473a34f28a4fc382ff1ab66fa9322b60083a"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Pk/CryptTs.c": {
+      "bytes": 18855,
+      "sha256": "211957269b2943f21bed904c60f05656ca692b86722db264fedb7f88e03af30d"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Pk/CryptTsNull.c": {
+      "bytes": 1323,
+      "sha256": "c3a7dfad7df214b799c906cf5cfeceafda979de2f9b1e69e073f77dd337878fe"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Pk/CryptX509.c": {
+      "bytes": 54273,
+      "sha256": "fe28597e674dc1b8b6cf201b3d7d6e5259b885eb85b310fd8018001b56bd4afa"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Pk/CryptX509Null.c": {
+      "bytes": 24434,
+      "sha256": "4955df5439226a396fef7d5ad8fed2fb284fb5694ab5a6e9cf9be9bb29cedd79"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Rand/CryptRand.c": {
+      "bytes": 2258,
+      "sha256": "336958c61c9aa9e8685de4aceeb218be40c3bd08affc49eebe4d93c470626481"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Rand/CryptRandNull.c": {
+      "bytes": 1213,
+      "sha256": "5e5de308a8cad1f53018f0ef1648bf3d120e4c3dda213b51b2963a41847f4b92"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Rand/CryptRandTsc.c": {
+      "bytes": 2391,
+      "sha256": "86acc7f48ac6fbb684d185d9dba1d2859a94202009293482bcd1572611465681"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/RuntimeCryptLib.inf": {
+      "bytes": 3180,
+      "sha256": "c05ad752b4cf8b95995e99a38a73f43572fb27f8113486ac121964f37ca2cdac"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/RuntimeCryptLib.uni": {
+      "bytes": 1257,
+      "sha256": "65c1ee805d32aa025ec8da7c39666bddcbd60fe29710667c5603da0bc69219e5"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/SecCryptLib.inf": {
+      "bytes": 2270,
+      "sha256": "bcf30635abea0eaf03cd5fbbcce96447d9410006b926ce7bc09b2fee796c607a"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/SecCryptLib.uni": {
+      "bytes": 1035,
+      "sha256": "fb6c60c37d33900133c8b9f76d51e19af0da02707b1f8b0b2b63793127e9d9d8"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/Setup/BaseCryptInit.c": {
+      "bytes": 593,
+      "sha256": "106d830bfb108b592ce4edeeaae0433e85bef05eb091b82766af83e68dcdb6ff"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/SmmCryptLib.inf": {
+      "bytes": 2801,
+      "sha256": "0a7e64cc4f6ce1172d65234e936fcffe56f921d72599645d5efa0d940fee8573"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/SmmCryptLib.uni": {
+      "bytes": 1241,
+      "sha256": "452bc45aeb0f7dea9bd20a956471c898fc095715a95ef63d3c28a5b35bbeb748"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/SysCall/BaseMemAllocation.c": {
+      "bytes": 2634,
+      "sha256": "cab44f5ef680a766c4833593fe230370e76f15cf874137964c0417c3e57bfd4d"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/SysCall/ConstantTimeClock.c": {
+      "bytes": 1072,
+      "sha256": "5034766133401cbb74510e79bb524b5070c04d1388f30979f1ac9301c0b5c268"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/SysCall/CrtWrapper.c": {
+      "bytes": 10634,
+      "sha256": "1beacb99fa3d72cadf9e12bdabb3a07ba728865406904f1ca76470e93be51ccc"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/SysCall/RuntimeMemAllocation.c": {
+      "bytes": 11371,
+      "sha256": "ed60c1f804848e3dba029ed53ad57a6e741e8f4e29a13138f7b5f0002d835cb2"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/SysCall/TimerWrapper.c": {
+      "bytes": 5976,
+      "sha256": "c90830b1bde4e63a7c5eb12b45d7e6e1dac481ba95bfeffd2c837ecdceb94ec8"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/SysCall/UnitTestHostCrtWrapper.c": {
+      "bytes": 1452,
+      "sha256": "a7a2428214c541420f796b1521a30b24df1113424dd9d8f8d443eaa1b88e2c1c"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/BaseCryptLib/UnitTestHostBaseCryptLib.inf": {
+      "bytes": 2009,
+      "sha256": "98739b54ef1dd368228f2617f47754593f0945e2db56fd5c2f8b25491c38e072"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/Include/arpa/inet.h": {
+      "bytes": 205,
+      "sha256": "f6275f8e8d4415cb71483ef8fcc4597a62a7fd029677a79e71276b0aeb4101d5"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/Include/arpa/nameser.h": {
+      "bytes": 205,
+      "sha256": "f6275f8e8d4415cb71483ef8fcc4597a62a7fd029677a79e71276b0aeb4101d5"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/Include/assert.h": {
+      "bytes": 234,
+      "sha256": "2a6a4cbabbe34d852b341f168e2afe58f5e410ada89d84dd4a4c8986661ed553"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/Include/CrtLibSupport.h": {
+      "bytes": 9005,
+      "sha256": "4d81d5a1735b4b1f7770411534552d6a5ffc822fc880949ff6fb0e6cced89d73"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/Include/ctype.h": {
+      "bytes": 234,
+      "sha256": "2a6a4cbabbe34d852b341f168e2afe58f5e410ada89d84dd4a4c8986661ed553"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/Include/errno.h": {
+      "bytes": 234,
+      "sha256": "2a6a4cbabbe34d852b341f168e2afe58f5e410ada89d84dd4a4c8986661ed553"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/Include/fcntl.h": {
+      "bytes": 234,
+      "sha256": "2a6a4cbabbe34d852b341f168e2afe58f5e410ada89d84dd4a4c8986661ed553"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/Include/inttypes.h": {
+      "bytes": 227,
+      "sha256": "88e885f6b363e98422b9a558cdad3c0588c6864e34bf63932517089530d4eab9"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/Include/limits.h": {
+      "bytes": 234,
+      "sha256": "2a6a4cbabbe34d852b341f168e2afe58f5e410ada89d84dd4a4c8986661ed553"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/Include/memory.h": {
+      "bytes": 234,
+      "sha256": "2a6a4cbabbe34d852b341f168e2afe58f5e410ada89d84dd4a4c8986661ed553"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/Include/netinet/in.h": {
+      "bytes": 205,
+      "sha256": "f6275f8e8d4415cb71483ef8fcc4597a62a7fd029677a79e71276b0aeb4101d5"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/Include/OpensslLibConstructor.h": {
+      "bytes": 1041,
+      "sha256": "8f12959a2974f886d35a9001ad81a56bae7d95364374fd13d3bf95ae7d9f9f10"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/Include/stdarg.h": {
+      "bytes": 234,
+      "sha256": "2a6a4cbabbe34d852b341f168e2afe58f5e410ada89d84dd4a4c8986661ed553"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/Include/stddef.h": {
+      "bytes": 234,
+      "sha256": "2a6a4cbabbe34d852b341f168e2afe58f5e410ada89d84dd4a4c8986661ed553"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/Include/stdint.h": {
+      "bytes": 624,
+      "sha256": "aaf2ed370b70afa760717d2a0b8939e33616a501612648e4f0a2568044a27748"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/Include/stdio.h": {
+      "bytes": 234,
+      "sha256": "2a6a4cbabbe34d852b341f168e2afe58f5e410ada89d84dd4a4c8986661ed553"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/Include/stdlib.h": {
+      "bytes": 234,
+      "sha256": "2a6a4cbabbe34d852b341f168e2afe58f5e410ada89d84dd4a4c8986661ed553"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/Include/string.h": {
+      "bytes": 234,
+      "sha256": "2a6a4cbabbe34d852b341f168e2afe58f5e410ada89d84dd4a4c8986661ed553"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/Include/strings.h": {
+      "bytes": 234,
+      "sha256": "2a6a4cbabbe34d852b341f168e2afe58f5e410ada89d84dd4a4c8986661ed553"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/Include/stubs-32.h": {
+      "bytes": 227,
+      "sha256": "29a806a49c6851962430c1400557cbf9f545224bcca2240a9b25c94415cd9d78"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/Include/sys/param.h": {
+      "bytes": 205,
+      "sha256": "f6275f8e8d4415cb71483ef8fcc4597a62a7fd029677a79e71276b0aeb4101d5"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/Include/sys/shm.h": {
+      "bytes": 227,
+      "sha256": "069669960bc83ce759c00ea5bc25211c4beb02086b9e6ee1ba7fa2653e74b52f"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/Include/sys/socket.h": {
+      "bytes": 205,
+      "sha256": "f6275f8e8d4415cb71483ef8fcc4597a62a7fd029677a79e71276b0aeb4101d5"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/Include/sys/syscall.h": {
+      "bytes": 268,
+      "sha256": "0f397c2f2bf658a5e1336c62025c7dd95343d64370634bc5c76d88ff63b7a4d4"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/Include/sys/time.h": {
+      "bytes": 234,
+      "sha256": "2a6a4cbabbe34d852b341f168e2afe58f5e410ada89d84dd4a4c8986661ed553"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/Include/sys/types.h": {
+      "bytes": 234,
+      "sha256": "2a6a4cbabbe34d852b341f168e2afe58f5e410ada89d84dd4a4c8986661ed553"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/Include/sys/utsname.h": {
+      "bytes": 227,
+      "sha256": "069669960bc83ce759c00ea5bc25211c4beb02086b9e6ee1ba7fa2653e74b52f"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/Include/syslog.h": {
+      "bytes": 234,
+      "sha256": "2a6a4cbabbe34d852b341f168e2afe58f5e410ada89d84dd4a4c8986661ed553"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/Include/time.h": {
+      "bytes": 234,
+      "sha256": "2a6a4cbabbe34d852b341f168e2afe58f5e410ada89d84dd4a4c8986661ed553"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/Include/unistd.h": {
+      "bytes": 234,
+      "sha256": "2a6a4cbabbe34d852b341f168e2afe58f5e410ada89d84dd4a4c8986661ed553"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/buildinf.c": {
+      "bytes": 153,
+      "sha256": "4ff23f48f996e2cbf5e127bd2c1ee86e17a0667a2f174c7ab06820eb9ebc2955"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/buildinf.h": {
+      "bytes": 111,
+      "sha256": "f5571110e57fa244e0ad7959502c7f6f6d5351034cff1fd37f3e27cbd2660ce5"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/configure.py": {
+      "bytes": 14091,
+      "sha256": "3cd56e72ab34ded46b71deb844600f1c51d96631b1d612f6de5a011b5da4a105"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpenSSL-HOWTO.txt": {
+      "bytes": 2300,
+      "sha256": "58e1c8c084d47051039e1e10a05fd0c2e3955f811cabb9fff2be361879c62db8"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/AARCH64-ELF/crypto/aes/aesv8-armx.S": {
+      "bytes": 120913,
+      "sha256": "d121cd7a50ea40ed175978d37e776abb4a1084db865c66473192472de39f00c1"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/AARCH64-ELF/crypto/aes/bsaes-armv8.S": {
+      "bytes": 83076,
+      "sha256": "635988898016b4c95627fb431747dd4d9412158c517dc3d78799cd7be1c05b05"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/AARCH64-ELF/crypto/aes/vpaes-armv8.S": {
+      "bytes": 59407,
+      "sha256": "5cb06b3b020b3ca9f543935af55b1756b9a56299700a1e3bcc92505b2e8fb160"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/AARCH64-ELF/crypto/arm64cpuid.S": {
+      "bytes": 6815,
+      "sha256": "f3de8a905bef5efda8afb9107774b8dc651dad92b1092c98a774237355b45f08"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/AARCH64-ELF/crypto/bn/armv8-mont.S": {
+      "bytes": 71796,
+      "sha256": "a7abe17e861b2dc55be3c4329eaaedbed476ec6b6da67d872483a3f9bad5a35b"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/AARCH64-ELF/crypto/ec/ecp_nistz256-armv8.S": {
+      "bytes": 837719,
+      "sha256": "1ac949b1fdb939f2a243434a2a5174a51b0d39d7a517812960c6bece6cfcc249"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/AARCH64-ELF/crypto/md5/md5-aarch64.S": {
+      "bytes": 50881,
+      "sha256": "b139bf87b26bb8730a5b308a89c3757d1189cbaf3ae28e3405320097b90c16f7"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/AARCH64-ELF/crypto/modes/aes-gcm-armv8-unroll8_64.S": {
+      "bytes": 442930,
+      "sha256": "13bab06c7cdd146030c5c3853b4f90f26283597a1722f761aaf02c5ab6823efd"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/AARCH64-ELF/crypto/modes/aes-gcm-armv8_64.S": {
+      "bytes": 276774,
+      "sha256": "cda7db7307df3faab3a18f099ae9d813ee42cf869a6474cd36bf1b98d79c2c00"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/AARCH64-ELF/crypto/modes/ghashv8-armx.S": {
+      "bytes": 23691,
+      "sha256": "8d276c0add5f95003770e370c21a869e8cdada118f88f4146b32c68163ba4950"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/AARCH64-ELF/crypto/sha/keccak1600-armv8.S": {
+      "bytes": 31045,
+      "sha256": "55aae830aad97c4c34ff7e70025783b3bc52951dfaaa547d85dca4246cca0c8b"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/AARCH64-ELF/crypto/sha/sha1-armv8.S": {
+      "bytes": 43583,
+      "sha256": "7cec5ec6db24dbb20700fcaea28d1233c98e4a44e89d7bc9a0017cd3a774c967"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/AARCH64-ELF/crypto/sha/sha256-armv8.S": {
+      "bytes": 79369,
+      "sha256": "f7ef7e82f2c3320979ef3dff2fd977afee23ab0de523aac6e6bcada2cc1165f3"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/AARCH64-ELF/crypto/sha/sha512-armv8.S": {
+      "bytes": 74466,
+      "sha256": "142974f7cb462faf6c381eefa0fdfc4c2f0b9d7e82ea6d8c9295f0650d9b8248"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/AARCH64-ELF/crypto/sm3/sm3-armv8.S": {
+      "bytes": 23408,
+      "sha256": "1aee9aefd7f3a8c1ebc185a46379ec5f738a2048702bb6f4c0fd67d0d18922ae"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/AARCH64-PE/crypto/aes/aesv8-armx.S": {
+      "bytes": 120146,
+      "sha256": "537286e2c685de16396725c24ad4e1a425ebf0c0892eb8aa04b315d21da09b58"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/AARCH64-PE/crypto/aes/bsaes-armv8.S": {
+      "bytes": 82487,
+      "sha256": "9768674ab7e62761af5495abf2bd1467eb407d65ed7a61a7a82df127f81e8908"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/AARCH64-PE/crypto/aes/vpaes-armv8.S": {
+      "bytes": 58480,
+      "sha256": "a75addbfc2fe24b6c30d898f913b4413ad0c6584e09c53e7ab597ab38d5ad68b"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/AARCH64-PE/crypto/arm64cpuid.S": {
+      "bytes": 6109,
+      "sha256": "c7dcbad46fe537440dcdd734067ca4bda7b87c334767cb9bb88f6cfaa2f153fe"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/AARCH64-PE/crypto/bn/armv8-mont.S": {
+      "bytes": 71506,
+      "sha256": "62c6b726121fc85200df56e8783b34315044ebc0c29471e97a40f69b1dae2347"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/AARCH64-PE/crypto/ec/ecp_nistz256-armv8.S": {
+      "bytes": 836372,
+      "sha256": "6528cfb36cc957cae0649b0e4e300f55cf2ffbbe037e46380056049d1451fbc5"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/AARCH64-PE/crypto/md5/md5-aarch64.S": {
+      "bytes": 50696,
+      "sha256": "2635e92516fc052f8b1c2439b96ca71d463bb99da9198f10ee90741e90362ae7"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/AARCH64-PE/crypto/modes/aes-gcm-armv8-unroll8_64.S": {
+      "bytes": 442408,
+      "sha256": "57d2b066774d4dcbed3e8a50bd21d33f58f3179bbf92db275860bb355d7a6f23"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/AARCH64-PE/crypto/modes/aes-gcm-armv8_64.S": {
+      "bytes": 276420,
+      "sha256": "bbd183735d59feccaa38ddbaa12911d6a964c9619fc1c454067203a0a93807b0"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/AARCH64-PE/crypto/modes/ghashv8-armx.S": {
+      "bytes": 23551,
+      "sha256": "8c22340e43388ec2e49ad952fbd2e8410f613c115741a67b6ae058cc331f6475"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/AARCH64-PE/crypto/sha/keccak1600-armv8.S": {
+      "bytes": 30643,
+      "sha256": "97b2172e54a8eea6c8eb702e94db24078ea991ba149f35c41704160c3347b82c"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/AARCH64-PE/crypto/sha/sha1-armv8.S": {
+      "bytes": 43465,
+      "sha256": "c7ca440420343f7ca1978ba2b547f5b4f634cd22f9bc39c11441744e0e860f8e"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/AARCH64-PE/crypto/sha/sha256-armv8.S": {
+      "bytes": 79145,
+      "sha256": "ae7ae691c70efc7b50bea9abbbbe33bafa43b40b511ff39e47c63c9831c5ec46"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/AARCH64-PE/crypto/sha/sha512-armv8.S": {
+      "bytes": 74289,
+      "sha256": "3671f97345c9594ac23983368b50080a916642a42c6ac269b6e2cdedd9b8a12a"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/AARCH64-PE/crypto/sm3/sm3-armv8.S": {
+      "bytes": 23218,
+      "sha256": "3704d714772df3fca770af06a418ff1f86eeedab4b8215596743dcc309963bdd"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/crypto/params_idx.c": {
+      "bytes": 139676,
+      "sha256": "8746d9e77db97987d45318424e5ef85c1a7740491493b3aa00255ad7f6794ec9"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/IA32-GCC/crypto/aes/aes-586.S": {
+      "bytes": 93165,
+      "sha256": "31574df815aa1e0f2daf608ba2f9f8dd5c1b1a6d89b72c676b2d3ae991e48104"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/IA32-GCC/crypto/aes/aesni-x86.S": {
+      "bytes": 92337,
+      "sha256": "d4891f466d686c1e69ca658f20e9d14eaccd9b0406270bf856eebbf6bbcb7984"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/IA32-GCC/crypto/aes/vpaes-x86.S": {
+      "bytes": 20572,
+      "sha256": "78f0a03cdc39af7be94dc5a77c65dee3d514fc8f9f12e621bf7f0c59e6ed6f4d"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/IA32-GCC/crypto/bn/bn-586.S": {
+      "bytes": 36734,
+      "sha256": "d3c2dfb00fa63f6c27370142d16dcab2667e18e0218b753ca6f24f7653b593cb"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/IA32-GCC/crypto/bn/co-586.S": {
+      "bytes": 27592,
+      "sha256": "8cce4785ac1536409614a86d3cdd20e463308543d89a0dce775d69a2aa69ebf9"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/IA32-GCC/crypto/bn/x86-gf2m.S": {
+      "bytes": 9593,
+      "sha256": "6b67b6bf52704a3cb3d90fb81ba70035d287b13f7f9ce2ef14f2fadebc051a94"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/IA32-GCC/crypto/bn/x86-mont.S": {
+      "bytes": 13207,
+      "sha256": "0f25b3f17714735d037cdd75b39f759a3bc08d6e411d2f572e7e4b49589ac44e"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/IA32-GCC/crypto/ec/ecp_nistz256-x86.S": {
+      "bytes": 856431,
+      "sha256": "680269f2b960ae6c0e7a3dc060dd9bfbe2f5c56ed8380a418f9a596240d65f22"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/IA32-GCC/crypto/md5/md5-586.S": {
+      "bytes": 17540,
+      "sha256": "9273f8451b298322cfc840f637e8fb69e364ba80af1e6e0a31035f0439464695"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/IA32-GCC/crypto/modes/ghash-x86.S": {
+      "bytes": 36846,
+      "sha256": "ec3b02e7398eb70de4e0faf5511162037cb26c5c22dd360e90a4a50136aab16a"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/IA32-GCC/crypto/sha/sha1-586.S": {
+      "bytes": 108092,
+      "sha256": "5ad00263c0a0fd1da3cd1499670138f20d8baa22c3571ec37a1010c33d0dbbff"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/IA32-GCC/crypto/sha/sha256-586.S": {
+      "bytes": 187717,
+      "sha256": "a21f0386376e0ad6039246ec05e4bce0718ece88d717533432a0431acf6074bb"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/IA32-GCC/crypto/sha/sha512-586.S": {
+      "bytes": 75691,
+      "sha256": "7e9ef7c54f0b358c28da74371ce2d85efc3fc04335675b93f1dbab271ee23b9d"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/IA32-GCC/crypto/x86cpuid.S": {
+      "bytes": 14625,
+      "sha256": "93e9d30ba6f4ae3532a613859d4b15bd4b9d664220279799ac597d8cdada3887"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/IA32-MSFT/crypto/aes/aes-586.nasm": {
+      "bytes": 92032,
+      "sha256": "ae6bf98c32fd20a714c6d553b25041917fe6f6ce47fd6d4b7d056b7b68951f40"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/IA32-MSFT/crypto/aes/aesni-x86.nasm": {
+      "bytes": 87316,
+      "sha256": "8671d402e820c3c0fb95f6ae7db9a0a9ad4158bb8dd8f2427bd2efa5ee1daa4e"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/IA32-MSFT/crypto/aes/vpaes-x86.nasm": {
+      "bytes": 18290,
+      "sha256": "46aa9220aa959315d74340bc0b78af8e90ca2db3431cf389bcdcfcc286d8d87d"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/IA32-MSFT/crypto/bn/bn-586.nasm": {
+      "bytes": 39677,
+      "sha256": "8a99eb6e5b0774908ca1b2a65a61b0d310b427a2db6c742bc975f6252936f1ed"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/IA32-MSFT/crypto/bn/co-586.nasm": {
+      "bytes": 33033,
+      "sha256": "bc982afbd253daa776c85f8726b37683bdf9f3266581805e644dc5f118d4cc37"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/IA32-MSFT/crypto/bn/x86-gf2m.nasm": {
+      "bytes": 9028,
+      "sha256": "f667eab2fdd61155b01ea18bb44fcf012e7ad167283a56e9297ecf6d76cc139c"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/IA32-MSFT/crypto/bn/x86-mont.nasm": {
+      "bytes": 13315,
+      "sha256": "787b9c0e0e32b3338e9ee8072fb18e9e2a904c0d4c6cc7f956361998520f07b6"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/IA32-MSFT/crypto/ec/ecp_nistz256-x86.nasm": {
+      "bytes": 855823,
+      "sha256": "3d42e7503c981ac3f05a6214253f9d7d64b487c34c5ca4899c20e8cd3dd80e19"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/IA32-MSFT/crypto/md5/md5-586.nasm": {
+      "bytes": 17719,
+      "sha256": "46dc0e9a6af5de1e77f220c99d2d06f90022742c0dea143ebb9d2bcd1d29dc5e"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/IA32-MSFT/crypto/modes/ghash-x86.nasm": {
+      "bytes": 34982,
+      "sha256": "a06f141f49e2cb5882fff3320dc79c11155f2f4c5018a97497c6ce79672fde1c"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/IA32-MSFT/crypto/sha/sha1-586.nasm": {
+      "bytes": 105792,
+      "sha256": "8e49485e7a8ab08c1d09938e376ddceccbdaf170570e781bdf12cce801240431"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/IA32-MSFT/crypto/sha/sha256-586.nasm": {
+      "bytes": 186132,
+      "sha256": "dbb1866a6ce0ade2807df8a3d3f609a3a85f65a713333bffe8a25fa98b43b4f5"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/IA32-MSFT/crypto/sha/sha512-586.nasm": {
+      "bytes": 71947,
+      "sha256": "ee8bcd3b4fc72427e86a3085dd503526f9a79575c7ed08f56d36b81471b3768a"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/IA32-MSFT/crypto/x86cpuid.nasm": {
+      "bytes": 12640,
+      "sha256": "becdd35cc92d8d3e8e9265a6b542bd669e70f82d5569e3940879aba77ff7b52c"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/include/crypto/bn_conf.h": {
+      "bytes": 1031,
+      "sha256": "20381dfe1a1935fdbab814919c916e6fb61f0a8e7786fbad3e24112df1ccb869"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/include/crypto/dso_conf.h": {
+      "bytes": 692,
+      "sha256": "c8b21cfc8d1bea3822a6a07aa8914870a8f0004eabcdad6ae8c54445482c8f1e"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/include/internal/param_names.h": {
+      "bytes": 21510,
+      "sha256": "cc8665fda6d6684a4f729f82c4a4cd135177a994af8ad71af0a8f0d99d832ac5"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/include/openssl/asn1.h": {
+      "bytes": 57736,
+      "sha256": "51a457023c28d9a53ae39cadadaab83f23445b69376a212d3d92223373629ff8"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/include/openssl/asn1t.h": {
+      "bytes": 38601,
+      "sha256": "ff24b48590d0fbc9c352c27caa2245feb9d01829e05c48df69df4217ac869a23"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/include/openssl/bio.h": {
+      "bytes": 41404,
+      "sha256": "4802c60e0dd656a2caed92e8df4867532d5f2cb835bab29b4f0695d2a8509965"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/include/openssl/cmp.h": {
+      "bytes": 48038,
+      "sha256": "3ab5f42be3a8adb42855d03c6cff0c1d3f1618bf84f122854c3e344aa663168f"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/include/openssl/cms.h": {
+      "bytes": 31103,
+      "sha256": "cb46c86ab1ba0a7ea06bd25064e96c5d6d1cd104af1fc450015c15ba70a91de7"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/include/openssl/comp.h": {
+      "bytes": 4696,
+      "sha256": "3f95492b4054a8064bc75f770766aa6c8c0866cbd267939460786e13092a053e"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/include/openssl/conf.h": {
+      "bytes": 10387,
+      "sha256": "ba4d4d590f0da539a1380631815373199cd505d8e973c0fedb1d93a56b05d53c"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/include/openssl/configuration-ec.h": {
+      "bytes": 9303,
+      "sha256": "21df35c4ad003462064711be240db7a2ffadccda836fe5ed8d065e6ec0d3d5dd"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/include/openssl/configuration-noec.h": {
+      "bytes": 9535,
+      "sha256": "fd042cfb2e2cb031331890efb8709568a5a5f802311692733571b0f2476f3877"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/include/openssl/configuration.h": {
+      "bytes": 102,
+      "sha256": "f5f815a4b957fa6e25a4e5bcfc7f8427b12bd7563059960d2319c9e542798ab7"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/include/openssl/core_names.h": {
+      "bytes": 29405,
+      "sha256": "738387bd3b5f7d505229d50ef44c99322076995bc3e4f143aee9b272e7c333cd"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/include/openssl/crmf.h": {
+      "bytes": 19644,
+      "sha256": "65331763ed05e7d6b915d982aa532002230568ad3f300ceb0102704d500b9f72"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/include/openssl/crypto.h": {
+      "bytes": 23119,
+      "sha256": "e38926e360184b25b245e694563129c9b7e6aaa9f152e270ab9f3cf4ff1314a3"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/include/openssl/ct.h": {
+      "bytes": 22238,
+      "sha256": "fe294ca4b7d06375f9e8d347e89ab02e8e6b2621efc4e371877f03fcaeb64a13"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/include/openssl/err.h": {
+      "bytes": 20436,
+      "sha256": "0d673984ff62d55d1fb4534d8136b7325e5264efeeb0b911cc94a4922681e080"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/include/openssl/ess.h": {
+      "bytes": 8704,
+      "sha256": "ff5fd097ae2df724b1c2dbe5bd3806817bee972c9318d38601dac5288f4b2d81"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/include/openssl/fipskey.h": {
+      "bytes": 1250,
+      "sha256": "2ace9db2041934a211c6edb082798db0aace37506fcdbdd4e7e899767fc41014"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/include/openssl/lhash.h": {
+      "bytes": 33375,
+      "sha256": "ba50a0dc4caa9662e138f913566c44454a68f6e59c405c761c1f387f58855af4"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/include/openssl/ocsp.h": {
+      "bytes": 27856,
+      "sha256": "92eb69f74980eb03ce60a02be7ccc842a6e04ba1e9d82a94e3158634203aa21d"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/include/openssl/opensslv.h": {
+      "bytes": 3449,
+      "sha256": "dc5c09549d2ef3ddc7c76839ea58adc5f23bd02b8f20a9e1b8b8f69e2f40d354"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/include/openssl/pkcs12.h": {
+      "bytes": 17004,
+      "sha256": "7aa3e49a731845fd325e967af1848fd9616c17d4c8a9b5822e19ae2f86db8a2f"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/include/openssl/pkcs7.h": {
+      "bytes": 21871,
+      "sha256": "1bf08b1d83ab798b6715f5c42b2bc5a61b5e6c9c17043d441df274e5861aaa03"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/include/openssl/safestack.h": {
+      "bytes": 29154,
+      "sha256": "99c92060bf4abf2a18f7963eafff3692b0823f9132e23fa034eb9a4c199f028f"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/include/openssl/srp.h": {
+      "bytes": 15159,
+      "sha256": "e92c59f7e840fec10da0c68cd3fb566ada249102db56b0275ee0c6e6b5c4b79f"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/include/openssl/ssl.h": {
+      "bytes": 121993,
+      "sha256": "ffdebadabb9d025ffd6f1da5d9a45072a471c171fbe65fdb6e6fe295a7fa3aa7"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/include/openssl/ui.h": {
+      "bytes": 18512,
+      "sha256": "75d4827c0126628779516a2109efd0b5dffcea1fc651740d328fe816af474481"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/include/openssl/x509.h": {
+      "bytes": 67489,
+      "sha256": "f8f342cbd87cbfa9ccd40d3389f270b4d3da42fe1586a92e6c217cb0e4dd9550"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/include/openssl/x509_acert.h": {
+      "bytes": 21919,
+      "sha256": "4ebbe4020238f1faec037bba95e77cc9d989792b4531f2baaea94cf7237073fe"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/include/openssl/x509_vfy.h": {
+      "bytes": 47176,
+      "sha256": "daf5959e1336a70321a9ecf7b357a83f5c64749776b7a33ff173eb1287def65d"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/include/openssl/x509v3.h": {
+      "bytes": 129347,
+      "sha256": "f51142998519410cae007ad2601cd7a93698d14da625b8110822af23811c9f2d"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/providers/common/der/der_digests_gen.c": {
+      "bytes": 4035,
+      "sha256": "c4983ae33e599253465f8b4d63eba00dd46ec1c5de39d2af565ca28ed1ac6522"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/providers/common/der/der_ec_gen.c": {
+      "bytes": 7217,
+      "sha256": "48989fc67ae6cf0a563884ffcbd6e9e3d1db97117f9ef44c73f34159fd38ba24"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/providers/common/der/der_ecx_gen.c": {
+      "bytes": 1238,
+      "sha256": "ca195db4acc1d0af94c9c391306523018a8bf34ee8336fe1eaeba0e8056d339b"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/providers/common/der/der_ml_dsa_gen.c": {
+      "bytes": 994,
+      "sha256": "c25c398ee38b851f84cbb764ce225c2f8b58ba9fce9dc9de9988ff207d4efa06"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/providers/common/der/der_rsa_gen.c": {
+      "bytes": 5276,
+      "sha256": "eac7810dfce62f4ca8f54e124f119c0addbaabb0657139aa778795760577b2da"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/providers/common/der/der_slh_dsa_gen.c": {
+      "bytes": 2898,
+      "sha256": "ac9ab7fe4ebec3a3b1e23ae333819944fbb0f2a55cf060a9f56edec5df10257f"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/providers/common/der/der_wrap_gen.c": {
+      "bytes": 1322,
+      "sha256": "d1f6ddde8c09bbe5fbf353008121cb1bfd16c9f317defc266e5787cf4e698ff3"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/providers/common/include/prov/der_digests.h": {
+      "bytes": 6175,
+      "sha256": "097169cef563f3dfc1c5cba28f9358a2ea17f28db1aa07a1c74c4f913049db5f"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/providers/common/include/prov/der_ec.h": {
+      "bytes": 11338,
+      "sha256": "3aee1643b8e648f2058cfca04c2d3687ef144677b59191275d7b7d48daa47940"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/providers/common/include/prov/der_ecx.h": {
+      "bytes": 1864,
+      "sha256": "c2cd4f6c5a91db6584c7f391df55f32376a8000260012973fa587fc3ac899c63"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/providers/common/include/prov/der_ml_dsa.h": {
+      "bytes": 1437,
+      "sha256": "5befee5185c4eb0547b31ac9e2127fd7f4b6cabdaa135c8d027a133570810509"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/providers/common/include/prov/der_rsa.h": {
+      "bytes": 8332,
+      "sha256": "2871f71bd05bb05e819c16cada105e5940c45b50a3e43c934bcb326ec19ebcd5"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/providers/common/include/prov/der_slh_dsa.h": {
+      "bytes": 4435,
+      "sha256": "c2847a9898be7f059cc92c561c70fa72bc61a90c7c3e18863cd105d73d3ea07b"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/providers/common/include/prov/der_wrap.h": {
+      "bytes": 1791,
+      "sha256": "a0ee2342487c4565535c91811089684bc3798e0c512f60b44642f7180935086f"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-GCC/crypto/aes/aes-x86_64.s": {
+      "bytes": 73932,
+      "sha256": "7b7206c4806c20b9fff7864c8c719421b13aa87b9bfa819c1d9a44857cb63a4d"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-GCC/crypto/aes/aesni-mb-x86_64.s": {
+      "bytes": 42204,
+      "sha256": "016c79946d5c9713c23ad8d429161cbebe45fb2c52c4870f63fdf75d16b57c8c"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-GCC/crypto/aes/aesni-sha1-x86_64.s": {
+      "bytes": 84845,
+      "sha256": "f0a77dce6c3eece9fa2672ba3b75df7b3e239cf3e85ff948cdf402dd37192ae5"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-GCC/crypto/aes/aesni-sha256-x86_64.s": {
+      "bytes": 130731,
+      "sha256": "76ab8306568206efabc65141ce4d4760a040738d422b89c72b69cf876bde7a9f"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-GCC/crypto/aes/aesni-x86_64.s": {
+      "bytes": 114449,
+      "sha256": "002f21633ea93bad64fe69ed241488011893ca8278062d89ae036e0ba0d4a6db"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-GCC/crypto/aes/aesni-xts-avx512.s": {
+      "bytes": 249928,
+      "sha256": "0e23f0d6e6fb3438a8b3869e28e4581c80566352bf21a53013e4140df9720b9a"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-GCC/crypto/aes/bsaes-x86_64.s": {
+      "bytes": 69515,
+      "sha256": "468bb923e9391103febd28511d113d72594efe055cd677833d9e67ba657512be"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-GCC/crypto/aes/vpaes-x86_64.s": {
+      "bytes": 18061,
+      "sha256": "0cd62b32102f13333756feecacd4ccd0cc4a3973eef38aec22074260e66aa9a3"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-GCC/crypto/bn/rsaz-2k-avx512.s": {
+      "bytes": 25633,
+      "sha256": "b3d6060bd82e4a40621d3fba64ee9d075c366833ffccc43113d4cfb0efe411bd"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-GCC/crypto/bn/rsaz-2k-avxifma.s": {
+      "bytes": 31218,
+      "sha256": "58115cf973246168261ed6a4213a80a8b357d614b484340bc3caf3928dd7f51b"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-GCC/crypto/bn/rsaz-3k-avx512.s": {
+      "bytes": 40236,
+      "sha256": "7fc4aa55b8fa9af6d8a5913f278d9d0cf5fce6c9ed9907d870ee455dba8e0ccd"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-GCC/crypto/bn/rsaz-3k-avxifma.s": {
+      "bytes": 49810,
+      "sha256": "4cd902bafa45203f0e6bcc4e5eebd60398db2a0464191e6bd2de64334f9f2c08"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-GCC/crypto/bn/rsaz-4k-avx512.s": {
+      "bytes": 42519,
+      "sha256": "cdd6fc880248b92486f66c0aacb048af0815e58bacd4da0331e4094a7bca82cf"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-GCC/crypto/bn/rsaz-4k-avxifma.s": {
+      "bytes": 55951,
+      "sha256": "76c3ac1231a6ef3a1206da06999ee11f9640502fd1993a027ef175cb972b3907"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-GCC/crypto/bn/rsaz-avx2.s": {
+      "bytes": 54342,
+      "sha256": "d16dd4c148ecd43f5b32a4dac2b6b356b9fe239f9d334cff77cf1b8744351547"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-GCC/crypto/bn/rsaz-avx512.s": {
+      "bytes": 23968,
+      "sha256": "b61f5e21f3e41b16988df2a315094ec879ea366b435badee4874f5e2e8f0c514"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-GCC/crypto/bn/rsaz-x86_64.s": {
+      "bytes": 46832,
+      "sha256": "69ade00cefc8d165ab50dc8c7928ac40bdab90d3533ec2df477d7889779efa24"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-GCC/crypto/bn/x86_64-gf2m.s": {
+      "bytes": 8500,
+      "sha256": "588600d686b98fd61b5e097e96b78517fefd41729f141b137961d8549ada9806"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-GCC/crypto/bn/x86_64-mont.s": {
+      "bytes": 29982,
+      "sha256": "dca84188a8d99b4c9f237d335fda2eaa0659308efdeadea716bc813a562b6f91"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-GCC/crypto/bn/x86_64-mont5.s": {
+      "bytes": 85207,
+      "sha256": "9cffdb63b76fb346a57573c988ae10fd6330a05f049c8b2e32fe8e0bb243ce3a"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-GCC/crypto/ec/ecp_nistz256-x86_64.s": {
+      "bytes": 555707,
+      "sha256": "9fa2108f35fba5e06a5e770c88ac8a85e31c0d9b0ff349a7e3702179fcc81e33"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-GCC/crypto/ec/x25519-x86_64.s": {
+      "bytes": 19347,
+      "sha256": "e7c18cefa3344c6580090679863f73065a2befd1852f9db6cdd00fab1d8f9b8a"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-GCC/crypto/md5/md5-x86_64.s": {
+      "bytes": 19424,
+      "sha256": "88802ced5ded5c08197d248244952e03a102442529c1c689c099a198e3e4c42c"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-GCC/crypto/modes/aes-gcm-avx512.s": {
+      "bytes": 4448160,
+      "sha256": "fad608186592f4d3411bbcbbaaa9041e4a37073ae7ec163f20ea8f8dcc1856fa"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-GCC/crypto/modes/aesni-gcm-x86_64.s": {
+      "bytes": 25077,
+      "sha256": "9739f791340535bf2c029bbe06c6f892e18861c9b70ed55b50b90b1f0ed8feff"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-GCC/crypto/modes/ghash-x86_64.s": {
+      "bytes": 52414,
+      "sha256": "d2d8340002b912043c5cd5007debafe29bfc85ab69e2229c905b7548f4f4c9a8"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-GCC/crypto/sha/keccak1600-x86_64.s": {
+      "bytes": 12301,
+      "sha256": "31e0e89e1535c56d5eaa2bd358ac8970ddaaed60018ea99c3244465bc9e84ede"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-GCC/crypto/sha/sha1-mb-x86_64.s": {
+      "bytes": 203649,
+      "sha256": "6ef12ffec4175cd35fff5ceb3eead8e57a826c773874b5acf5628caad74dbb1a"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-GCC/crypto/sha/sha1-x86_64.s": {
+      "bytes": 152858,
+      "sha256": "9f76df380ee78cbb478992c7b5f4ec231c3d8084041b87b7954918bb22c26ad4"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-GCC/crypto/sha/sha256-mb-x86_64.s": {
+      "bytes": 210813,
+      "sha256": "3f6754dad4a112e01ff2ad474b45a73ba3a72050122eaa0c58d39930453cb446"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-GCC/crypto/sha/sha256-x86_64.s": {
+      "bytes": 144964,
+      "sha256": "a8b08dcd81f522c0fec12ccebf9ccec895d8822b590085d4516da76a0af328eb"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-GCC/crypto/sha/sha512-x86_64.s": {
+      "bytes": 144358,
+      "sha256": "188710715c64a861fe0c540c2a4f2e5ffee8f58a784367f1b3105ab589d27135"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-GCC/crypto/x86_64cpuid.s": {
+      "bytes": 12094,
+      "sha256": "c5157837370aec745a480a749d19b60e2b58415ef2d57e05ba37fa7a0bec7e6b"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-MSFT/crypto/aes/aes-x86_64.nasm": {
+      "bytes": 84100,
+      "sha256": "60f8dd2ffd57ef39c2698ce6f894586b847c4fd410130e65d3de36dbf23ed39f"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-MSFT/crypto/aes/aesni-mb-x86_64.nasm": {
+      "bytes": 50126,
+      "sha256": "7c430527d6f3d3f6aa4052433d4d72f618054663b0000bc285fe112d8b07de0e"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-MSFT/crypto/aes/aesni-sha1-x86_64.nasm": {
+      "bytes": 89909,
+      "sha256": "419a028e2eafeeda01b9794d90e19c2d51ac4c01040beaddb209aadc986685e2"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-MSFT/crypto/aes/aesni-sha256-x86_64.nasm": {
+      "bytes": 133483,
+      "sha256": "c9584518738dc479554ec809e0d845e5959cc2ac4309fd4ae7aa70dc372b7acc"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-MSFT/crypto/aes/aesni-x86_64.nasm": {
+      "bytes": 134444,
+      "sha256": "19e2e29edc7a54a91df9bc0024898cb7a8059bf135cfaf5ad77fcff46c956880"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-MSFT/crypto/aes/aesni-xts-avx512.nasm": {
+      "bytes": 255821,
+      "sha256": "9ddc0150b5365b18b55e63e66eb07c504df28f53820a1b0b1da821a18a86e9fd"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-MSFT/crypto/aes/bsaes-x86_64.nasm": {
+      "bytes": 74771,
+      "sha256": "dcbdd8d60bd0ce973e492b58b0e7f61d7601d1f02234bc5018e49a13ec9ea38a"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-MSFT/crypto/aes/vpaes-x86_64.nasm": {
+      "bytes": 26753,
+      "sha256": "3c79a2c8ef4a5df539b8af2414b365c4737d44621ba7f1b4c3343cf4390f6cf8"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-MSFT/crypto/bn/rsaz-2k-avx512.nasm": {
+      "bytes": 28207,
+      "sha256": "9677c21ba131ccc97f5fbbcf549b7508a8ecf867e67d1978afd6a9c44e15c690"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-MSFT/crypto/bn/rsaz-2k-avxifma.nasm": {
+      "bytes": 34865,
+      "sha256": "f1d4434a82b9231da939b6c4a669a87629c9c4807957e2795b76410566f7cb93"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-MSFT/crypto/bn/rsaz-3k-avx512.nasm": {
+      "bytes": 45354,
+      "sha256": "247de4115125c1e22503999919356b402f8c9c742988a09e1b4daa6e18c0f355"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-MSFT/crypto/bn/rsaz-3k-avxifma.nasm": {
+      "bytes": 56191,
+      "sha256": "57fcc42248147f67ead6867b405bdd0bf5a5402b69d3ad2dfe5352ba6dce80ea"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-MSFT/crypto/bn/rsaz-4k-avx512.nasm": {
+      "bytes": 47605,
+      "sha256": "796f694c7884f5beea9fc0b7a72642fc63ce5b331bc35ec34914d4d6f0186490"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-MSFT/crypto/bn/rsaz-4k-avxifma.nasm": {
+      "bytes": 62899,
+      "sha256": "4dd2d57750010fadd30a353fc926201630a0e16ccf750ad8f19e5975c78e99b0"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-MSFT/crypto/bn/rsaz-avx2.nasm": {
+      "bytes": 61749,
+      "sha256": "300cae11a9123399bae945b5da732f6a11aa2378205bbb1a7041a287d810afc5"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-MSFT/crypto/bn/rsaz-avx512.nasm": {
+      "bytes": 26999,
+      "sha256": "4d03cfe4f806fee1f6d6d738e1754fa4b4cfc739a27e3c116a6a8eae72e5c8c1"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-MSFT/crypto/bn/rsaz-x86_64.nasm": {
+      "bytes": 52365,
+      "sha256": "3ebaf4b88d24911527fc56f62b3cd388a9e5df7266e817939a239b214c1e005b"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-MSFT/crypto/bn/x86_64-gf2m.nasm": {
+      "bytes": 10296,
+      "sha256": "6db1814da37f34e59365bcbaa16a1ee2cc21838df987e87f0450298818eae693"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-MSFT/crypto/bn/x86_64-mont.nasm": {
+      "bytes": 34885,
+      "sha256": "a9149181744cf1a4fb52acf2444613aa1f11ca1dd5e8fba654bc3e8233894c9d"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-MSFT/crypto/bn/x86_64-mont5.nasm": {
+      "bytes": 91600,
+      "sha256": "df36ddcd4c8eaf5e061f440bb9818e796c2401c9e0b4b08e4164e0647510805f"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-MSFT/crypto/ec/ecp_nistz256-x86_64.nasm": {
+      "bytes": 589157,
+      "sha256": "bfffa2ca3191223230f5cd65e5446506771df4183b92f6cedb56c68f43cc3842"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-MSFT/crypto/ec/x25519-x86_64.nasm": {
+      "bytes": 24789,
+      "sha256": "221c6bc708daf8c34f581f8eb39a2d3f6a686d715f673a20f746e53afecc2676"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-MSFT/crypto/md5/md5-x86_64.nasm": {
+      "bytes": 20702,
+      "sha256": "45a11ab968991e0ffd760fe3a6d0006a47c964aab6e876fed9872c9295e7e145"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-MSFT/crypto/modes/aes-gcm-avx512.nasm": {
+      "bytes": 4311407,
+      "sha256": "0f74c5c543c7e6fd571e2f25e7263c0a4c1746c67bca5add741e8939e37e6d4f"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-MSFT/crypto/modes/aesni-gcm-x86_64.nasm": {
+      "bytes": 29687,
+      "sha256": "393d044d1e5993a1421377a84f5f0b5ac36aae2727fcab7ca8cbd7f56db339a8"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-MSFT/crypto/modes/ghash-x86_64.nasm": {
+      "bytes": 56945,
+      "sha256": "27c695f95f6083e32e4c0bf3ba6378b1210cc72d1b2c24b6b82f1ada87caf457"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-MSFT/crypto/sha/keccak1600-x86_64.nasm": {
+      "bytes": 11490,
+      "sha256": "65c91e6a1ee045727fd38ece7b769caa7a2e81405eceb33bed825aed60182b66"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-MSFT/crypto/sha/sha1-mb-x86_64.nasm": {
+      "bytes": 207531,
+      "sha256": "68c34a2d66ba5c4b6b03d0a6a9b4e91f8fea563137a351dd36e673d7679bdd11"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-MSFT/crypto/sha/sha1-x86_64.nasm": {
+      "bytes": 155471,
+      "sha256": "94fd0bc6d63f5c98caacaf0a9d211a2476bb8f297e6a17b28ec97f246b817216"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-MSFT/crypto/sha/sha256-mb-x86_64.nasm": {
+      "bytes": 212141,
+      "sha256": "3ff7405ea10d305068c44013c855dd3720481bfb29fc14c1f89d3cc7b36a5927"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-MSFT/crypto/sha/sha256-x86_64.nasm": {
+      "bytes": 144039,
+      "sha256": "d489b220572a7b6b7931943adaa196ea6d7e4678a4ca5c1e01a7a76fca26d218"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-MSFT/crypto/sha/sha512-x86_64.nasm": {
+      "bytes": 142518,
+      "sha256": "438fa7bf367a2aaa07e4f4651e91de459e2227e24b2f9cd7ef24f0a42034aa2a"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslGen/X64-MSFT/crypto/x86_64cpuid.nasm": {
+      "bytes": 10889,
+      "sha256": "a4896ff0f86f7b1bd221299242690b70d3e9d7c5674663af27e7879cc0ca439c"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslLib.inf": {
+      "bytes": 37599,
+      "sha256": "31d41531b2f7ddb64e4a742a270cf33af2bd3ce3ece06606c13be501681c7500"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslLib.uni": {
+      "bytes": 464,
+      "sha256": "8aa755de4e32682f24929916be81111faba67ed6118e7bfab92b9df8eecaa2ec"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslLibAccel.inf": {
+      "bytes": 107867,
+      "sha256": "4357fb81d2f463e0996d08a987ac14aee69fd8af20add572daba8bd0b432cde0"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslLibAccel.uni": {
+      "bytes": 729,
+      "sha256": "84a0be9a3b19838ad03f0eb12c5d21329892a660996e24623a7c557e27d3a9a3"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslLibConstructor.c": {
+      "bytes": 761,
+      "sha256": "5f519ebc340ec08bc46c5d28807b44406f78543ce21e2706cbc71664f85b9efe"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslLibCrypto.inf": {
+      "bytes": 35773,
+      "sha256": "83a2f3b37e1c68f61d4cac98206a6ab7dfb9b314b24ebcbea13be571def9b07a"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslLibCrypto.uni": {
+      "bytes": 517,
+      "sha256": "eef50dc6597f335c4daaf8d935bedd05ecf397047ae5bbd56bdb4617b45a5cd4"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslLibFull.inf": {
+      "bytes": 40140,
+      "sha256": "da0a2715ff09dd582add068999f6214d6bb0a227f3fd892e49161a470703cbd0"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslLibFull.uni": {
+      "bytes": 487,
+      "sha256": "2ce51190dfcff342bbd6a8110d28578ec430fc247d4117a16e8088fff775bb6a"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslLibFullAccel.inf": {
+      "bytes": 115332,
+      "sha256": "c1227682cfd1d2e1c3bec463d701ea8454b95233ca4da17813f7b0ee748a4a50"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslLibFullAccel.uni": {
+      "bytes": 667,
+      "sha256": "56204d9fe5546e30e7177eda0a8a3df3823e12d1291a943d569e7813de980d10"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslLibSm3.inf": {
+      "bytes": 804,
+      "sha256": "0d1d001328524e39b68d9e6812baa9e6a3dddb6f3b673d6c490a6cdebb5e2c07"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslStub/AArch64Cap.c": {
+      "bytes": 2310,
+      "sha256": "d47e016f48ecf3a43a46c94ea55f8be1dc21c406eee6c801c5b7fefcdb0e6b96"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslStub/EcSm2Null.c": {
+      "bytes": 4774,
+      "sha256": "189bf7ea78e4aa9eea2fe6b0c612dbe45fb63cc40aeed928915b471907ee7ac1"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslStub/EncoderNull.c": {
+      "bytes": 5137,
+      "sha256": "d63eca5eec30d2777eab1103e450095147f21c1d1c050770d26fbed2955b2b5c"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslStub/OpensslCleanse.c": {
+      "bytes": 334,
+      "sha256": "843ae2176a353b07ba3e4b47cfd25098214d0b859a27ff26f464c5c9b2ca4f34"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslStub/ossl_store.c": {
+      "bytes": 2549,
+      "sha256": "78ce13f7cfdf4b39b75523143dca0c998a12af12cecebeeede8f19dfe4967ec4"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslStub/Pkcs12Null.c": {
+      "bytes": 2344,
+      "sha256": "e8571eab57885371c0a634e045c88a5e6b76b0b41a23ddeaf51d5d87d93e2dd4"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslStub/rand_pool.c": {
+      "bytes": 3439,
+      "sha256": "9bea439a3c1535362ede05553419257bcba92b3814d74ad836311048f3fbafff"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslStub/SslExtServNull.c": {
+      "bytes": 9312,
+      "sha256": "a20d16c98b2a4933feae7d5d53ebedb29e2b264a1548cb65421fc853157a3010"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslStub/SslNull.c": {
+      "bytes": 4510,
+      "sha256": "37d815d5b7bd5f380676d43523dba526210cd5f78b860d9ea2bf1973a99975ba"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslStub/SslStatServNull.c": {
+      "bytes": 4760,
+      "sha256": "ec79d9b87e03629b33d5144f7b5cedcecfb4619bc96d0a7297af410cf758a883"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/OpensslStub/uefiprov.c": {
+      "bytes": 11912,
+      "sha256": "70ccb1a6f6c0b198ac9a01ec847a97a3b509d6b1dfc455923a7faaf1d2ee8773"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/perl2json.pl": {
+      "bytes": 348,
+      "sha256": "37b9f049b78d7b0e7176a1fe285d82e0b777caea877b37346ef86c29014481be"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/UefiAsm.conf": {
+      "bytes": 1165,
+      "sha256": "e4a7d9a519468983ec67f6d047f5a4e4213d7232fb77303c65dd90eb5b5360af"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/OpensslLib/X64/ApiHooks.c": {
+      "bytes": 288,
+      "sha256": "864cc66b86733f2874e58df855816611003846512eb59217b27f87dd9c9bfc0b"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/TlsLib/InternalTlsLib.h": {
+      "bytes": 1214,
+      "sha256": "17922f0e473c307e52ec2cdb6ce894d2abc5df07a9dc51721e259767509e9873"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/TlsLib/SysCall/inet_pton.c": {
+      "bytes": 7728,
+      "sha256": "27e8687958a68bdd4d13b49d7bca0c77d5a9a0cd6276e66ac79af13b0aa7685c"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/TlsLib/TlsConfig.c": {
+      "bytes": 43828,
+      "sha256": "9c497992487a1225f349dc7675ab0a7226c490d1837c559b43df5af30185e6da"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/TlsLib/TlsInit.c": {
+      "bytes": 5474,
+      "sha256": "d5fab6a7e5d3951883ae14926c7a17c83735dbd85b785c742e965c443217a2fe"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/TlsLib/TlsLib.inf": {
+      "bytes": 1112,
+      "sha256": "882897378be0fa8197a3aac53c11ab134980b7544ce7e6ea4e73c94fbf6d33e4"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/TlsLib/TlsLib.uni": {
+      "bytes": 405,
+      "sha256": "1781e4a32a3a65dcf4a8b3133457d132c809053aefe9f0f96ec84af1747651cd"
+    },
+    "Silicon/Silicium/OpensslPkg/Library/TlsLib/TlsProcess.c": {
+      "bytes": 15205,
+      "sha256": "0673273bf22a8c3df6d94e0011a7a752b761f4593969f074756327c33cbee006"
+    },
+    "Silicon/Silicium/OpensslPkg/OpensslPkg.ci.yaml": {
+      "bytes": 4861,
+      "sha256": "c4a2a93534e849740568f30707d2039aa9e72983cf3721e667de2e5c629fa4e3"
+    },
+    "Silicon/Silicium/OpensslPkg/OpensslPkg.dec": {
+      "bytes": 2026,
+      "sha256": "456240ab727b7e41c39f7722ed4a2da67abc1fdfbc558ff3955e3df2640e2722"
+    },
+    "Silicon/Silicium/OpensslPkg/OpensslPkg.dsc": {
+      "bytes": 7227,
+      "sha256": "1be4a8c4ab545e2f28bd4560dff118406585acf64854ab41316566ac894c6828"
+    },
+    "Silicon/Silicium/OpensslPkg/Private/Library/OpensslLib.h": {
+      "bytes": 269,
+      "sha256": "32b1bffa1b660be1fe2238cd543e5932dcafe45f77c6af9359427883be6798da"
+    },
+    "Silicon/Silicium/OpensslPkg/Source.txt": {
+      "bytes": 104,
+      "sha256": "baf0b484f67c78c64f6ccc1bcfb8f1b89953babedba6b96baa11282f970a019d"
+    },
+    "Silicon/Silicium/OpensslPkg/Test/OpensslPkgHostUnitTest.dsc": {
+      "bytes": 1319,
+      "sha256": "4fb641c4eed1245923dc8a152baaeee3bc2342e5315aec5b7cd51213f374432d"
+    },
+    "Silicon/Silicium/SiliciumNullPkg/Library/AcpiTableUpdateLibNull/AcpiTableUpdateLibNull.inf": {
+      "bytes": 466,
+      "sha256": "768bcf50cad865755d61d144b7818c6a06ef5248e2225904300be0ca9336ae0d"
+    },
+    "Silicon/Silicium/SiliciumNullPkg/Library/AcpiTableUpdateLibNull/AcpiTableUpdateNull.c": {
+      "bytes": 120,
+      "sha256": "d99d901927ac5bcd0d36baf3beca08e7ae2e7db52c0d56dcb2b1449b1ec5d8bb"
+    },
+    "Silicon/Silicium/SiliciumNullPkg/Library/ErrataPatchesLibNull/ErrataPatchesLibNull.inf": {
+      "bytes": 427,
+      "sha256": "da329ce51f85d7e002034bb9a25e95a7960c9457ba88a4fa0a9c998a9dd8abe4"
+    },
+    "Silicon/Silicium/SiliciumNullPkg/Library/ErrataPatchesLibNull/ErrataPatchesNull.c": {
+      "bytes": 430,
+      "sha256": "9bd991ffbcd034645a48c3ed3c79e15b72fd594fe94de75323a87151da6e8c0a"
+    },
+    "Silicon/Silicium/SiliciumNullPkg/Library/PlatformBootManagerLibNull/PlatformBootManagerLibNull.inf": {
+      "bytes": 471,
+      "sha256": "7264a9064171705763525092a6e1a700f832f4b8dde5ebf2958a1ee93312116c"
+    },
+    "Silicon/Silicium/SiliciumNullPkg/Library/PlatformBootManagerLibNull/PlatformBootManagerNull.c": {
+      "bytes": 747,
+      "sha256": "9d4d40f131e1c1b121930dfcd483456ca838ca72c15314c1726c4a9925d9218a"
+    },
+    "Silicon/Silicium/SiliciumNullPkg/Library/PlatformBootOptionsLibNull/PlatformBootOptionsLibNull.inf": {
+      "bytes": 445,
+      "sha256": "43448854d35d72c79462569f0186a0f984498fe66106b5415dca4803aba0a1b6"
+    },
+    "Silicon/Silicium/SiliciumNullPkg/Library/PlatformBootOptionsLibNull/PlatformBootOptionsNull.c": {
+      "bytes": 246,
+      "sha256": "f069bb1a7a6d6dd15769697a290c4c2a6e031804fe701f9a7ce468c06cfa4330"
+    },
+    "Silicon/Silicium/SiliciumNullPkg/Library/PlatformPeiLibNull/PlatformPeiLibNull.inf": {
+      "bytes": 689,
+      "sha256": "c1082107f8782ffd8a2648fde80937473398c159d3239675f5e7a3ac6e05959a"
+    },
+    "Silicon/Silicium/SiliciumNullPkg/Library/PlatformPeiLibNull/PlatformPeiNull.c": {
+      "bytes": 379,
+      "sha256": "6058b5604c7a0f3c16b7f0dae98fdb1d4cb0d467af60404c2c81ec18ed911496"
+    },
+    "Silicon/Silicium/SiliciumNullPkg/Library/PlatformSecLibNull/AArch64/PlatformHelperNull.S": {
+      "bytes": 187,
+      "sha256": "f9a04adc736ce7d968f114e5248d358e2b3e137d83d4a37bc2abdbb9922bf208"
+    },
+    "Silicon/Silicium/SiliciumNullPkg/Library/PlatformSecLibNull/PlatformSecLibNull.inf": {
+      "bytes": 590,
+      "sha256": "d2d414e5883679deb2fd93d2f16205bd56fc4c1cee75d0a0e392f6ab0b246256"
+    },
+    "Silicon/Silicium/SiliciumNullPkg/Library/PlatformSecLibNull/PlatformSecNull.c": {
+      "bytes": 195,
+      "sha256": "0ac703ac4c7bf725307c18e72db484eda7323011d857092ebbf0dfb408b40a0d"
+    },
+    "Silicon/Silicium/SiliciumNullPkg/Library/RamLogLibNull/RamLogLibNull.c": {
+      "bytes": 176,
+      "sha256": "50d3f7ca9301a528afd0d07e0150ce773110cb79021ea425cba1fa72298b962e"
+    },
+    "Silicon/Silicium/SiliciumNullPkg/Library/RamLogLibNull/RamLogLibNull.inf": {
+      "bytes": 392,
+      "sha256": "2f046d3c734f95886f55529c4787c566bdc54608478068b7ddedc3c97595a7c2"
+    },
+    "Silicon/Silicium/SiliciumNullPkg/Library/RamManagerLibNull/RamManagerLibNull.inf": {
+      "bytes": 418,
+      "sha256": "f1180c62eb88db85c9e7affb5f1a7f7a428325757f2e36387a9ddd609b644b25"
+    },
+    "Silicon/Silicium/SiliciumNullPkg/Library/RamManagerLibNull/RamManagerNull.c": {
+      "bytes": 170,
+      "sha256": "6abb6522265d0817085184d176c1e3085b4080e6be33311922c06303bced4c72"
+    },
+    "Silicon/Silicium/SiliciumNullPkg/Library/RealTimeClockLibNull/RealTimeClockLibNull.inf": {
+      "bytes": 1064,
+      "sha256": "df8c3f4bbcba374cda02a76dbefbfd37d3c84acfe2fc03f246100734e4d53d2f"
+    },
+    "Silicon/Silicium/SiliciumNullPkg/Library/RealTimeClockLibNull/RealTimeClockNull.c": {
+      "bytes": 2499,
+      "sha256": "947659106988d172acded7c37776396fe9cccb5ce2a6caad26a4dd79037ba43a"
+    },
+    "Silicon/Silicium/SiliciumNullPkg/Library/SmBiosTableLibNull/SmBiosTableLibNull.inf": {
+      "bytes": 421,
+      "sha256": "b7b4f43e7126cf645d98c247bd550b23ff3e8b8e36635e3ed1ae2cd9d81b74d1"
+    },
+    "Silicon/Silicium/SiliciumNullPkg/Library/SmBiosTableLibNull/SmBiosTableNull.c": {
+      "bytes": 207,
+      "sha256": "8eea9dc774c8a854a58c9abd43c4e7e2c0a413e1a9ebbada2180185c321d61e5"
+    },
+    "Silicon/Silicium/SiliciumPkg/Applications/UFP/LICENSE.md": {
+      "bytes": 15703,
+      "sha256": "1eca344a982282a0bcc20c09dbddd5c3d3a2fdc7fa33f138d26436ca4bcf855a"
+    },
+    "Silicon/Silicium/SiliciumPkg/Applications/UFP/ufpdevicefw.efi": {
+      "bytes": 443904,
+      "sha256": "72de25543341ba515be3872749b5fe7501468019acb6d8d997ae4a5bb19493fa"
+    },
+    "Silicon/Silicium/SiliciumPkg/Applications/UFP/ufpdevicefw.inf": {
+      "bytes": 355,
+      "sha256": "24e8a29179fd40f48dbf0c02b28dede757cd2c2fe1fd25bc8411dc0010bb337c"
+    },
+    "Silicon/Silicium/SiliciumPkg/Applications/UFPLoader/UFPLoader.c": {
+      "bytes": 2249,
+      "sha256": "48bf7fbc48e6a33e56c56f960b70e19fe3950a1dff6e930dba870c45ddaa3b9a"
+    },
+    "Silicon/Silicium/SiliciumPkg/Applications/UFPLoader/UFPLoader.h": {
+      "bytes": 169,
+      "sha256": "322d909c4a72571c52c7c48fabac179e7f2b15bae3f89de52f3efba95e0be5f9"
+    },
+    "Silicon/Silicium/SiliciumPkg/Applications/UFPLoader/UFPLoader.inf": {
+      "bytes": 681,
+      "sha256": "f0794f34bb5e65da21d1279efba685a1bc53738db68319c67dbb0bc90874395f"
+    },
+    "Silicon/Silicium/SiliciumPkg/Applications/UFPLoader/UFPPatch.c": {
+      "bytes": 1289,
+      "sha256": "eb9a9ebea683d426024f0cd076c3f94e202fefc94bcc2cd734713b40bc1232e4"
+    },
+    "Silicon/Silicium/SiliciumPkg/Common.fdf.inc": {
+      "bytes": 2706,
+      "sha256": "20a0aeb14304c5fc6678985ea413701d9288fe3971dc43dadcc9d03c6feac2a7"
+    },
+    "Silicon/Silicium/SiliciumPkg/Drivers/KeypadDeviceDxe/KeypadDeviceDxe.c": {
+      "bytes": 760,
+      "sha256": "b7e46cb550c9ada02ec43a549216703feca393b809015d2dec8282fc8196032a"
+    },
+    "Silicon/Silicium/SiliciumPkg/Drivers/KeypadDeviceDxe/KeypadDeviceDxe.inf": {
+      "bytes": 605,
+      "sha256": "754adb3e3583ed82b073f1d4d6244e6890b43a076a6a29affe631b3463b5c68a"
+    },
+    "Silicon/Silicium/SiliciumPkg/Drivers/KeypadDxe/ComponentName.c": {
+      "bytes": 15044,
+      "sha256": "0d35c85fcb90531c0b1fdd11c486d217c60afe77809c70192442034b0261d2ad"
+    },
+    "Silicon/Silicium/SiliciumPkg/Drivers/KeypadDxe/KeypadController.c": {
+      "bytes": 3384,
+      "sha256": "104d0a32499147c265f87814ce5d8a3b28b545297bf683c343af5b7dc95ae788"
+    },
+    "Silicon/Silicium/SiliciumPkg/Drivers/KeypadDxe/KeypadDxe.c": {
+      "bytes": 15854,
+      "sha256": "31de2030b0240ca63f3f099adf94615f9d633a2310305dbe3edc8601cba0b346"
+    },
+    "Silicon/Silicium/SiliciumPkg/Drivers/KeypadDxe/KeypadDxe.h": {
+      "bytes": 11368,
+      "sha256": "e8d1f909559cc35d0fc29f2a2bc113582011f364740b44a250d7d12062fb6700"
+    },
+    "Silicon/Silicium/SiliciumPkg/Drivers/KeypadDxe/KeypadDxe.inf": {
+      "bytes": 1420,
+      "sha256": "ffcf7373f8ba1531004a4383cf487cd7ca16f2a4ee7ae0bb123bfae867272526"
+    },
+    "Silicon/Silicium/SiliciumPkg/Drivers/KeypadDxe/KeypadTextIn.c": {
+      "bytes": 20405,
+      "sha256": "528615c988aae206a5f1fc87e3b7a06cf2623c0197c405f4cc8ae0de0f732d27"
+    },
+    "Silicon/Silicium/SiliciumPkg/Drivers/KeypadDxe/Source.txt": {
+      "bytes": 118,
+      "sha256": "84a7415f1d65b651025e5669965d5a634c20ad92806bc5bb4d2889461283b997"
+    },
+    "Silicon/Silicium/SiliciumPkg/Drivers/RamManagerDxe/RamManager.c": {
+      "bytes": 6902,
+      "sha256": "f21045e2ca73208d3dc55a1bcadae71bcf55cd2c60baafd68d6664a51398e527"
+    },
+    "Silicon/Silicium/SiliciumPkg/Drivers/RamManagerDxe/RamManagerDxe.inf": {
+      "bytes": 597,
+      "sha256": "bc93a87755b5e6ca200f7500bbbfe9ad7954cbfeb6472b6b6f1782d4c3944495"
+    },
+    "Silicon/Silicium/SiliciumPkg/Drivers/SimpleFbDxe/SimpleFb.c": {
+      "bytes": 9025,
+      "sha256": "926136fbf45aef45fda9a18c797e21cc361c2dbe34003176eadf9e98034a05d6"
+    },
+    "Silicon/Silicium/SiliciumPkg/Drivers/SimpleFbDxe/SimpleFbDxe.inf": {
+      "bytes": 876,
+      "sha256": "46a6ebe23cd5e4c9ec15dedb18a4e5a34d0fb5560143b0b2924dbb9b8ff0ff53"
+    },
+    "Silicon/Silicium/SiliciumPkg/Drivers/SmBiosTableDxe/SmBiosTable.c": {
+      "bytes": 16103,
+      "sha256": "85fe0234beaf71509579108385b9d436cc43dc47d6b146dfe59122f7c5558bfd"
+    },
+    "Silicon/Silicium/SiliciumPkg/Drivers/SmBiosTableDxe/SmBiosTable.h": {
+      "bytes": 3360,
+      "sha256": "af2cbc354bdd5a00283d43e74700ea875f57aeb4f34398606273c691052d7f34"
+    },
+    "Silicon/Silicium/SiliciumPkg/Drivers/SmBiosTableDxe/SmBiosTableDxe.inf": {
+      "bytes": 1358,
+      "sha256": "429368efb35474e76470f3a218c355b1458dede453c6e5c2d60c938409b91020"
+    },
+    "Silicon/Silicium/SiliciumPkg/Drivers/SmBiosTableDxe/TableDefinitions.h": {
+      "bytes": 11447,
+      "sha256": "abc24cf6f1a588f6d0977feb7bf6bcda72fb8509c1daeabf99d80135ba5e9f73"
+    },
+    "Silicon/Silicium/SiliciumPkg/Drivers/SmBiosTableDxe/Utils.c": {
+      "bytes": 3814,
+      "sha256": "b566dce741d43a4d476a3c88784f6f6f0f9d56759ab18a755b897ec54d4db05f"
+    },
+    "Silicon/Silicium/SiliciumPkg/Extra.fdf.inc": {
+      "bytes": 1192,
+      "sha256": "b055cd798824fd9596d4faf0ae20e997e9b14ce47f4b0647be0db33f971cd58c"
+    },
+    "Silicon/Silicium/SiliciumPkg/Include/Configuration/BootDevices.h": {
+      "bytes": 1805,
+      "sha256": "0a4d268f2f8cac02dd247fd2c54bacf14cb766b1b5c9cd953a9fc115b4ecf931"
+    },
+    "Silicon/Silicium/SiliciumPkg/Include/Library/AcpiTableUpdateLib.h": {
+      "bytes": 184,
+      "sha256": "cbd88f52d47257dfbc01bef70b77d7eca5063c7d1b33bf5f1caeae379b3322a6"
+    },
+    "Silicon/Silicium/SiliciumPkg/Include/Library/AslUpdateLib.h": {
+      "bytes": 4021,
+      "sha256": "36e27136063dc8f80ca41dd051301e2a712dfd628c32ef7545b1693707810f68"
+    },
+    "Silicon/Silicium/SiliciumPkg/Include/Library/AssemblyUtilsLib.h": {
+      "bytes": 716,
+      "sha256": "ce227d9a8f3e9641154180241237546f3ef187bba238d577eb3724dc0691f7a4"
+    },
+    "Silicon/Silicium/SiliciumPkg/Include/Library/AtomicLib.h": {
+      "bytes": 1973,
+      "sha256": "9321485a6b046762b47ebdca47b1ac49ec0227bc9f29a1ad78b5096fd44f7061"
+    },
+    "Silicon/Silicium/SiliciumPkg/Include/Library/BitmapLib.h": {
+      "bytes": 2537,
+      "sha256": "f08147b7a85d1b128c70687397873c3ac0303ce673add591f0f3bf501af3e25f"
+    },
+    "Silicon/Silicium/SiliciumPkg/Include/Library/BootGraphics.h": {
+      "bytes": 253,
+      "sha256": "a2e0d5a3fba77c2591df89bd9bd3cc87de42c2ff7915381041ec10c2090d4cd8"
+    },
+    "Silicon/Silicium/SiliciumPkg/Include/Library/EarlyHandoffLib.h": {
+      "bytes": 551,
+      "sha256": "229ce4b6b41903ad101872f17e6ce846bd39f7070979e665015308be76e8872b"
+    },
+    "Silicon/Silicium/SiliciumPkg/Include/Library/EarlyLogSecLib.h": {
+      "bytes": 366,
+      "sha256": "bc031d2190bab656ccdc9025c447a6ee7028057054eac3df16e9bafbe5764c2d"
+    },
+    "Silicon/Silicium/SiliciumPkg/Include/Library/EfiMemoryMapUtilsLib.h": {
+      "bytes": 396,
+      "sha256": "9b6f4e6c9d6ac71b06cad5a5340d3683313e66cc5a17b13476a0cab230e40332"
+    },
+    "Silicon/Silicium/SiliciumPkg/Include/Library/ErrataPatchesLib.h": {
+      "bytes": 719,
+      "sha256": "ea1b3809fba077ea500cfb69365b395d45f465d3cdde0288a514f16e582bb2cc"
+    },
+    "Silicon/Silicium/SiliciumPkg/Include/Library/FrameBufferHandoff.h": {
+      "bytes": 852,
+      "sha256": "b859ba848ce80c2564c30506a563956732d1c8ef3534d6dafa54ffcc89c41494"
+    },
+    "Silicon/Silicium/SiliciumPkg/Include/Library/KeypadDeviceLib.h": {
+      "bytes": 599,
+      "sha256": "3349434be4272634bf758eea66e3d88f74a6fb8f33712646521d6c1172977140"
+    },
+    "Silicon/Silicium/SiliciumPkg/Include/Library/MemoryAllocationHelperLib.h": {
+      "bytes": 715,
+      "sha256": "29f03a733a4df4b707a879e70dea70adb1a8dfac405df369dc9c9032df6813ed"
+    },
+    "Silicon/Silicium/SiliciumPkg/Include/Library/MemoryMapHelperLib.h": {
+      "bytes": 1450,
+      "sha256": "c2cd75e8a7a67cfcb883bdc3902e300cf77b8d4a51a7b9ed79955188fcc7e98f"
+    },
+    "Silicon/Silicium/SiliciumPkg/Include/Library/MemoryMapLib.h": {
+      "bytes": 4364,
+      "sha256": "c60c4b80e81388d40148cc014a25f22a20a89a1722c6dd0f1e784efa3268816b"
+    },
+    "Silicon/Silicium/SiliciumPkg/Include/Library/PlatformBootOptionsLib.h": {
+      "bytes": 626,
+      "sha256": "4a2ea84899c3303846f9895729bb97df1e805fe9eb4c778bd51f53ff6134bf40"
+    },
+    "Silicon/Silicium/SiliciumPkg/Include/Library/PlatformSecLib.h": {
+      "bytes": 401,
+      "sha256": "9194ca076ee21bb70302246503253adf38ff4a5b75cdb66cf734053a0b0f3394"
+    },
+    "Silicon/Silicium/SiliciumPkg/Include/Library/RamLogLib.h": {
+      "bytes": 622,
+      "sha256": "fd8283ba44ae0167a610982ba643ee984a6642108c27d3511edf4d992ad8b686"
+    },
+    "Silicon/Silicium/SiliciumPkg/Include/Library/RamManagerLib.h": {
+      "bytes": 552,
+      "sha256": "8e89787c6a8ea7823131ab44bd38fe0493041ab470adb9cb318c6862fb0f5b1e"
+    },
+    "Silicon/Silicium/SiliciumPkg/Include/Library/SecureBootHandlerLib.h": {
+      "bytes": 280,
+      "sha256": "48ca6e6c509657310dd3b22febea9d12a42c415fc25139712cbeaf69eb8f4655"
+    },
+    "Silicon/Silicium/SiliciumPkg/Include/Library/SmBiosTableLib.h": {
+      "bytes": 2114,
+      "sha256": "9a6cd89ff04d41525c23a1dbc8c2741a07d65a67041169bceaef524e24dc482f"
+    },
+    "Silicon/Silicium/SiliciumPkg/Include/Protocol/EfiKeypadDevice.h": {
+      "bytes": 1290,
+      "sha256": "76744dfc383a4fa133e8147fb9db21f4aa2734222a77f8a3aeda53c91473270c"
+    },
+    "Silicon/Silicium/SiliciumPkg/Include/Resources/BootLogo.bmp": {
+      "bytes": 91078,
+      "sha256": "daf81fcaaae58853f9fa0e8a5fdaec7f44b1ba1d7596ebb7f329ceaa84afd6b8"
+    },
+    "Silicon/Silicium/SiliciumPkg/Include/Resources/MassStorage.bmp": {
+      "bytes": 251078,
+      "sha256": "d8db6a75dd779e7a8ef610341bd08b54b9df1c1e91c5fd94e63f504f4ba52564"
+    },
+    "Silicon/Silicium/SiliciumPkg/Include/Resources/NoBootOS.bmp": {
+      "bytes": 91078,
+      "sha256": "d602b490756db178117647f4032e6556694e9eff1b0db8044c87d225feba5ed7"
+    },
+    "Silicon/Silicium/SiliciumPkg/Include/Resources/SecureBoot/README.md": {
+      "bytes": 414,
+      "sha256": "4dba8cf540fc0ffa2291e2be48d1387e1624d40c6a926175f906534a31e6da94"
+    },
+    "Silicon/Silicium/SiliciumPkg/Include/Resources/SecureBoot/SiPolicy.p7b": {
+      "bytes": 8633,
+      "sha256": "531477810e7c3a9f1e4d5e6d171508ce1caa88bd5aab0131abd8f1b92dd81a23"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/AslUpdateLib/AslUpdateLib.c": {
+      "bytes": 8344,
+      "sha256": "537707fa76d175dbd91019a710e9d0c06a3f422c2e59769de91f22a12e0b0a28"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/AslUpdateLib/AslUpdateLib.inf": {
+      "bytes": 754,
+      "sha256": "2f6163b10fa8eee318fd332a8739b3931d087efdd01dc8fe2ddfb408f4d7e910"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/BootGraphicsProviderLib/BootGraphicsProvider.c": {
+      "bytes": 798,
+      "sha256": "40299539fbf459072b5d2f5303a7617301f044b7b1c58911e880b96d2b6d063a"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/BootGraphicsProviderLib/BootGraphicsProvider.h": {
+      "bytes": 581,
+      "sha256": "5a8f63472861b139f750cc7ae0f137400f3e5976f20413addcdcb81ec0fd2815"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/BootGraphicsProviderLib/BootGraphicsProviderLib.inf": {
+      "bytes": 901,
+      "sha256": "a014c59bb1d185cdd7dc7439c6f2e1eb91dfeb2c87cd8d3de69c7300fdf4211d"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/BootManagerLib/BootManager.c": {
+      "bytes": 6388,
+      "sha256": "48608f582c7bd00526ca6510e2257cea64590c8162fa106550ac0261ad301076"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/BootManagerLib/BootManager.h": {
+      "bytes": 245,
+      "sha256": "318b460d38529210eae6dfba559eff17ceeb04e760493ac381f5a2598dbd988f"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/BootManagerLib/BootManagerLib.inf": {
+      "bytes": 1161,
+      "sha256": "43013f6ff4a289a61a6548e274a9f111deb7d9d919e0b71d100436146eb8f730"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/BootManagerLib/KeyCallback.c": {
+      "bytes": 3596,
+      "sha256": "d7ee112dfad85d10d8f8e8e6272de7de55c8b2961cac481fc245093234ddfd85"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/DxeRngLib/DxeRng.c": {
+      "bytes": 4307,
+      "sha256": "f43db5b98908fcf74dd58c99fad749011a8cf9a25364c5b70a87e73ad4d51b34"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/DxeRngLib/DxeRngLib.inf": {
+      "bytes": 673,
+      "sha256": "7411e3fac44ea602693419e4bc93f57cc30ad0aff84d7bd73fcfa423cc363f12"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/EarlyHandoffLibNull/EarlyHandoffLibNull.c": {
+      "bytes": 352,
+      "sha256": "434292deca531dab9d5eb18bddd29210c8bb62ea262d28e19fc0c32e884198db"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/EarlyHandoffLibNull/EarlyHandoffLibNull.inf": {
+      "bytes": 324,
+      "sha256": "ed07e4eab35d87c4749e0d29e16f992b3e93c519352fde8b2c16cf0cfdcefacf"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/EarlyLogSecLibNull/EarlyLogSecLibNull.c": {
+      "bytes": 166,
+      "sha256": "7eff9d7868cd46db58fb8c24852858dbc58ac8acb7bf72e3e3bebff986031516"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/EarlyLogSecLibNull/EarlyLogSecLibNull.inf": {
+      "bytes": 273,
+      "sha256": "742c8267a8d74a6a34a8330125d831cb3f32dd8578d23ca1e2b0230506f642c0"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/FrameBufferSerialPortLib/Font.h": {
+      "bytes": 3692,
+      "sha256": "d2a3687db67b069f4e34a961e17fd28b0242986e3fa8dd8a7545cab70834fa8e"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/FrameBufferSerialPortLib/FrameBuffer.h": {
+      "bytes": 928,
+      "sha256": "556f0ba7479eda4d0ecfe3a6b01c83ba3cfbfe60338e26d0aeeb8645d615993f"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/FrameBufferSerialPortLib/FrameBufferSerialPortLib.c": {
+      "bytes": 9300,
+      "sha256": "e4b2433c251b5a11aae3335aedf8a455ad6a3aa68d3ddb4d4ea688bc0855ae53"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/FrameBufferSerialPortLib/FrameBufferSerialPortLib.inf": {
+      "bytes": 872,
+      "sha256": "5d04bce159d42199c298cf3ec6a164cc719935f89fb71cae53f849e1cfadbaa1"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/KernelErrataPatcherLib.c": {
+      "bytes": 5243,
+      "sha256": "d493a1a32877220dd5d8832b7579e5ee4b330988b2826acd6c33b284c68ad841"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/KernelErrataPatcherLib.h": {
+      "bytes": 686,
+      "sha256": "542e4fec020fb0045982dcc0295094332db799850896bee4ee87898136400ad0"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/KernelErrataPatcherLib.inf": {
+      "bytes": 916,
+      "sha256": "2573cad1b8a757778af18690d3e3d3b56a2c40f3967ca8f8b3b09ca1b443f26a"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/MemoryAttribute.c": {
+      "bytes": 1445,
+      "sha256": "cef98e82440d6384ff18ab5e223c8308cee064f46c7f3994b626b1e8b98c82a2"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/Winload.c": {
+      "bytes": 6219,
+      "sha256": "ced29f86a0022181c6eedcaa712fee972e575edb6f78208aa2faf734585d95d4"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/KernelErrataPatcherLib/Winload.h": {
+      "bytes": 1273,
+      "sha256": "db37b2a946b20c090636ae90a0debf958454ac26654a03d617a953d49cc05e3d"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/MemoryAllocationHelperLib/MemoryAllocationHelper.c": {
+      "bytes": 2964,
+      "sha256": "6abf106f78e17cef735176bc83f44eb3d2846a6ed60abd30871879a7f6cbaa46"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/MemoryAllocationHelperLib/MemoryAllocationHelperLib.inf": {
+      "bytes": 546,
+      "sha256": "24c781e903ae941d2863aa2358f060447bd1f90bbda432dccd8cc624ed091d5d"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/MemoryInitPeiLib/MemoryInitPei.c": {
+      "bytes": 5508,
+      "sha256": "d163a036d1c62ba6449c9266afa54457742ddee3bd00a323dc512b180cc681a3"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/MemoryInitPeiLib/MemoryInitPeiLib.inf": {
+      "bytes": 946,
+      "sha256": "89802e4ddfbd59ce97f8b73e267493f5aa75331e11dd075a49620f5859a00d86"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/MemoryMapHelperLib/MemoryMapHelper.c": {
+      "bytes": 1635,
+      "sha256": "ec9c5e0f7b9a23fabb8ad7316906742139e0c8f8e49fec74f91a7822b41d5c79"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/MemoryMapHelperLib/MemoryMapHelperLib.inf": {
+      "bytes": 461,
+      "sha256": "c002bea97077e115317c72b7b6b70b4078d3becb5ac00b0bfe63eca5e6feea90"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/MsBootOptionsLib/MsBootOptionsLib.c": {
+      "bytes": 9420,
+      "sha256": "d9cb4f7503aae317442cdeeff4a92c357e1c8c858921ff613f9dfac30de989f9"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/MsBootOptionsLib/MsBootOptionsLib.inf": {
+      "bytes": 1017,
+      "sha256": "d5173d7fbfe96b875619ca7e7c5ac0db2b44b1ba3f7d66fd7653c10155ea3c7f"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/MsBootPolicyLib/MsBootPolicy.c": {
+      "bytes": 1469,
+      "sha256": "788c633905726204bc4f317e63abd12683eeb85656166ac77c7b31a137807313"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/MsBootPolicyLib/MsBootPolicyLib.inf": {
+      "bytes": 572,
+      "sha256": "bbe08b26ea1111a2864b8510175fe91d4c933cf5771844d0062fa1194e5feba3"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/SecureBootHandlerLib/SecureBootHandler.c": {
+      "bytes": 8979,
+      "sha256": "e34eaba2094b1e22954e2317ebde9eae78ea6d3cebae5742e97f92b37b55a2f0"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/SecureBootHandlerLib/SecureBootHandler.h": {
+      "bytes": 265,
+      "sha256": "36642a92a0fa05384dff8b75319aa2f7eee5ef96e917edd8b370bb254fa76e72"
+    },
+    "Silicon/Silicium/SiliciumPkg/Library/SecureBootHandlerLib/SecureBootHandlerLib.inf": {
+      "bytes": 780,
+      "sha256": "ab59e9e5ed643b97aa5e6ed5fbca5be59d17da44ce6fb9664edd8cd5330cfe4b"
+    },
+    "Silicon/Silicium/SiliciumPkg/Sec/AArch64/ArchSec.c": {
+      "bytes": 1166,
+      "sha256": "d520becf03894c613443979a72f8535d4dcbf42927218b346dd14ea58112bdc1"
+    },
+    "Silicon/Silicium/SiliciumPkg/Sec/AArch64/Exception.S": {
+      "bytes": 5402,
+      "sha256": "6cbd46db3d3c5cab457d93271b4eba7c0bdff6be2a8b1d5c3d71f3b17584eed2"
+    },
+    "Silicon/Silicium/SiliciumPkg/Sec/AArch64/Helper.S": {
+      "bytes": 2846,
+      "sha256": "7132227a10e3079d97927cbbfa9cd4a26097c2f4d2b5a3385dd73287f31fe128"
+    },
+    "Silicon/Silicium/SiliciumPkg/Sec/AArch64/ModuleEntryPoint.S": {
+      "bytes": 2012,
+      "sha256": "cee1f559006be5d9cda8d37433d09e1f7f0ea498bc4870b9dfac51a8ded533ae"
+    },
+    "Silicon/Silicium/SiliciumPkg/Sec/Sec.c": {
+      "bytes": 8411,
+      "sha256": "f7574db38e420962ebce8061d3e40e53ed6b9831546ca9b6d4d24598c930a843"
+    },
+    "Silicon/Silicium/SiliciumPkg/Sec/Sec.h": {
+      "bytes": 473,
+      "sha256": "4b692896146a4da8308f1a07665eb6382cf27d52ed3578bbe94db41130fae0aa"
+    },
+    "Silicon/Silicium/SiliciumPkg/Sec/Sec.inf": {
+      "bytes": 1580,
+      "sha256": "a5c887a0429d900ba7571c7aeaf27920ef94cf71121c9e93c94e6c8015668695"
+    },
+    "Silicon/Silicium/SiliciumPkg/SecureBoot-Keys.inc": {
+      "bytes": 56899,
+      "sha256": "bef02dd42800fbc39c6b5ad99ca69546a7e6d9d6463fbf72c57f140afb5f3ec0"
+    },
+    "Silicon/Silicium/SiliciumPkg/SiliciumPkg.dec": {
+      "bytes": 3068,
+      "sha256": "28af351b7933eb703b48fba338177c264758fb4e09d4c09d8acf3a2b7328e214"
+    },
+    "Silicon/Silicium/SiliciumPkg/SiliciumPkg.dsc.inc": {
+      "bytes": 20387,
+      "sha256": "3d6179c680fdd8b5f00ecb25e064abd22283caa8a7d1aa830725fe04c0f8f708"
+    }
+  },
+  "darwinboot": {
+    "repository": "https://github.com/UniXNU/DarwinBoot.git",
+    "commit": "5243c68ec332a227fe3680cd5da6d5a0e127035c",
+    "working_tree_clean": true
+  },
+  "unixnu": {
+    "repository": "https://github.com/UniXNU/UniXNU.git",
+    "commit": "7b730b231746667d8b7f54746c2c1ce45852611c",
+    "patch": "Resources/UniXNUPatches/j716f-menu-hold.patch",
+    "patch_sha256": "73f630532e4b6f46e0cf9388b95da3257343db930bb3f9d1e446f25271018596",
+    "patch_origin": "Diff of the actual firmware-build core; Menu diagnostic hold/confirmation behavior"
+  },
+  "external_dependency_closure_reviewed": true
+}

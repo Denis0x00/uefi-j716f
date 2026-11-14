@@ -29,6 +29,9 @@
   INF MdeModulePkg/Universal/Disk/UnicodeCollation/EnglishDxe/EnglishDxe.inf
   INF FatPkg/EnhancedFatDxe/Fat.inf
   INF DarwinBootPkg/Driver/DarwinBoot.inf
+!if $(TARGET) == DEBUG
+  INF j716fPkg/Drivers/J716fHandoffDiagnosticsDxe/J716fHandoffDiagnosticsDxe.inf
+!endif
   INF j716fPkg/Drivers/J716fIoConsoleBdsDxe/J716fIoConsoleBdsDxe.inf
   INF UniXNUPkg/Application/UniXNU/UniXNU.inf
 

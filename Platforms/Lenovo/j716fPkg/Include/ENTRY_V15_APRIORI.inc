@@ -30,5 +30,9 @@ APRIORI DXE {
   INF MdeModulePkg/Universal/Disk/UnicodeCollation/EnglishDxe/EnglishDxe.inf
   INF FatPkg/EnhancedFatDxe/Fat.inf
   INF DarwinBootPkg/Driver/DarwinBoot.inf
+!if $(TARGET) == DEBUG
+  # Registers ReadyToBoot before BDS launches the UniXNU application.
+  INF j716fPkg/Drivers/J716fHandoffDiagnosticsDxe/J716fHandoffDiagnosticsDxe.inf
+!endif
   INF j716fPkg/Drivers/J716fIoConsoleBdsDxe/J716fIoConsoleBdsDxe.inf
 }

@@ -1,0 +1,670 @@
+diff --git a/Platforms/Lenovo/j716fPkg/Drivers/J716fIoConsoleBdsDxe/J716fIoConsoleBds.c b/Platforms/Lenovo/j716fPkg/Drivers/J716fIoConsoleBdsDxe/J716fIoConsoleBds.c
+index 3f3536d..64a0ebe 100644
+--- a/Platforms/Lenovo/j716fPkg/Drivers/J716fIoConsoleBdsDxe/J716fIoConsoleBds.c
++++ b/Platforms/Lenovo/j716fPkg/Drivers/J716fIoConsoleBdsDxe/J716fIoConsoleBds.c
+@@ -19,6 +19,7 @@
+ #include <Library/PcdLib.h>
+ #include <Library/UefiBootServicesTableLib.h>
+ #include <Library/UefiLib.h>
++#include "../../Library/J716fRamLogLib/DisplayOwnership.h"
+ 
+ STATIC EFI_HANDLE mImageHandle;
+ STATIC VOID EFIAPI EmptyNotify (EFI_EVENT Event, VOID *Context) { }
+@@ -104,6 +105,7 @@ STATIC EFI_STATUS BootUniXnu (VOID)
+   EFI_FV_FILETYPE Type;
+   EFI_FV_FILE_ATTRIBUTES Attributes;
+   UINT32 Auth;
++  UINT64 DisplayToken;
+   EFI_DEVICE_PATH_PROTOCOL *Path;
+   MEDIA_FW_VOL_FILEPATH_DEVICE_PATH Node;
+   EFI_GUID *File = (EFI_GUID *)PcdGetPtr (PcdUniXNUApplicationFile);
+@@ -129,7 +131,18 @@ STATIC EFI_STATUS BootUniXnu (VOID)
+       EfiSignalEventReadyToBoot ();
+       DEBUG ((DEBUG_ERROR, "J716F V11 START_UNIXNU\n"));
+       // Application host mode avoids a second ConnectAll; BDS connected above.
+-      Status = gBS->StartImage (Image, NULL, NULL);
++      // This is the configured UniXNU FV image, not an arbitrary later app.
++      // Acquire immediately before entry; hold through menu, plugins and loader.
++      // Successful XNU handoff never returns, so it must not release the lease.
++      if (!J716fDisplayClaim (&DisplayToken)) {
++        gBS->UnloadImage (Image);
++        Status = EFI_NOT_READY;
++      } else {
++        Status = gBS->StartImage (Image, NULL, NULL);
++        if (!J716fDisplayRelease (DisplayToken)) {
++          Status = EFI_DEVICE_ERROR;
++        }
++      }
+     }
+     break;
+   }
+diff --git a/Platforms/Lenovo/j716fPkg/Drivers/J716fIoConsoleBdsDxe/J716fIoConsoleBdsDxe.inf b/Platforms/Lenovo/j716fPkg/Drivers/J716fIoConsoleBdsDxe/J716fIoConsoleBdsDxe.inf
+index b922f49..bedb4d3 100644
+--- a/Platforms/Lenovo/j716fPkg/Drivers/J716fIoConsoleBdsDxe/J716fIoConsoleBdsDxe.inf
++++ b/Platforms/Lenovo/j716fPkg/Drivers/J716fIoConsoleBdsDxe/J716fIoConsoleBdsDxe.inf
+@@ -9,10 +9,12 @@
+ [Sources]
+   J716fIoConsoleBds.c
+ [Packages]
++  SiliciumPkg/SiliciumPkg.dec
+   MdePkg/MdePkg.dec
+   MdeModulePkg/MdeModulePkg.dec
+   UniXNUPkg/UniXNUPkg.dec
+ [LibraryClasses]
++  RamLogLib
+   BaseMemoryLib
+   DebugLib
+   DevicePathLib
+diff --git a/Platforms/Lenovo/j716fPkg/Include/ENTRY_V15_APRIORI.inc b/Platforms/Lenovo/j716fPkg/Include/ENTRY_V15_APRIORI.inc
+index af81129..b4d0b91 100644
+--- a/Platforms/Lenovo/j716fPkg/Include/ENTRY_V15_APRIORI.inc
++++ b/Platforms/Lenovo/j716fPkg/Include/ENTRY_V15_APRIORI.inc
+@@ -30,5 +30,9 @@ APRIORI DXE {
+   INF MdeModulePkg/Universal/Disk/UnicodeCollation/EnglishDxe/EnglishDxe.inf
+   INF FatPkg/EnhancedFatDxe/Fat.inf
+   INF DarwinBootPkg/Driver/DarwinBoot.inf
++!if $(TARGET) == DEBUG
++  # Registers ReadyToBoot before BDS launches the UniXNU application.
++  INF j716fPkg/Drivers/J716fHandoffDiagnosticsDxe/J716fHandoffDiagnosticsDxe.inf
++!endif
+   INF j716fPkg/Drivers/J716fIoConsoleBdsDxe/J716fIoConsoleBdsDxe.inf
+ }
+diff --git a/Platforms/Lenovo/j716fPkg/Include/ENTRY_V15_DXE.inc b/Platforms/Lenovo/j716fPkg/Include/ENTRY_V15_DXE.inc
+index 720d042..4454571 100644
+--- a/Platforms/Lenovo/j716fPkg/Include/ENTRY_V15_DXE.inc
++++ b/Platforms/Lenovo/j716fPkg/Include/ENTRY_V15_DXE.inc
+@@ -29,6 +29,9 @@
+   INF MdeModulePkg/Universal/Disk/UnicodeCollation/EnglishDxe/EnglishDxe.inf
+   INF FatPkg/EnhancedFatDxe/Fat.inf
+   INF DarwinBootPkg/Driver/DarwinBoot.inf
++!if $(TARGET) == DEBUG
++  INF j716fPkg/Drivers/J716fHandoffDiagnosticsDxe/J716fHandoffDiagnosticsDxe.inf
++!endif
+   INF j716fPkg/Drivers/J716fIoConsoleBdsDxe/J716fIoConsoleBdsDxe.inf
+   INF UniXNUPkg/Application/UniXNU/UniXNU.inf
+ 
+diff --git a/Platforms/Lenovo/j716fPkg/Library/J716fFrameBufferSerialPortLib/FrameBufferSerialPortLib.c b/Platforms/Lenovo/j716fPkg/Library/J716fFrameBufferSerialPortLib/FrameBufferSerialPortLib.c
+index 44d3338..e14f305 100644
+--- a/Platforms/Lenovo/j716fPkg/Library/J716fFrameBufferSerialPortLib/FrameBufferSerialPortLib.c
++++ b/Platforms/Lenovo/j716fPkg/Library/J716fFrameBufferSerialPortLib/FrameBufferSerialPortLib.c
+@@ -2,47 +2,27 @@
+ #include <Library/CacheMaintenanceLib.h>
+ #include <Library/MemoryMapHelperLib.h>
+ #include <Library/PrintLib.h>
++#include <Library/RamLogLib.h>
+ #include <Library/SerialPortLib.h>
+ #include <Library/TimerLib.h>
+ 
+ #include "FrameBuffer.h"
+ #include "Font.h"
++#include "../J716fRamLogLib/DisplayOwnership.h"
+ 
+ 
+-#define J716F_LOG_MAGIC 0x474F4C4A // 'JLOG'
+-#define J716F_LOG_BASE  0xB0000000ULL
+-#define J716F_LOG_MAX   (512 * 1024 - 32)
+-
+-typedef struct {
+-  UINT32 Magic;
+-  UINT32 Length;
+-  UINT32 MaxCapacity;
+-  UINT32 Reserved;
+-  CHAR8  Buffer[];
+-} J716F_BOOT_LOG_HDR;
++// Each linked console instance owns its cursor; display/dfps RAM is not storage.
++STATIC EFI_FRAME_BUFFER_POSITION mCurrentPosition;
++STATIC BOOLEAN                   mPositionInitialized = FALSE;
+ 
+ STATIC
+ VOID
+-RecordLogToMemory (
+-  IN CONST UINT8 *Buffer,
+-  IN UINTN       NumberOfBytes
+-  )
++InitializePosition (VOID)
+ {
+-  volatile J716F_BOOT_LOG_HDR *Hdr = (volatile J716F_BOOT_LOG_HDR *)J716F_LOG_BASE;
+-  if (Hdr->Magic != J716F_LOG_MAGIC || Hdr->MaxCapacity != J716F_LOG_MAX) {
+-    Hdr->Magic = J716F_LOG_MAGIC;
+-    Hdr->Length = 0;
+-    Hdr->MaxCapacity = J716F_LOG_MAX;
+-    Hdr->Reserved = 0;
+-  }
+-  UINT32 CurLen = Hdr->Length;
+-  if (CurLen < J716F_LOG_MAX) {
+-    UINT32 ToCopy = (UINT32)NumberOfBytes;
+-    if (CurLen + ToCopy > J716F_LOG_MAX) {
+-      ToCopy = J716F_LOG_MAX - CurLen;
+-    }
+-    CopyMem ((VOID *)(J716F_LOG_BASE + 16 + CurLen), Buffer, ToCopy);
+-    Hdr->Length = CurLen + ToCopy;
++  if (!mPositionInitialized) {
++    mCurrentPosition.XPos = 0;
++    mCurrentPosition.YPos = 0;
++    mPositionInitialized = TRUE;
+   }
+ }
+ 
+@@ -153,7 +133,7 @@ AdvanceNewLine (
+   // Verify Y Position
+   if (CurrentPosition->YPos >= MaxPosition.YPos) {
+     // Clear Frame Buffer
+-    ZeroMem ((VOID *)FbBase, FB_WIDTH * FB_HEIGHT * FB_BPP);
++    ZeroMem ((VOID *)FbBase, (UINTN)FbLength);
+ 
+     // Reset X & Y Position
+     CurrentPosition->XPos = 0;
+@@ -182,7 +162,7 @@ GetFbPositions (
+   EFI_FRAME_BUFFER_POSITION LocalMaxPosition;
+ 
+   // Get Current Position
+-  *CurrentPosition = (EFI_FRAME_BUFFER_POSITION *)(FbBase + FbLength - sizeof (EFI_FRAME_BUFFER_POSITION));
++  *CurrentPosition = &mCurrentPosition;
+ 
+   // Calculate Max Positions
+   LocalMaxPosition.XPos = FB_WIDTH  / ((FONT_WIDTH  + 1) * FontScale);
+@@ -201,6 +181,8 @@ WriteFrameBuffer (
+   EFI_FRAME_BUFFER_POSITION *CurrentPosition;
+   EFI_FRAME_BUFFER_POSITION  MaxPosition;
+   UINT8                     *Pixels;
++  UINTN                      Offset;
++  UINTN                      GlyphBytes;
+ 
+   // Set Glyph Font
+   STATIC CONST UINT64 GlyphFont[] = GLYPH_FONT;
+@@ -211,6 +193,18 @@ WriteFrameBuffer (
+   // Get Frame Buffer Positions
+   GetFbPositions (FbBase, FbLength, GlyphFontScale, &CurrentPosition, &MaxPosition);
+ 
++  if ((MaxPosition.XPos == 0) || (MaxPosition.YPos == 0) ||
++      (FbLength != (UINT64)FB_WIDTH * FB_HEIGHT * FB_BPP)) {
++    return;
++  }
++
++  // Validate state before either rendering or advancing a line.
++  if ((CurrentPosition->XPos >= MaxPosition.XPos) ||
++      (CurrentPosition->YPos >= MaxPosition.YPos)) {
++    CurrentPosition->XPos = 0;
++    CurrentPosition->YPos = 0;
++  }
++
+   // Skip Invalid ACSII Characters
+   if (Character >= 127) {
+     return;
+@@ -220,7 +214,7 @@ WriteFrameBuffer (
+   if (Character < 32) {
+     if (Character == '\f') {
+       // Start a diagnostic page without losing its first lines at page wrap.
+-      ZeroMem ((VOID *)FbBase, FB_WIDTH * FB_HEIGHT * FB_BPP);
++      ZeroMem ((VOID *)FbBase, (UINTN)FbLength);
+       CurrentPosition->XPos = 0;
+       CurrentPosition->YPos = 0;
+     } else if (Character == '\n') {
+@@ -245,9 +239,13 @@ WriteFrameBuffer (
+   UINTN GlyphHeight = (FONT_HEIGHT - 4) * GlyphFontScale;
+ 
+   // Set Glyph Pixels
+-  Pixels  = (VOID *)FbBase;
+-  Pixels += (UINTN)CurrentPosition->YPos * GlyphHeight * (FB_WIDTH * FB_BPP);
+-  Pixels += (UINTN)CurrentPosition->XPos * GlyphWidth  * FB_BPP;
++  Offset = (UINTN)CurrentPosition->YPos * GlyphHeight * (FB_WIDTH * FB_BPP) +
++           (UINTN)CurrentPosition->XPos * GlyphWidth * FB_BPP;
++  GlyphBytes = ((GlyphHeight - 1) * FB_WIDTH + FONT_WIDTH * GlyphFontScale) * FB_BPP;
++  if ((Offset > FbLength) || (GlyphBytes > FbLength - Offset)) {
++    return;
++  }
++  Pixels = (UINT8 *)(UINTN)FbBase + Offset;
+ 
+   // Draw Glyph
+   DrawGlyph (Pixels, Glyph, GlyphFontScale);
+@@ -267,17 +265,38 @@ GetFrameBufferMemory (
+   OUT UINT64               *Length)
+ {
+   EFI_MEMORY_REGION_DESCRIPTOR FbRegion;
++  EFI_STATUS                   Status;
++  UINT64                       ImageBytes;
++
++  if ((Base == NULL) || (Length == NULL)) {
++    return EFI_INVALID_PARAMETER;
++  }
++
++  ZeroMem (&FbRegion, sizeof (FbRegion));
++  Status = LocateMemoryRegionByName ("Display Reserved", &FbRegion);
++  if (EFI_ERROR (Status)) {
++    Status = LocateMemoryRegionByName ("Display_Reserved", &FbRegion);
++  }
++  if (EFI_ERROR (Status)) {
++    return Status;
++  }
+ 
+-  // Locate "Display Reserved" Memory Region
+-  LocateMemoryRegionByName ("Display Reserved", &FbRegion);
+-  LocateMemoryRegionByName ("Display_Reserved", &FbRegion);
+-  if (!FbRegion.Address && !FbRegion.Length) {
+-    return EFI_NOT_FOUND;
++  // Same static, tightly packed geometry as J716fInheritedFbDxe. This bounds
++  // early writes; actual scanout/stride still needs hardware verification.
++  if ((FbRegion.Address != 0x9C000000ULL) || (FB_WIDTH != 2560) ||
++      (FB_HEIGHT != 1600) || (FixedPcdGet8 (PcdFrameBufferColorDepth) != 32)) {
++    return EFI_UNSUPPORTED;
++  }
++  ImageBytes = (UINT64)FB_WIDTH * FB_HEIGHT * FB_BPP;
++  // cont_splash ends at 0x9e300000; dfps is the following 1 MiB. Keep the
++  // entire reservation in the memory map, but expose only the image here.
++  if ((ImageBytes > FbRegion.Length) || (ImageBytes > 0x02300000ULL)) {
++    return EFI_UNSUPPORTED;
+   }
+ 
+   // Pass Frame Buffer Memory
+   *Base   = FbRegion.Address;
+-  *Length = FbRegion.Length;
++  *Length = ImageBytes;
+ 
+   return EFI_SUCCESS;
+ }
+@@ -418,25 +437,45 @@ SerialPortWrite (
+   UINT64               FbLength;
+   STATIC BOOLEAN       TzAssertTraced = FALSE;
+   BOOLEAN              TraceTzAssert;
++  BOOLEAN              InterruptState;
+ 
+-  // Get Frame Buffer Memory
+-  Status = GetFrameBufferMemory (&FbBase, &FbLength);
+-  if (EFI_ERROR (Status)) {
++  if ((Buffer == NULL) || (NumberOfBytes == 0)) {
+     return 0;
+   }
+ 
+   // Get Interrupts State
+-  BOOLEAN InterruptState = ArmGetInterruptState ();
++  InterruptState = ArmGetInterruptState ();
+ 
+   // Disable Interrupts
+   if (InterruptState) {
+     ArmDisableInterrupts ();
+   }
+ 
++  // Keep early diagnostics even when the framebuffer descriptor is rejected.
++  RamLogWrite (Buffer, NumberOfBytes);
++
++  // All independently linked instances consult the same boot-scoped lease.
++  // Keep RAM diagnostics while the application owns the panel, including
++  // direct serial, form-feed, wrap and TZ trace paths. Never flush stale pixels.
++  if (!J716fSerialMayDraw ()) {
++    if (InterruptState) {
++      ArmEnableInterrupts ();
++    }
++    return NumberOfBytes;
++  }
++
++  Status = GetFrameBufferMemory (&FbBase, &FbLength);
++  if (EFI_ERROR (Status)) {
++    if (InterruptState) {
++      ArmEnableInterrupts ();
++    }
++    return 0;
++  }
++  InitializePosition ();
++
+   TraceTzAssert = !TzAssertTraced &&
+     J716fBufferContains (Buffer, NumberOfBytes, "ERROR: C90000002:V03000007", sizeof ("ERROR: C90000002:V03000007") - 1) &&
+     J716fBufferContains (Buffer, NumberOfBytes, "6925FAD3-E243-4B69-AD61-3F978C8ABC60", sizeof ("6925FAD3-E243-4B69-AD61-3F978C8ABC60") - 1);
+-  RecordLogToMemory (Buffer, NumberOfBytes);
+   if (TraceTzAssert) {
+     TzAssertTraced = TRUE;
+     J716fTzAssertTrace (FbBase, FbLength, Buffer, NumberOfBytes);
+@@ -505,5 +544,27 @@ EFI_STATUS
+ EFIAPI
+ SerialPortInitialize ()
+ {
++  EFI_PHYSICAL_ADDRESS FbBase;
++  UINT64               FbLength;
++  EFI_STATUS           Status;
++  BOOLEAN              InterruptState;
++  STATIC CONST CHAR8   FrameBufferUnavailable[] =
++    "J716F: framebuffer validation failed; continuing with RAM log only\n";
++
++  InitializePosition ();
++  Status = GetFrameBufferMemory (&FbBase, &FbLength);
++  if (EFI_ERROR (Status)) {
++    InterruptState = ArmGetInterruptState ();
++    if (InterruptState) {
++      ArmDisableInterrupts ();
++    }
++    RamLogWrite ((CONST UINT8 *)FrameBufferUnavailable, sizeof (FrameBufferUnavailable) - 1);
++    if (InterruptState) {
++      ArmEnableInterrupts ();
++    }
++  }
++
++  // RAM logging remains usable without a validated display. The write path
++  // checks the framebuffer again and rejects drawing if it is unavailable.
+   return EFI_SUCCESS;
+ }
+diff --git a/Platforms/Lenovo/j716fPkg/Library/J716fFrameBufferSerialPortLib/FrameBufferSerialPortLib.inf b/Platforms/Lenovo/j716fPkg/Library/J716fFrameBufferSerialPortLib/FrameBufferSerialPortLib.inf
+index 19e13e3..a445f8d 100644
+--- a/Platforms/Lenovo/j716fPkg/Library/J716fFrameBufferSerialPortLib/FrameBufferSerialPortLib.inf
++++ b/Platforms/Lenovo/j716fPkg/Library/J716fFrameBufferSerialPortLib/FrameBufferSerialPortLib.inf
+@@ -20,6 +20,7 @@
+   CacheMaintenanceLib
+   MemoryMapHelperLib
+   PrintLib
++  RamLogLib
+   TimerLib
+ 
+ [FixedPcd]
+diff --git a/Platforms/Lenovo/j716fPkg/j716f.dsc b/Platforms/Lenovo/j716fPkg/j716f.dsc
+index ca5b9f8..7452f0d 100644
+--- a/Platforms/Lenovo/j716fPkg/j716f.dsc
++++ b/Platforms/Lenovo/j716fPkg/j716f.dsc
+@@ -66,9 +66,22 @@
+   # Debug and Version
+   #
+   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareVersionString|L"J716F UniXNU"
++!if $(TARGET) == DEBUG
++  # Keep firmware warnings/errors and UniXNU's default DEBUG_INFO messages.
++  gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x80000042
++  gUniXNUPkgTokenSpaceGuid.PcdUniXNUDebugLevel|0x00000040
++!else
+   gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x80000000
+   gUniXNUPkgTokenSpaceGuid.PcdUniXNUDebugLevel|0
++!endif
+   gUniXNUPkgTokenSpaceGuid.PcdUniXNUDeviceModel|"j716f"
++!ifdef J716F_MENU_DIAGNOSTIC
++!if $(J716F_MENU_DIAGNOSTIC) == 1
++  # Explicit diagnostic policy for both built-in and loaded configurations.
++  gUniXNUPkgTokenSpaceGuid.PcdUniXNUBuiltinMenuWaitForInput|TRUE
++  gUniXNUPkgTokenSpaceGuid.PcdUniXNUDiagnosticMenuHold|TRUE
++!endif
++!endif
+   gAdvLoggerPkgTokenSpaceGuid.PcdAdvancedLoggerPages|0x100
+   gAdvLoggerPkgTokenSpaceGuid.PcdAdvancedLoggerBase|0x00000000
+   gEfiMdeModulePkgTokenSpaceGuid.PcdEmuVariableNvModeEnable|TRUE
+@@ -80,6 +93,7 @@
+ 
+ [LibraryClasses.common]
+   MemoryMapLib|j716fPkg/Library/MemoryMapLib/MemoryMapLib.inf
++  RamLogLib|j716fPkg/Library/J716fRamLogLib/J716fRamLogLib.inf
+   SerialPortLib|j716fPkg/Library/J716fFrameBufferSerialPortLib/FrameBufferSerialPortLib.inf
+   ConfigurationMapLib|j716fPkg/Library/ConfigurationMapLib/ConfigurationMapLib.inf
+   UniXNULib|UniXNUPkg/Library/UniXNULib/UniXNULib.inf
+@@ -91,23 +105,50 @@
+   AssertLib|AdvLoggerPkg/Library/AssertLib/AssertLib.inf
+ 
+ [LibraryClasses.common.SEC]
++  EarlyLogSecLib|j716fPkg/Library/J716fEarlyLogSecLib/J716fEarlyLogSecLib.inf
++  EarlyHandoffLib|j716fPkg/Library/J716fEarlyHandoffLib/J716fEarlyHandoffLib.inf
++  # The menu stage only publishes its own FV; no inherited XBL protocols.
++  PlatformPeiLib|j716fPkg/Library/J716fPlatformPeiLib/PlatformPeiLib.inf
++  # Sec.c calls BaseDebugLibSerialPortConstructor directly before DXE.
+   DebugLib|MdePkg/Library/BaseDebugLibSerialPort/BaseDebugLibSerialPort.inf
+ 
+ [LibraryClasses.common.DXE_CORE]
++!if $(TARGET) == DEBUG
++  # The DxeCore constructor allocates the log and installs its protocol.
++  DebugLib|AdvLoggerPkg/Library/BaseDebugLibAdvancedLogger/BaseDebugLibAdvancedLogger.inf
++  AdvancedLoggerLib|AdvLoggerPkg/Library/AdvancedLoggerLib/DxeCore/AdvancedLoggerLib.inf
++!else
+   DebugLib|MdePkg/Library/BaseDebugLibSerialPort/BaseDebugLibSerialPort.inf
++!endif
+ 
+ [LibraryClasses.common.DXE_DRIVER, LibraryClasses.common.UEFI_APPLICATION, LibraryClasses.common.UEFI_DRIVER]
+-  # AdvancedLoggerLib removed
++!if $(TARGET) == DEBUG
++  DebugLib|AdvLoggerPkg/Library/BaseDebugLibAdvancedLogger/BaseDebugLibAdvancedLogger.inf
++  AdvancedLoggerLib|AdvLoggerPkg/Library/AdvancedLoggerLib/Dxe/AdvancedLoggerLib.inf
++!endif
+ 
+ [LibraryClasses.common.DXE_RUNTIME_DRIVER]
+-  # AdvancedLoggerLib runtime removed
++!if $(TARGET) == DEBUG
++  DebugLib|AdvLoggerPkg/Library/BaseDebugLibAdvancedLogger/BaseDebugLibAdvancedLogger.inf
++  AdvancedLoggerLib|AdvLoggerPkg/Library/AdvancedLoggerLib/Runtime/AdvancedLoggerLib.inf
++!endif
+ 
+ [Components]
++  # Built for explicit manual EFI payload entries; never automatically dispatched.
++  j716fPkg/Application/J716fEarlyLogProbe/J716fEarlyLogProbe.inf
+   UniXNUPkg/Application/UniXNU/UniXNU.inf
+   UniXNUPkg/Driver/UniXNUDxe/UniXNUDxe.inf
+   UniXNUPkg/Driver/UniXNURamDiskDxe/UniXNURamDiskDxe.inf
+-  UniXNUPkg/Driver/AdvancedLogDxe/AdvancedLogDxe.inf
++  UniXNUPkg/Driver/AdvancedLogDxe/AdvancedLogDxe.inf {
++    <PcdsFixedAtBuild>
++      # QrEncoderLib INFO traces share the panel with the QR image. Keep
++      # exporter errors while other modules retain the full boot diagnostics.
++      gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x80000000
++  }
+   DarwinBootPkg/Driver/DarwinBoot.inf
+   j716fPkg/Drivers/J716fInheritedFbDxe/J716fInheritedFbDxe.inf
+   j716fPkg/Drivers/J716fKeysDxe/J716fKeysDxe.inf
++!if $(TARGET) == DEBUG
++  j716fPkg/Drivers/J716fHandoffDiagnosticsDxe/J716fHandoffDiagnosticsDxe.inf
++!endif
+   j716fPkg/Drivers/J716fIoConsoleBdsDxe/J716fIoConsoleBdsDxe.inf
+diff --git a/Platforms/Lenovo/j716fPkg/memory-map.json b/Platforms/Lenovo/j716fPkg/memory-map.json
+index 6052575..356270e 100644
+--- a/Platforms/Lenovo/j716fPkg/memory-map.json
++++ b/Platforms/Lenovo/j716fPkg/memory-map.json
+@@ -488,5 +488,25 @@
+     "UNCACHEABLE",
+     "Reserv",
+     "UNCACHED_UNBUFFERED_XN"
++  ],
++  [
++    "XNU Window",
++    3489660928,
++    536870912,
++    "AddMem",
++    "SYS_MEM",
++    "SYS_MEM_CAP",
++    "Conv",
++    "WRITE_BACK_XN"
++  ],
++  [
++    "High RAM",
++    4290904064,
++    4164812800,
++    "AddMem",
++    "SYS_MEM",
++    "SYS_MEM_CAP",
++    "Conv",
++    "WRITE_BACK_XN"
+   ]
+ ]
+diff --git a/Silicon/Silicium/SiliciumPkg/Library/MemoryInitPeiLib/MemoryInitPei.c b/Silicon/Silicium/SiliciumPkg/Library/MemoryInitPeiLib/MemoryInitPei.c
+index 433b982..232f709 100644
+--- a/Silicon/Silicium/SiliciumPkg/Library/MemoryInitPeiLib/MemoryInitPei.c
++++ b/Silicon/Silicium/SiliciumPkg/Library/MemoryInitPeiLib/MemoryInitPei.c
+@@ -10,6 +10,7 @@
+ #include <Library/MemoryMapLib.h>
+ #include <Library/DebugLib.h>
+ #include <Library/HobLib.h>
++#include <Library/EarlyHandoffLib.h>
+ 
+ VOID
+ BuildMemoryTypeInformationHob ();
+@@ -119,6 +120,14 @@ MemoryPeim (
+   // Get Memory Map
+   GetMemoryMap (&MemoryDescriptor, &MemoryDescriptorCount);
+ 
++  // Replace the static map only after the SEC input validation has completed.
++  // Split Conventional entries before HOB emission, never add overlapping
++  // allocation HOBs after the MMU allocator has already used the heap.
++  Status = ApplyEarlyHandoffMemoryMap (&MemoryDescriptor, &MemoryDescriptorCount);
++  if (EFI_ERROR (Status)) {
++    return Status;
++  }
++
+   DEBUG ((EFI_D_WARN, "MMU: %u regions\n", (UINT32)MemoryDescriptorCount));
+ 
+   // Validate Memory Map
+diff --git a/Silicon/Silicium/SiliciumPkg/Library/MemoryInitPeiLib/MemoryInitPeiLib.inf b/Silicon/Silicium/SiliciumPkg/Library/MemoryInitPeiLib/MemoryInitPeiLib.inf
+index 0ddd88c..bcc93f8 100644
+--- a/Silicon/Silicium/SiliciumPkg/Library/MemoryInitPeiLib/MemoryInitPeiLib.inf
++++ b/Silicon/Silicium/SiliciumPkg/Library/MemoryInitPeiLib/MemoryInitPeiLib.inf
+@@ -23,6 +23,7 @@
+   SiliciumPkg/SiliciumPkg.dec
+ 
+ [LibraryClasses]
++  EarlyHandoffLib
+   PcdLib
+   SortLib
+   ArmMmuLib
+diff --git a/Silicon/Silicium/SiliciumPkg/Sec/Sec.c b/Silicon/Silicium/SiliciumPkg/Sec/Sec.c
+index 9ea32b6..98c7216 100644
+--- a/Silicon/Silicium/SiliciumPkg/Sec/Sec.c
++++ b/Silicon/Silicium/SiliciumPkg/Sec/Sec.c
+@@ -16,6 +16,8 @@
+ #include <Library/RamLogLib.h>
+ #include <Library/TimerLib.h>
+ #include <Library/HobLib.h>
++#include <Library/EarlyHandoffLib.h>
++#include <Library/EarlyLogSecLib.h>
+ 
+ #include "Sec.h"
+ 
+@@ -60,16 +62,11 @@ STATIC
+ VOID
+ ClearFrameBuffer (VOID)
+ {
+-  EFI_MEMORY_REGION_DESCRIPTOR FrameBufferRegion;
++  UINT8 FormFeed = '\f';
+ 
+-  // Locate "Display Reserved" Memory Region
+-  LocateMemoryRegionByName ("Display Reserved", &FrameBufferRegion);
+-  LocateMemoryRegionByName ("Display_Reserved", &FrameBufferRegion);
+-
+-  // Clear Memory Region
+-  if (FrameBufferRegion.Address != 0 && FrameBufferRegion.Length != 0) {
+-    ZeroMem ((VOID *)FrameBufferRegion.Address, FrameBufferRegion.Length);
+-  }
++  // The initialized console owns geometry validation and the drawable range.
++  // A display reservation can also contain non-image data; never clear it here.
++  SerialPortWrite (&FormFeed, sizeof (FormFeed));
+ }
+ 
+ STATIC
+@@ -127,7 +124,7 @@ InitializeMemory (VOID)
+ 
+ STATIC
+ VOID
+-SecMain (VOID)
++SecMain (IN EFI_STATUS HandoffStatus)
+ {
+   EFI_STATUS Status;
+ 
+@@ -141,9 +138,6 @@ SecMain (VOID)
+     return;
+   }
+ 
+-  // Start this Boot's Memory Log before the first Line
+-  RamLogReset ();
+-
+   // Print Firmware Version
+   PrintFirmwareVersion ();
+ 
+@@ -152,12 +146,22 @@ SecMain (VOID)
+   SaveAndSetDebugTimerInterrupt (TRUE);
+ #endif
+ 
++  // Invalid incoming memory must never reach the raw x0 HOB consumer in DXE.
++  ReportEarlyHandoff ();
++  if (EFI_ERROR (HandoffStatus)) {
++    DEBUG ((EFI_D_ERROR, "SEC: handoff rejected before heap initialization (%r)\n", HandoffStatus));
++    return;
++  }
++
+   // Initialize Memory
+   Status = InitializeMemory ();
+   if (EFI_ERROR (Status)) {
+     return;
+   }
+ 
++  // The SEC-only snapshot is published after HOB construction, before DXE.
++  EarlyLogSecPublish ();
++
+   DEBUG ((EFI_D_WARN, "SEC: memory HOBs done\n"));
+ 
+   // Build CPU HOB
+@@ -214,6 +218,7 @@ SecMain (VOID)
+ VOID
+ SecEntry (VOID)
+ {
++  EFI_STATUS HandoffStatus;
+   // The previous stage ran with its caches on. Clean and invalidate them before anything else: the UEFI writes its HOB tables and heap with
+   // the MMU and caches off, and lines the previous stage left would hide those writes (or be written back over them) once the caches are on.
+   SecCleanInvalidateDataCacheAll ();
+@@ -232,6 +237,17 @@ SecEntry (VOID)
+   WriteBackInvalidateDataCacheRange ((VOID *)FixedPcdGet64 (PcdCPUCoresStackBase), FixedPcdGet32 (PcdCPUCorePrimaryStackSize));
+   WriteBackInvalidateDataCacheRange ((VOID *)FixedPcdGet64 (PcdFdBaseAddress),     FixedPcdGet32 (PcdFdSize));
+ 
++  // Plan input reservations without allocating or logging, before resetting
++  // logs/clearing the display and before HobConstructor/PrePi allocations.
++  // BootShim's FD copy and assembly stack setup have already run: placements
++  // overlapping those regions are unsupported and rejected, not recoverable.
++  HandoffStatus = PrepareEarlyHandoff (gSecEntryArg0);
++
++  // Exactly once per SEC entry, before any DEBUG or platform initialization.
++  // Serial/debug library constructors must only append, never reset this log.
++  EarlyLogSecCapture ();
++  RamLogReset ();
++
+   // Verify Exception Vector Table
+   ASSERT (((UINTN)SecVectorTable & ARM_VECTOR_TABLE_ALIGNMENT) == 0);
+ 
+@@ -239,5 +255,5 @@ SecEntry (VOID)
+   ArmWriteVBar ((UINTN)SecVectorTable);
+ 
+   // Enter Main SEC Function
+-  SecMain ();
++  SecMain (HandoffStatus);
+ }
+diff --git a/Silicon/Silicium/SiliciumPkg/Sec/Sec.inf b/Silicon/Silicium/SiliciumPkg/Sec/Sec.inf
+index 1b465c2..d107d4f 100644
+--- a/Silicon/Silicium/SiliciumPkg/Sec/Sec.inf
++++ b/Silicon/Silicium/SiliciumPkg/Sec/Sec.inf
+@@ -31,6 +31,8 @@
+   SiliciumPkg/SiliciumPkg.dec
+ 
+ [LibraryClasses]
++  EarlyHandoffLib
++  EarlyLogSecLib
+   ArmLib
+   PrePiLib
+   DebugLib
+diff --git a/Silicon/Silicium/SiliciumPkg/SiliciumPkg.dec b/Silicon/Silicium/SiliciumPkg/SiliciumPkg.dec
+index 6f9dcde..7e21907 100644
+--- a/Silicon/Silicium/SiliciumPkg/SiliciumPkg.dec
++++ b/Silicon/Silicium/SiliciumPkg/SiliciumPkg.dec
+@@ -7,6 +7,10 @@
+ [Includes]
+   Include                              # Root Include for the Package
+ 
++[LibraryClasses]
++  EarlyLogSecLib|Include/Library/EarlyLogSecLib.h
++  EarlyHandoffLib|Include/Library/EarlyHandoffLib.h
++
+ [Guids]
+   gSiliciumPkgTokenSpaceGuid          = { 0x055720A6, 0xA739, 0x0047, { 0xBE, 0xC1, 0x67, 0xFC, 0x38, 0x34, 0x54, 0x53 } }
+ 
+diff --git a/Silicon/Silicium/SiliciumPkg/SiliciumPkg.dsc.inc b/Silicon/Silicium/SiliciumPkg/SiliciumPkg.dsc.inc
+index e5419e0..64e955b 100644
+--- a/Silicon/Silicium/SiliciumPkg/SiliciumPkg.dsc.inc
++++ b/Silicon/Silicium/SiliciumPkg/SiliciumPkg.dsc.inc
+@@ -124,6 +124,7 @@
+ !include MdePkg/MdeLibs.dsc.inc
+ 
+ [LibraryClasses]
++  EarlyHandoffLib|SiliciumPkg/Library/EarlyHandoffLibNull/EarlyHandoffLibNull.inf
+   #
+   # Compiler Libraries
+   #
+@@ -184,6 +185,7 @@
+   HobLib|MdePkg/Library/DxeHobLib/DxeHobLib.inf
+   RamManagerLib|SiliciumNullPkg/Library/RamManagerLibNull/RamManagerLibNull.inf
+   RamLogLib|SiliciumNullPkg/Library/RamLogLibNull/RamLogLibNull.inf
++  EarlyLogSecLib|SiliciumPkg/Library/EarlyLogSecLibNull/EarlyLogSecLibNull.inf
+   MemoryAllocationHelperLib|SiliciumPkg/Library/MemoryAllocationHelperLib/MemoryAllocationHelperLib.inf
+ 
+   #

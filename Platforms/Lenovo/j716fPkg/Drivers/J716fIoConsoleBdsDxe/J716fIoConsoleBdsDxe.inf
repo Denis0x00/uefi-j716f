@@ -9,10 +9,12 @@
 [Sources]
   J716fIoConsoleBds.c
 [Packages]
+  SiliciumPkg/SiliciumPkg.dec
   MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
   UniXNUPkg/UniXNUPkg.dec
 [LibraryClasses]
+  RamLogLib
   BaseMemoryLib
   DebugLib
   DevicePathLib

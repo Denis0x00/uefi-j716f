@@ -16,6 +16,8 @@
 #include <Library/RamLogLib.h>
 #include <Library/TimerLib.h>
 #include <Library/HobLib.h>
+#include <Library/EarlyHandoffLib.h>
+#include <Library/EarlyLogSecLib.h>
 
 #include "Sec.h"
 
@@ -60,16 +62,11 @@ STATIC
 VOID
 ClearFrameBuffer (VOID)
 {
-  EFI_MEMORY_REGION_DESCRIPTOR FrameBufferRegion;
+  UINT8 FormFeed = '\f';
 
-  // Locate "Display Reserved" Memory Region
-  LocateMemoryRegionByName ("Display Reserved", &FrameBufferRegion);
-  LocateMemoryRegionByName ("Display_Reserved", &FrameBufferRegion);
-
-  // Clear Memory Region
-  if (FrameBufferRegion.Address != 0 && FrameBufferRegion.Length != 0) {
-    ZeroMem ((VOID *)FrameBufferRegion.Address, FrameBufferRegion.Length);
-  }
+  // The initialized console owns geometry validation and the drawable range.
+  // A display reservation can also contain non-image data; never clear it here.
+  SerialPortWrite (&FormFeed, sizeof (FormFeed));
 }
 
 STATIC
@@ -127,7 +124,7 @@ InitializeMemory (VOID)
 
 STATIC
 VOID
-SecMain (VOID)
+SecMain (IN EFI_STATUS HandoffStatus)
 {
   EFI_STATUS Status;
 
@@ -141,9 +138,6 @@ SecMain (VOID)
     return;
   }
 
-  // Start this Boot's Memory Log before the first Line
-  RamLogReset ();
-
   // Print Firmware Version
   PrintFirmwareVersion ();
 
@@ -152,11 +146,21 @@ SecMain (VOID)
   SaveAndSetDebugTimerInterrupt (TRUE);
 #endif
 
+  // Invalid incoming memory must never reach the raw x0 HOB consumer in DXE.
+  ReportEarlyHandoff ();
+  if (EFI_ERROR (HandoffStatus)) {
+    DEBUG ((EFI_D_ERROR, "SEC: handoff rejected before heap initialization (%r)\n", HandoffStatus));
+    return;
+  }
+
   // Initialize Memory
   Status = InitializeMemory ();
   if (EFI_ERROR (Status)) {
     return;
   }
+
+  // The SEC-only snapshot is published after HOB construction, before DXE.
+  EarlyLogSecPublish ();
 
   DEBUG ((EFI_D_WARN, "SEC: memory HOBs done\n"));
 
@@ -214,6 +218,7 @@ SecMain (VOID)
 VOID
 SecEntry (VOID)
 {
+  EFI_STATUS HandoffStatus;
   // The previous stage ran with its caches on. Clean and invalidate them before anything else: the UEFI writes its HOB tables and heap with
   // the MMU and caches off, and lines the previous stage left would hide those writes (or be written back over them) once the caches are on.
   SecCleanInvalidateDataCacheAll ();
@@ -232,6 +237,17 @@ SecEntry (VOID)
   WriteBackInvalidateDataCacheRange ((VOID *)FixedPcdGet64 (PcdCPUCoresStackBase), FixedPcdGet32 (PcdCPUCorePrimaryStackSize));
   WriteBackInvalidateDataCacheRange ((VOID *)FixedPcdGet64 (PcdFdBaseAddress),     FixedPcdGet32 (PcdFdSize));
 
+  // Plan input reservations without allocating or logging, before resetting
+  // logs/clearing the display and before HobConstructor/PrePi allocations.
+  // BootShim's FD copy and assembly stack setup have already run: placements
+  // overlapping those regions are unsupported and rejected, not recoverable.
+  HandoffStatus = PrepareEarlyHandoff (gSecEntryArg0);
+
+  // Exactly once per SEC entry, before any DEBUG or platform initialization.
+  // Serial/debug library constructors must only append, never reset this log.
+  EarlyLogSecCapture ();
+  RamLogReset ();
+
   // Verify Exception Vector Table
   ASSERT (((UINTN)SecVectorTable & ARM_VECTOR_TABLE_ALIGNMENT) == 0);
 
@@ -239,5 +255,5 @@ SecEntry (VOID)
   ArmWriteVBar ((UINTN)SecVectorTable);
 
   // Enter Main SEC Function
-  SecMain ();
+  SecMain (HandoffStatus);
 }

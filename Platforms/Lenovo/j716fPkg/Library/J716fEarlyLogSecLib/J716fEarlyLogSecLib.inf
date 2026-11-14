@@ -1,0 +1,20 @@
+[Defines]
+  INF_VERSION = 0x00010005
+  BASE_NAME = J716fEarlyLogSecLib
+  FILE_GUID = 9A4F43D7-FBD5-47E1-9BBF-394B742BF32A
+  MODULE_TYPE = BASE
+  LIBRARY_CLASS = EarlyLogSecLib|SEC
+[Sources]
+  J716fEarlyLogSecLib.c
+[Packages]
+  MdePkg/MdePkg.dec
+  ArmPkg/ArmPkg.dec
+  SiliciumPkg/SiliciumPkg.dec
+  j716fPkg/J716fEarlyLog.dec
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  MemoryMapHelperLib
+  HobLib
+[Guids]
+  gJ716fEarlyLogSnapshotGuid

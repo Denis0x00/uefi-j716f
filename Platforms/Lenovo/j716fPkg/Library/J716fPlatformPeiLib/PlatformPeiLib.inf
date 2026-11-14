@@ -1,0 +1,28 @@
+## @file
+#  Firmware-volume handoff for the J716F menu-stage firmware.
+#
+#  SPDX-License-Identifier: BSD-2-Clause-Patent
+##
+
+[Defines]
+  INF_VERSION                    = 0x00010005
+  BASE_NAME                      = J716fPlatformPeiLib
+  FILE_GUID                      = D3B518B4-B8F1-4FED-9921-3301F301FC87
+  MODULE_TYPE                    = SEC
+  VERSION_STRING                 = 1.0
+  LIBRARY_CLASS                  = PlatformPeiLib|SEC
+
+[Sources]
+  PlatformPei.c
+
+[Packages]
+  ArmPkg/ArmPkg.dec
+  MdePkg/MdePkg.dec
+
+[LibraryClasses]
+  HobLib
+  PcdLib
+
+[FixedPcd]
+  gArmTokenSpaceGuid.PcdFvBaseAddress
+  gArmTokenSpaceGuid.PcdFvSize

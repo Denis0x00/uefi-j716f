@@ -1,0 +1,19 @@
+[Defines]
+  INF_VERSION = 0x00010005
+  BASE_NAME = J716fEarlyHandoffLib
+  FILE_GUID = 65D5D610-7628-4A71-9B85-3B6A4C95E511
+  MODULE_TYPE = BASE
+  VERSION_STRING = 1.0
+  LIBRARY_CLASS = EarlyHandoffLib|SEC
+[Sources]
+  J716fEarlyHandoff.c
+[Packages]
+  ArmPkg/ArmPkg.dec
+  MdePkg/MdePkg.dec
+  SiliciumPkg/SiliciumPkg.dec
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  MemoryMapLib
+  FdtLib

@@ -7,6 +7,10 @@
 [Includes]
   Include                              # Root Include for the Package
 
+[LibraryClasses]
+  EarlyLogSecLib|Include/Library/EarlyLogSecLib.h
+  EarlyHandoffLib|Include/Library/EarlyHandoffLib.h
+
 [Guids]
   gSiliciumPkgTokenSpaceGuid          = { 0x055720A6, 0xA739, 0x0047, { 0xBE, 0xC1, 0x67, 0xFC, 0x38, 0x34, 0x54, 0x53 } }
 

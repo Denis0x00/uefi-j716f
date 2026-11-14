@@ -1,30 +1,40 @@
-# uefi-j716f
+# UEFI for Lenovo TB-J716F
 
-UEFI platform integration for the Lenovo Xiaoxin Pad Pro 2021 (j716f / TB-J716F, SM8250-AC), using Project Silicium and Project Mu.
+Current board firmware sources for the Lenovo Xiaoxin Pad Pro 2021, Snapdragon
+870 / SM8250-AC. This snapshot contains the r9 display-ownership repair and the
+r22 retained early-XNU-log path used by the subsequent boot diagnostics.
 
-The platform supplies memory reservations, board peripherals, display handoff (GOP framebuffer), hardware buttons, and the firmware volume. UniXNU supplies the boot application and DarwinBoot loader.
+The tablet has verified firmware menu entry, volume-key navigation, power-key
+confirmation, stable QR log pages, restart, and menu rendering without the
+previous black overlay. Power off stays off with USB/charging disconnected.
+Both diagnostic reset and long-power-button reset preserved the early-log test
+record. These firmware results do not establish UFS access, XNU touch/HID,
+APFS root mounting, launchd, SpringBoard, or a usable iPadOS installation.
 
-- [Firmware integration](https://unixnu.com/zh/porting/uefi-firmware)
-- [j716f device support](https://unixnu.com/zh/devices/j716f)
-- [Build instructions](Building.md)
-- [Platform details](Platforms/Lenovo/j716fPkg/README.md)
+This repository supplies board memory reservations, firmware display ownership,
+hardware keys, the loader handoff and log import. The UniXNU boot application,
+QR viewer and DarwinBoot remain separately pinned dependencies. The menu entries
+and kernel checkpoint are selected by the companion device target; the two RAM
+log test entries are not automatically added by this firmware source.
 
-## Payload firmware
+Use the [official firmware build path](Building.md). The source comes from base
+revision `d1d183b79d28329f46fc18a67eea9c2a51a9b939` plus the reviewed local board
+changes. The six original gitlink pins are preserved. Only `Common/Mu` and
+`Common/Mu_OEM_Sample` are active UEFI submodules in the validated official target;
+both were clean. In particular, there is no hidden AdvancedLogger submodule
+patch. The package-level menu change is retained in
+`Resources/UniXNUPatches/j716f-menu-hold.patch`.
 
-Build through `./unixnu build firmware --uefi ../uefi-j716f` from UniXNU.
-The DSC and FDF include `UniXNURamDiskDxe`, DiskIoDxe and FAT support so the boot-image payload appears as a filesystem. `UniXNURamDiskDxe` is a shared module in UniXNU's `package/`, and uses the Mu-Silicium FDT handoff.
+See [source provenance](docs/source-provenance.json) for dependency commits and
+source identities. The six historical DTB/EFI/policy/bitmap resources remain
+byte-identical to their original tracked Git blobs. Generated boot images, FD
+images, kernel binaries, ROM/IPSW inputs, identities and private device logs are
+not part of this source snapshot.
 
-## Hardware Status
+Original notices, per-file SPDX identifiers and [LICENSE](LICENSE) are retained.
+Dependency licenses remain in their pinned repositories; this snapshot does not
+relicense them. The original broader Mu-Silicium build helpers are retained for
+provenance, while the instructions below describe the firmware path actually used.
 
-| Feature | Status | Implementation |
-| --- | --- | --- |
-| UEFI Menu & GOP | Verified | 2560x1600 BGRX8888 Simple FrameBuffer at `0x9c000000` (`J716fInheritedFbDxe`) |
-| Buttons & Keys | Verified | PM8150/PM8150B SPMI PON Power, Vol+, Vol- key support (`J716fKeysDxe`) |
-| Memory Map | Verified | 6 GiB / 8 GiB physical DRAM map (`0x80000000..0x1f8000000`), `0x80860000` AOP CMD DB, `0xb0000000` boot log, `0xce000000` UEFI FD, `0xd0000000` XNU window |
-| BootShim & A/B slot | Verified | BootShim header, `Resources/DTBs/j716f.dtb` (728,300 bytes), safe Boot Slot B targeting |
-| DarwinBoot Loader | Verified | Mu-Silicium FDT handoff, `UniXNURamDiskDxe` 96 MiB FAT payload ramdisk (`J716fIoConsoleBdsDxe`) with `kernel.macho`, `trustcache.bin`, `root.dmg` & runtime addons |
-
-## License
-
-All code except drivers in `GPLDrivers` & `GPLApplications` & `GPLLibrary` directories are licensed under BSD-2-Clause.
-GPL Drivers are licensed under `GPLv2` or later license.
+References: [UniXNU](https://github.com/UniXNU/UniXNU),
+[TB-J716F device sources](https://github.com/Denis0x00/UniXNU-j716f).

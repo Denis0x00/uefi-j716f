@@ -1,0 +1,43 @@
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+[Defines]
+  INF_VERSION = 0x0001001B
+  BASE_NAME = J716fHandoffDiagnosticsDxe
+  FILE_GUID = 5A40B705-332E-4C9E-A979-BE3D309F26F6
+  MODULE_TYPE = DXE_DRIVER
+  VERSION_STRING = 0.1
+  ENTRY_POINT = J716fHandoffDiagnosticsInitialize
+
+[Sources]
+  J716fHandoffDiagnostics.c
+  J716fEarlyLogImport.c
+
+[Packages]
+  j716fPkg/J716fEarlyLog.dec
+  MdePkg/MdePkg.dec
+  ArmPkg/ArmPkg.dec
+  SiliciumPkg/SiliciumPkg.dec
+  AdvLoggerPkg/AdvLoggerPkg.dec
+
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  DebugLib
+  FdtLib
+  HobLib
+  MemoryAllocationLib
+  MemoryMapLib
+  MemoryMapHelperLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+
+[Guids]
+  gJ716fEarlyLogSnapshotGuid
+  gEfiEventReadyToBootGuid
+  gSiliciumEntryArgHobGuid
+
+[Protocols]
+  gAdvancedLoggerProtocolGuid
+  gEfiGraphicsOutputProtocolGuid
+
+[Depex]
+  gAdvancedLoggerProtocolGuid

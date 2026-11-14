@@ -20,6 +20,7 @@
   CacheMaintenanceLib
   MemoryMapHelperLib
   PrintLib
+  RamLogLib
   TimerLib
 
 [FixedPcd]

@@ -1,108 +1,51 @@
-# Building
+# Building the retained-log TB-J716F firmware
 
-> [!TIP]
-> For the Compilation, a Linux OS is recommended.
+Use a Linux build host with the UniXNU toolchain and Python dependencies already
+prepared. First reconstruct the workspace using the companion
+[device repository](https://github.com/Denis0x00/UniXNU-j716f)'s
+`scripts/export_workspace.py --destination /absolute/new/workspace --fetch-core`.
+That export preserves the official core revision and its local source changes.
+Place this firmware checkout at `work/uefi-j716f-early-log` inside that workspace.
 
-## Cloning the Source Code
+From the exported workspace root:
 
-To Compile this UEFI Project in the first Place, You have to Download the Source Code. <br>
-You can do this by using the `git` Command:
-```
-git clone https://github.com/Project-Silicium/Mu-Silicium.git --recursive
-```
-The entire Source is about ~5GB in Size, so the Download Time depends on your Internet Speed and Storage Speed.
-At the End you should see a new Folder called `Mu-Silicium`.
-
-## Platform Specific Steps
-
-<details>
-<summary>Windows</summary>
-
-## Requirements
-  - [Git](https://git-scm.com/install/windows)
-  - [Python](https://www.python.org/downloads/) Version 3.11 or higher
-  - [LLVM](https://github.com/llvm/llvm-project/releases/)
-  - [VS Build Tools](https://aka.ms/vs/stable/vs_BuildTools.exe)
-  - [GnuMake32](https://gnuwin32.sourceforge.net/packages/make.htm)
-
-## Setting Up PATH
-
-Since GnuMake32 doesn't add itself to PATH, you have to add it manually. <br>
-You can Update the PATH Variable using UI in Windows, Simply Enter "Path" in your Search Bar. <br>
-Once you Open the Window, Go to System PATH and add two new Entries.
-
-The Entry should Point to the Install `bin` Folder of GnuMake32. <br>
-The Install Location Depends on what Path you Extracted it to.
-
-## Installing pip Dependencies
-
-Before you can Start to Compile this UEFI Project, You have to Install the pip Dependencies. <br>
-Open a Command Prompt Window in the same Folder as the Source Code. <br>
-Once you did that, Run this Command to Install all pip Dependencies:
-```cmd
-python3 -m pip install -r pip-requirements.txt
+```sh
+git -C work/uefi-j716f-early-log submodule update --init Common/Mu Common/Mu_OEM_Sample
+python3 work/UniXNU-j716f-early-log-firmware/scripts/firmware.py defconfig
+python3 work/UniXNU-j716f-early-log-firmware/scripts/firmware.py tree
+python3 work/UniXNU-j716f-early-log-firmware/scripts/firmware.py status
+python3 work/UniXNU-j716f-early-log-firmware/scripts/firmware.py firmware
 ```
 
----
+The wrapper calls the official UniXNU `build firmware` operation. Its board
+target selects `Platforms/Lenovo/j716fPkg/j716f.dsc`, `DEVICE_MODEL=j716f`,
+`ENABLE_SECUREBOOT=0`, and `J716F_MENU_DIAGNOSTIC=1`. It uses the core EDK2 feed
+`cfb93724a06ff86ff5ba971413368a7809ee42a5` and DarwinBoot
+`5243c68ec332a227fe3680cd5da6d5a0e127035c`. The inactive root `Mu_Basecore`
+gitlink is retained as historical source metadata and is not substituted for
+that feed. The root `build_uefi.py` legacy Mu patches are not applied by this
+validated path.
 
-</details>
+The companion export applies the core menu patch already. For a separately
+prepared clean core at `7b730b231746667d8b7f54746c2c1ce45852611c`, the same patch
+is available at `Resources/UniXNUPatches/j716f-menu-hold.patch`; check whether
+it is already applied before using `git apply`. Do not apply it twice or switch
+the core revision silently. Use the read-only dependency checker to compare
+the actual repositories and package bytes:
 
-<details>
-<summary>Linux</summary>
-
-## Installing Dependencies
-
-Before you can Start to Compile this UEFI Project, You have to Install the Dependencies. <br>
-Open a Terminal in the same Folder as the Source Code. <br>
-Once you did that, Run this Command to Install all Dependencies:
-```bash
-./setup_env.sh -p [PACKAGE_MANAGER_NAME]
-```
-The `[PACKAGE_MANAGER_NAME]` Argument here is the Name of your Distro Package Manager. <br>
-For Example, for Ubuntu or Debian users the Name would be `apt`.
-
-</details>
-
-## Compiling UEFI
-
-> [!IMPORTANT]
-> Depending on your Python Install, You might have to use `python` instead of `python3`.
-
-After you have Done all the Steps from before, You're now ready to Compile UEFI with this Command:
-```
-python3 build_uefi.py -d [DEVICE_CODENAME]
-```
-The `[DEVICE_CODENAME]` Argument here is the Codename of your Device. <br>
-You can Find the Codename of the Device in the [Status Page](Status.md).
-
-# Updating
-
-To get these new Updates and Changes you can use the `-u` Parameter to Update your Local Repo when Building:
-```
-python3 build_uefi.py -d [DEVICE_CODENAME] -u
+```sh
+python3 work/uefi-j716f-early-log/scripts/verify_dependencies.py --core UniXNU --edk2 UniXNU/out-early-log-firmware-20261114/feeds/mu_basecore-8f10084c
 ```
 
-# Tips & Tricks
+The firmware output is
+`work/uefi-j716f-early-log/Build/j716fPkg/DEBUG_CLANGPDB/FV/SILICIUM_UEFI.fd`.
+The historical final r22 FD was 7,340,032 bytes with SHA-256
+`f45f81be07b83062b6e8a24c8e531eaf7d8c00bfadfddfbae66c5048cfe7a2b9`.
+That identity records the tested build, not a guarantee of byte-reproducibility
+on a new host. Recheck new outputs and provenance before packaging.
 
-## Faster Build Times on Windows
-
-If you're Compiling on Windows, you probably Experience slow Builds Times. <br>
-Here are some Suggestions to Improve this:
-
-### Setting Up a Dev Drive
-
-One Way to Improve the Build Times is using a Dev Drive in Windows. <br>
-You can Find more Details, the Requirements and How to Set it Up on the [Microsoft Website](https://learn.microsoft.com/en-us/windows/dev-drive/).
-
-### Adding a Antivirus Exception
-
-> [!CAUTION]
-> This will Disable Security in the `Mu-Silicium` Folder! <br>
-> Only follow this if you're Comfortable with that.
-
-Another Way to Improve the Build Times is adding the `Mu-Silicium` as an Exception in your Antivirus. <br>
-How to do that Highly depends on the Antivirus you're using, On Microsoft Defender you can do it like this:
-```
-Virus & thread protection -> Virus & thread protection settings -> Exclusions -> Add or remove exclusions
-```
-In there you can Add the `Mu-Silicium` Folder as an Exclusion.
+This source export has not itself received a fresh clean-room firmware rebuild.
+The frozen original source and build evidence were checked during migration.
+Boot image assembly additionally needs the companion device definition,
+BootShim, the reviewed normalized stock DTB, kernel and user-provided system
+inputs. These firmware instructions neither assemble nor flash an image.

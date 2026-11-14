@@ -19,6 +19,7 @@
 #include <Library/PcdLib.h>
 #include <Library/UefiBootServicesTableLib.h>
 #include <Library/UefiLib.h>
+#include "../../Library/J716fRamLogLib/DisplayOwnership.h"
 
 STATIC EFI_HANDLE mImageHandle;
 STATIC VOID EFIAPI EmptyNotify (EFI_EVENT Event, VOID *Context) { }
@@ -104,6 +105,7 @@ STATIC EFI_STATUS BootUniXnu (VOID)
   EFI_FV_FILETYPE Type;
   EFI_FV_FILE_ATTRIBUTES Attributes;
   UINT32 Auth;
+  UINT64 DisplayToken;
   EFI_DEVICE_PATH_PROTOCOL *Path;
   MEDIA_FW_VOL_FILEPATH_DEVICE_PATH Node;
   EFI_GUID *File = (EFI_GUID *)PcdGetPtr (PcdUniXNUApplicationFile);
@@ -129,7 +131,18 @@ STATIC EFI_STATUS BootUniXnu (VOID)
       EfiSignalEventReadyToBoot ();
       DEBUG ((DEBUG_ERROR, "J716F V11 START_UNIXNU\n"));
       // Application host mode avoids a second ConnectAll; BDS connected above.
-      Status = gBS->StartImage (Image, NULL, NULL);
+      // This is the configured UniXNU FV image, not an arbitrary later app.
+      // Acquire immediately before entry; hold through menu, plugins and loader.
+      // Successful XNU handoff never returns, so it must not release the lease.
+      if (!J716fDisplayClaim (&DisplayToken)) {
+        gBS->UnloadImage (Image);
+        Status = EFI_NOT_READY;
+      } else {
+        Status = gBS->StartImage (Image, NULL, NULL);
+        if (!J716fDisplayRelease (DisplayToken)) {
+          Status = EFI_DEVICE_ERROR;
+        }
+      }
     }
     break;
   }

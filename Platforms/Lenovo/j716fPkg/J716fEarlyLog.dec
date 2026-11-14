@@ -1,0 +1,9 @@
+[Defines]
+  DEC_SPECIFICATION = 0x00010005
+  PACKAGE_NAME = J716fEarlyLog
+  PACKAGE_GUID = 12E2E8CF-9181-4747-B6D0-22839C897CA4
+  PACKAGE_VERSION = 0.1
+[Includes]
+  Include
+[Guids]
+  gJ716fEarlyLogSnapshotGuid = { 0x60D5039B, 0xC61C, 0x47B2, { 0x9F, 0x22, 0xB4, 0x61, 0x9A, 0x35, 0x81, 0xE5 } }

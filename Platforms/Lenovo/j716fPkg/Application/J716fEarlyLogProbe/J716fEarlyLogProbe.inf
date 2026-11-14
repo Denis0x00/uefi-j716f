@@ -1,0 +1,25 @@
+[Defines]
+  INF_VERSION = 0x0001001B
+  BASE_NAME = J716fEarlyLogProbe
+  FILE_GUID = 778886F6-FB79-436F-BA32-7DDE499BA29F
+  MODULE_TYPE = UEFI_APPLICATION
+  VERSION_STRING = 0.1
+  ENTRY_POINT = J716fEarlyLogProbeEntry
+[Sources]
+  J716fEarlyLogProbe.c
+[Packages]
+  MdePkg/MdePkg.dec
+  ArmPkg/ArmPkg.dec
+  SiliciumPkg/SiliciumPkg.dec
+  j716fPkg/J716fEarlyLog.dec
+[LibraryClasses]
+  UefiApplicationEntryPoint
+  UefiBootServicesTableLib
+  UefiLib
+  BaseLib
+  BaseMemoryLib
+  MemoryAllocationLib
+  MemoryMapHelperLib
+  TimerLib
+[Protocols]
+  gEfiLoadedImageProtocolGuid

@@ -23,6 +23,7 @@
   SiliciumPkg/SiliciumPkg.dec
 
 [LibraryClasses]
+  EarlyHandoffLib
   PcdLib
   SortLib
   ArmMmuLib

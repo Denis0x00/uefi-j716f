@@ -124,6 +124,7 @@
 !include MdePkg/MdeLibs.dsc.inc
 
 [LibraryClasses]
+  EarlyHandoffLib|SiliciumPkg/Library/EarlyHandoffLibNull/EarlyHandoffLibNull.inf
   #
   # Compiler Libraries
   #
@@ -184,6 +185,7 @@
   HobLib|MdePkg/Library/DxeHobLib/DxeHobLib.inf
   RamManagerLib|SiliciumNullPkg/Library/RamManagerLibNull/RamManagerLibNull.inf
   RamLogLib|SiliciumNullPkg/Library/RamLogLibNull/RamLogLibNull.inf
+  EarlyLogSecLib|SiliciumPkg/Library/EarlyLogSecLibNull/EarlyLogSecLibNull.inf
   MemoryAllocationHelperLib|SiliciumPkg/Library/MemoryAllocationHelperLib/MemoryAllocationHelperLib.inf
 
   #

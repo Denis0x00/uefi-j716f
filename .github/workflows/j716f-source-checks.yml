@@ -112,6 +112,6 @@ jobs:
             echo '## J716F UEFI source checks'
             echo 'Checked Git metadata, script execution and J716F configuration syntax.'
             echo 'This job does not compile a firmware volume or validate a hardware boot.'
-            echo 'The inherited all-active-devices builder is available only as a separate manual workflow.'
-            echo 'J716F firmware builds still need the matching local resources documented in README.md.'
+            echo 'The legacy all-active-devices script is retained for source provenance; it is not run by this workflow.'
+            echo 'The official firmware path and pinned external dependencies are documented in Building.md.'
           } >> "$GITHUB_STEP_SUMMARY"
