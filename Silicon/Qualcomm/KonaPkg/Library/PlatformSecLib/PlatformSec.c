@@ -10,6 +10,8 @@
 
 #include "PlatformRegisters.h"
 
+VOID J716fR35BeforeDetach (VOID);
+
 VOID
 DisableWatchDogTimer ()
 {
@@ -32,9 +34,6 @@ PlatformInitialize ()
   // Disable WatchDog Timer
   DisableWatchDogTimer ();
 
-  // Set MDP SIDs
-  CONST UINT16 MdpStreams[] = { 0x820, 0x821, 0x822, 0xC20, 0xC21, 0xC22 };
-
-  // Detach IOMMU Domains
-  ArmSmmuDetach (MdpStreams, ARRAY_SIZE (MdpStreams));
+  // Capture/maintain the old UFS namespace before ordinary SMMU cleanup.
+  J716fR35BeforeDetach ();
 }

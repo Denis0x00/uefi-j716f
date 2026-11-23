@@ -18,6 +18,7 @@
 #include <Library/HobLib.h>
 #include <Library/EarlyHandoffLib.h>
 #include <Library/EarlyLogSecLib.h>
+#include <Library/J716fR35RecordLib.h>
 
 #include "Sec.h"
 
@@ -162,6 +163,11 @@ SecMain (IN EFI_STATUS HandoffStatus)
   // The SEC-only snapshot is published after HOB construction, before DXE.
   EarlyLogSecPublish ();
 
+  // This is the current SEC producer result, separate from previous-XNU logs.
+  // No record is fabricated or retried if staging/publication failed.
+  Status = J716fR35RecordPublish ();
+  DEBUG ((EFI_D_WARN, "J716FR35 SEC record publication %r\n", Status));
+
   DEBUG ((EFI_D_WARN, "SEC: memory HOBs done\n"));
 
   // Build CPU HOB
@@ -247,6 +253,7 @@ SecEntry (VOID)
   // Serial/debug library constructors must only append, never reset this log.
   EarlyLogSecCapture ();
   RamLogReset ();
+  J716fR35RecordReset ();
 
   // Verify Exception Vector Table
   ASSERT (((UINTN)SecVectorTable & ARM_VECTOR_TABLE_ALIGNMENT) == 0);

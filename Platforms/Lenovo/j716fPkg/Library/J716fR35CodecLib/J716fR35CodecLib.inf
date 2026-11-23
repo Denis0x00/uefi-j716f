@@ -1,0 +1,15 @@
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+[Defines]
+  INF_VERSION = 0x00010005
+  BASE_NAME = J716fR35CodecLib
+  FILE_GUID = B0E92373-E376-4F01-AE17-7D6A4A3B0035
+  MODULE_TYPE = BASE
+  LIBRARY_CLASS = J716fR35CodecLib
+[Sources]
+  ../J716fR35Common/R35Record.c
+[Packages]
+  MdePkg/MdePkg.dec
+  j716fPkg/J716fR35Handoff.dec
+[BuildOptions]
+  GCC:*_*_*_CC_FLAGS = -DR35_EDK2
+  CLANGPDB:*_*_*_CC_FLAGS = -DR35_EDK2

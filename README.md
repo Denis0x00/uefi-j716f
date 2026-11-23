@@ -1,40 +1,45 @@
 # UEFI for Lenovo TB-J716F
 
-Current board firmware sources for the Lenovo Xiaoxin Pad Pro 2021, Snapdragon
-870 / SM8250-AC. This snapshot contains the r9 display-ownership repair and the
-r22 retained early-XNU-log path used by the subsequent boot diagnostics.
+Board UEFI firmware sources for the Lenovo Xiaoxin Pad Pro 2021 (`TB-J716F`,
+Snapdragon 870 / SM8250-AC), built on Mu-Silicium for the
+[UniXNU](https://github.com/UniXNU/UniXNU) bring-up flow.
 
-The tablet has verified firmware menu entry, volume-key navigation, power-key
-confirmation, stable QR log pages, restart, and menu rendering without the
-previous black overlay. Power off stays off with USB/charging disconnected.
-Both diagnostic reset and long-power-button reset preserved the early-log test
-record. These firmware results do not establish UFS access, XNU touch/HID,
-APFS root mounting, launchd, SpringBoard, or a usable iPadOS installation.
+## Current Capabilities
 
-This repository supplies board memory reservations, firmware display ownership,
-hardware keys, the loader handoff and log import. The UniXNU boot application,
-QR viewer and DarwinBoot remain separately pinned dependencies. The menu entries
-and kernel checkpoint are selected by the companion device target; the two RAM
-log test entries are not automatically added by this firmware source.
+- **Board memory map & early protection (`J716fEarlyHandoffLib`, `MemoryMapLib`)**:
+  reserves ABL FDT, initrd, inherited framebuffer, boot log, and DXE/XNU windows
+  with non-overlapping descriptor checks before HOB publication and MMU setup.
+- **Display ownership & console (`J716fInheritedFbDxe`, `J716fKeysDxe`, `J716fIoConsoleBdsDxe`)**:
+  verified menu entry, volume/power key navigation, clean rendering without
+  overlay corruption, restart, and power-off (with external USB power removed).
+- **Retained early XNU logs (`J716fRamLogLib`, `J716fEarlyLogSecLib`, `J716fHandoffDiagnosticsDxe`)**:
+  survives diagnostic reset and long-power-button reset, with Advanced Logger QR
+  export and ReadyToBoot payload CRC32 reporting.
+- **r35–r38 UFS/SMMU RAM handoff slot (`J716fR35RecordLib`, `J716fR35RecordDxe`, `PlatformSecLib/R35Handoff.c`)**:
+  captures the SM8250 UFS HCI + APPS SMMU handoff state in SEC and publishes a
+  versioned, checksummed RAM record for the companion XNU read-only storage
+  bring-up driver (`UniXNU-j716f`).
 
-Use the [official firmware build path](Building.md). The source comes from base
-revision `d1d183b79d28329f46fc18a67eea9c2a51a9b939` plus the reviewed local board
-changes. The six original gitlink pins are preserved. Only `Common/Mu` and
-`Common/Mu_OEM_Sample` are active UEFI submodules in the validated official target;
-both were clean. In particular, there is no hidden AdvancedLogger submodule
-patch. The package-level menu change is retained in
-`Resources/UniXNUPatches/j716f-menu-hold.patch`.
+## Building
 
-See [source provenance](docs/source-provenance.json) for dependency commits and
-source identities. The six historical DTB/EFI/policy/bitmap resources remain
-byte-identical to their original tracked Git blobs. Generated boot images, FD
-images, kernel binaries, ROM/IPSW inputs, identities and private device logs are
-not part of this source snapshot.
+See [Building.md](Building.md) for the official UniXNU Format 2 firmware build
+path (`./unixnu build firmware`) as well as standalone EDK II `CLANGPDB`
+compilation instructions.
 
-Original notices, per-file SPDX identifiers and [LICENSE](LICENSE) are retained.
-Dependency licenses remain in their pinned repositories; this snapshot does not
-relicense them. The original broader Mu-Silicium build helpers are retained for
-provenance, while the instructions below describe the firmware path actually used.
+The optional core menu-hold patch for local diagnostic builds is kept at
+`Resources/UniXNUPatches/j716f-menu-hold.patch`. Without `-D J716F_MENU_DIAGNOSTIC=1`,
+`Platforms/Lenovo/j716fPkg/j716f.dsc` compiles directly against upstream
+`UniXNU/UniXNU` and produces a 7,340,032-byte (`0x700000`) `SILICIUM_UEFI.fd`.
 
-References: [UniXNU](https://github.com/UniXNU/UniXNU),
-[TB-J716F device sources](https://github.com/Denis0x00/UniXNU-j716f).
+## Scope & Provenance
+
+- The six upstream submodule gitlink pins are preserved; only `Common/Mu` and
+  `Common/Mu_OEM_Sample` are required alongside UniXNU's pinned `mu_basecore`
+  feed (`edk2`).
+- Generated firmware volumes, boot images, kernels, IPSW/ROM binaries, private
+  identities, and device logs are excluded from this repository.
+- Original notices, per-file SPDX headers, and [LICENSE](LICENSE) are retained.
+
+References:
+- [UniXNU](https://github.com/UniXNU/UniXNU)
+- [TB-J716F Device Repository](https://github.com/Denis0x00/UniXNU-j716f)

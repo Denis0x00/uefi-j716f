@@ -29,10 +29,12 @@
   MdeModulePkg/MdeModulePkg.dec
   EmbeddedPkg/EmbeddedPkg.dec
   SiliciumPkg/SiliciumPkg.dec
+  j716fPkg/J716fR35Handoff.dec
 
 [LibraryClasses]
   EarlyHandoffLib
   EarlyLogSecLib
+  J716fR35RecordLib
   ArmLib
   PrePiLib
   DebugLib

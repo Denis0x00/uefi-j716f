@@ -92,6 +92,7 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdSupportProcessCapsuleAtRuntime|FALSE
 
 [LibraryClasses.common]
+  J716fR35CodecLib|j716fPkg/Library/J716fR35CodecLib/J716fR35CodecLib.inf
   MemoryMapLib|j716fPkg/Library/MemoryMapLib/MemoryMapLib.inf
   RamLogLib|j716fPkg/Library/J716fRamLogLib/J716fRamLogLib.inf
   SerialPortLib|j716fPkg/Library/J716fFrameBufferSerialPortLib/FrameBufferSerialPortLib.inf
@@ -105,6 +106,7 @@
   AssertLib|AdvLoggerPkg/Library/AssertLib/AssertLib.inf
 
 [LibraryClasses.common.SEC]
+  J716fR35RecordLib|j716fPkg/Library/J716fR35RecordLib/J716fR35RecordLib.inf
   EarlyLogSecLib|j716fPkg/Library/J716fEarlyLogSecLib/J716fEarlyLogSecLib.inf
   EarlyHandoffLib|j716fPkg/Library/J716fEarlyHandoffLib/J716fEarlyHandoffLib.inf
   # The menu stage only publishes its own FV; no inherited XBL protocols.
@@ -150,5 +152,6 @@
   j716fPkg/Drivers/J716fKeysDxe/J716fKeysDxe.inf
 !if $(TARGET) == DEBUG
   j716fPkg/Drivers/J716fHandoffDiagnosticsDxe/J716fHandoffDiagnosticsDxe.inf
+  j716fPkg/Drivers/J716fR35RecordDxe/J716fR35RecordDxe.inf
 !endif
   j716fPkg/Drivers/J716fIoConsoleBdsDxe/J716fIoConsoleBdsDxe.inf

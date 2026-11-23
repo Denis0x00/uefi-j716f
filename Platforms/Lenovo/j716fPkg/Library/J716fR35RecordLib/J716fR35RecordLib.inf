@@ -1,0 +1,27 @@
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+[Defines]
+  INF_VERSION = 0x00010005
+  BASE_NAME = J716fR35RecordLib
+  FILE_GUID = DB12786E-CB94-4CD8-9501-6C7333F2F035
+  MODULE_TYPE = BASE
+  LIBRARY_CLASS = J716fR35RecordLib|SEC
+[Sources]
+  J716fR35RecordLib.c
+[Packages]
+  MdePkg/MdePkg.dec
+  ArmPkg/ArmPkg.dec
+  SiliciumPkg/SiliciumPkg.dec
+  j716fPkg/J716fEarlyLog.dec
+  j716fPkg/J716fR35Handoff.dec
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  MemoryMapHelperLib
+  HobLib
+  TimerLib
+  J716fR35CodecLib
+[Guids]
+  gJ716fR35RecordGuid
+[BuildOptions]
+  GCC:*_*_*_CC_FLAGS = -DR35_EDK2
+  CLANGPDB:*_*_*_CC_FLAGS = -DR35_EDK2

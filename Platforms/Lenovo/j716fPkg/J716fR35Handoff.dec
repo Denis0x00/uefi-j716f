@@ -1,0 +1,13 @@
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+[Defines]
+  DEC_SPECIFICATION = 0x00010005
+  PACKAGE_NAME = J716fR35Handoff
+  PACKAGE_GUID = 7C86DE89-3E19-4BF2-89AC-9D86E3259D34
+  PACKAGE_VERSION = 0.1
+[Includes]
+  Include
+[LibraryClasses]
+  J716fR35RecordLib|Include/Library/J716fR35RecordLib.h
+  J716fR35CodecLib|Include/Library/J716fR35CodecLib.h
+[Guids]
+  gJ716fR35RecordGuid = { 0x294DCDBA, 0x905D, 0x46D4, { 0xA1, 0x2F, 0x57, 0x68, 0xFE, 0x35, 0x71, 0x6F } }

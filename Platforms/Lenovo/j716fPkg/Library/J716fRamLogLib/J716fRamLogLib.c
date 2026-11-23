@@ -8,6 +8,7 @@
 #include <Library/RamLogLib.h>
 #include "DisplayOwnership.h"
 #include <J716fEarlyLog.h>
+#include <J716fR35RamSlot.h>
 
 #define J716F_LOG_MAGIC       0x474F4C4A // 'JLOG'
 #define J716F_LOG_BASE        0xB0000000ULL
@@ -201,13 +202,15 @@ RamLogWrite (
     return;
   }
   Length = Hdr->Length;
-  if (Length >= J716F_LOG_MAX) {
+  // Keep MaxCapacity=J716F_LOG_MAX for JXLG/epoch readers, but clamp writes
+  // below J716F_RAMLOG_SOFT_LIMIT so [0xB007E000, 0xB007F000) stays untouched.
+  if (Length >= J716F_RAMLOG_SOFT_LIMIT) {
     return;
   }
 
   // Preserve the beginning of this boot. Once full, drop new bytes until the
   // next explicit SEC reset; do not wrap or narrow a large UINTN before clipping.
-  Available = J716F_LOG_MAX - Length;
+  Available = J716F_RAMLOG_SOFT_LIMIT - Length;
   ToCopy = (NumberOfBytes < Available) ? NumberOfBytes : Available;
   CopyMem ((VOID *)&Hdr->Buffer[Length], Buffer, ToCopy);
   Hdr->Buffer[Length + ToCopy] = '\0';

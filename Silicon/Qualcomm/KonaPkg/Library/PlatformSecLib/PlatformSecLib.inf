@@ -13,6 +13,8 @@
 
 [Sources]
   PlatformSec.c
+  R35Firmware.c
+  R35Handoff.c
 
 [Sources.AArch64]
   AArch64/PlatformHelper.S
@@ -22,8 +24,17 @@
   MdePkg/MdePkg.dec
   SiliciumPkg/SiliciumPkg.dec
   QcomPkg/QcomPkg.dec
+  j716fPkg/J716fR35Handoff.dec
 
 [LibraryClasses]
   IoLib
   MemoryMapHelperLib
   ArmSmmuDetachLib
+  BaseMemoryLib
+  DebugLib
+  J716fR35RecordLib
+  J716fR35CodecLib
+
+[BuildOptions]
+  GCC:*_*_*_CC_FLAGS = -DR35_EDK2 -DR35_EDK2_SEC
+  CLANGPDB:*_*_*_CC_FLAGS = -DR35_EDK2 -DR35_EDK2_SEC

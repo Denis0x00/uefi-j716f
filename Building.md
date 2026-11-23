@@ -1,51 +1,65 @@
-# Building the retained-log TB-J716F firmware
+# Building TB-J716F UEFI Firmware
 
-Use a Linux build host with the UniXNU toolchain and Python dependencies already
-prepared. First reconstruct the workspace using the companion
-[device repository](https://github.com/Denis0x00/UniXNU-j716f)'s
-`scripts/export_workspace.py --destination /absolute/new/workspace --fetch-core`.
-That export preserves the official core revision and its local source changes.
-Place this firmware checkout at `work/uefi-j716f-early-log` inside that workspace.
+This repository builds `Platforms/Lenovo/j716fPkg/j716f.dsc` for `AARCH64` with
+EDK II `CLANGPDB`, targeting the 7 MiB (`0x700000` / 7,340,032 bytes) firmware
+volume at `0xCE000000`.
 
-From the exported workspace root:
+## Recommended Path: Official UniXNU Format 2 Flow
 
-```sh
-git -C work/uefi-j716f-early-log submodule update --init Common/Mu Common/Mu_OEM_Sample
-python3 work/UniXNU-j716f-early-log-firmware/scripts/firmware.py defconfig
-python3 work/UniXNU-j716f-early-log-firmware/scripts/firmware.py tree
-python3 work/UniXNU-j716f-early-log-firmware/scripts/firmware.py status
-python3 work/UniXNU-j716f-early-log-firmware/scripts/firmware.py firmware
+Place `UniXNU`, `UniXNU-j716f`, and `uefi-j716f` as sibling directories on a
+Linux (Ubuntu 24.04 x86_64) build host:
+
+```bash
+git clone https://github.com/UniXNU/UniXNU.git
+git clone https://github.com/Denis0x00/UniXNU-j716f.git
+git clone https://github.com/Denis0x00/uefi-j716f.git
+
+cd UniXNU
+./unixnu defconfig j716f_defconfig -D ../UniXNU-j716f --os 17
+./unixnu fetch edk2 --os 17
+./unixnu build firmware --os 17 --uefi ../uefi-j716f
 ```
 
-The wrapper calls the official UniXNU `build firmware` operation. Its board
-target selects `Platforms/Lenovo/j716fPkg/j716f.dsc`, `DEVICE_MODEL=j716f`,
-`ENABLE_SECUREBOOT=0`, and `J716F_MENU_DIAGNOSTIC=1`. It uses the core EDK2 feed
-`cfb93724a06ff86ff5ba971413368a7809ee42a5` and DarwinBoot
-`5243c68ec332a227fe3680cd5da6d5a0e127035c`. The inactive root `Mu_Basecore`
-gitlink is retained as historical source metadata and is not substituted for
-that feed. The root `build_uefi.py` legacy Mu patches are not applied by this
-validated path.
+The output firmware volume is written to:
 
-The companion export applies the core menu patch already. For a separately
-prepared clean core at `7b730b231746667d8b7f54746c2c1ce45852611c`, the same patch
-is available at `Resources/UniXNUPatches/j716f-menu-hold.patch`; check whether
-it is already applied before using `git apply`. Do not apply it twice or switch
-the core revision silently. Use the read-only dependency checker to compare
-the actual repositories and package bytes:
-
-```sh
-python3 work/uefi-j716f-early-log/scripts/verify_dependencies.py --core UniXNU --edk2 UniXNU/out-early-log-firmware-20261114/feeds/mu_basecore-8f10084c
+```text
+../uefi-j716f/Build/j716fPkg/DEBUG_CLANGPDB/FV/SILICIUM_UEFI.fd
 ```
 
-The firmware output is
-`work/uefi-j716f-early-log/Build/j716fPkg/DEBUG_CLANGPDB/FV/SILICIUM_UEFI.fd`.
-The historical final r22 FD was 7,340,032 bytes with SHA-256
-`f45f81be07b83062b6e8a24c8e531eaf7d8c00bfadfddfbae66c5048cfe7a2b9`.
-That identity records the tested build, not a guarantee of byte-reproducibility
-on a new host. Recheck new outputs and provenance before packaging.
+## Standalone EDK II Build (Same Path as CI)
 
-This source export has not itself received a fresh clean-room firmware rebuild.
-The frozen original source and build evidence were checked during migration.
-Boot image assembly additionally needs the companion device definition,
-BootShim, the reviewed normalized stock DTB, kernel and user-provided system
-inputs. These firmware instructions neither assemble nor flash an image.
+On Ubuntu 24.04 with `clang-18`, `lld-18`, `llvm-18`, `nasm`, `acpica-tools`,
+`uuid-dev`, `build-essential`, and `python3`:
+
+```bash
+git submodule update --init --depth 1 Common/Mu Common/Mu_OEM_Sample
+# Clone UniXNU/UniXNU (with drivers/DarwinBoot) and microsoft/mu_basecore
+# at the commit pinned in UniXNU/feeds.toml (with its 5 listed submodules).
+make -C "$EDK2/BaseTools/Source/C" -j"$(nproc)"
+
+export WORKSPACE="$PWD"
+export EDK_TOOLS_PATH="$EDK2/BaseTools"
+export CONF_PATH="$PWD/Conf"
+export CLANG_BIN="/usr/lib/llvm-18/bin/"
+export PYTHON_COMMAND="python3"
+export PATH="$EDK_TOOLS_PATH/BinWrappers/PosixLike:$EDK_TOOLS_PATH/Source/C/bin:$PATH"
+export PACKAGES_PATH="$PWD:$PWD/Platforms/Lenovo:$PWD/Common/Mu:$PWD/Common/Mu_OEM_Sample:$EDK2:$PWD/Silicon/Qualcomm:$PWD/Silicon/Silicium:$UNIXNU/package:$UNIXNU/drivers/DarwinBoot"
+
+mkdir -p "$CONF_PATH"
+for f in target tools_def build_rule; do
+  cp "$EDK_TOOLS_PATH/Conf/${f}.template" "$CONF_PATH/${f}.txt"
+done
+
+build -p Platforms/Lenovo/j716fPkg/j716f.dsc \
+  -a AARCH64 -b DEBUG -t CLANGPDB -n "$(nproc)" \
+  -D FD_BASE=0xCE000000 -D FD_SIZE=0x700000 -D FD_BLOCKS=1792 \
+  -D DEVICE_MODEL=j716f -D ENABLE_SECUREBOOT=0
+```
+
+## Optional Local Diagnostic Menu Hold
+
+If you apply `Resources/UniXNUPatches/j716f-menu-hold.patch` to your local
+`UniXNU` checkout, you can additionally pass `-D J716F_MENU_DIAGNOSTIC=1` to
+enable `PcdUniXNUBuiltinMenuWaitForInput` and `PcdUniXNUDiagnosticMenuHold`.
+Without that local core patch, omit `J716F_MENU_DIAGNOSTIC` so the DSC builds
+cleanly against unmodified upstream `UniXNU/UniXNU`.

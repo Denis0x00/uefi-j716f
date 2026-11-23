@@ -1,0 +1,33 @@
+# SPDX-License-Identifier: BSD-2-Clause-Patent
+[Defines]
+  INF_VERSION = 0x0001001B
+  BASE_NAME = J716fR35RecordDxe
+  FILE_GUID = F46A1E31-327B-4430-BC6D-EA7327530035
+  MODULE_TYPE = DXE_DRIVER
+  VERSION_STRING = 0.1
+  ENTRY_POINT = J716fR35RecordInitialize
+[Sources]
+  J716fR35RecordDxe.c
+[Packages]
+  MdePkg/MdePkg.dec
+  ArmPkg/ArmPkg.dec
+  SiliciumPkg/SiliciumPkg.dec
+  AdvLoggerPkg/AdvLoggerPkg.dec
+  j716fPkg/J716fEarlyLog.dec
+  j716fPkg/J716fR35Handoff.dec
+[LibraryClasses]
+  BaseLib
+  BaseMemoryLib
+  HobLib
+  J716fR35CodecLib
+  MemoryMapHelperLib
+  PrintLib
+  UefiBootServicesTableLib
+  UefiDriverEntryPoint
+[Guids]
+  gJ716fR35RecordGuid
+  gEfiEventReadyToBootGuid
+[Protocols]
+  gAdvancedLoggerProtocolGuid
+[Depex]
+  gAdvancedLoggerProtocolGuid

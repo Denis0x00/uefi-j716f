@@ -33,6 +33,7 @@ APRIORI DXE {
 !if $(TARGET) == DEBUG
   # Registers ReadyToBoot before BDS launches the UniXNU application.
   INF j716fPkg/Drivers/J716fHandoffDiagnosticsDxe/J716fHandoffDiagnosticsDxe.inf
+  INF j716fPkg/Drivers/J716fR35RecordDxe/J716fR35RecordDxe.inf
 !endif
   INF j716fPkg/Drivers/J716fIoConsoleBdsDxe/J716fIoConsoleBdsDxe.inf
 }

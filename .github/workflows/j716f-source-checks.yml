@@ -1,4 +1,4 @@
-name: J716F UEFI source checks
+name: J716F UEFI checks and build
 
 on:
   push:
@@ -11,8 +11,9 @@ permissions:
 
 jobs:
   source-checks:
+    name: Source checks & host tests
     runs-on: ubuntu-24.04
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -69,11 +70,21 @@ jobs:
           assert dtb.is_file() and dtb.stat().st_size == 728300 and dtb.read_bytes()[:4] == b'\xd0\x0d\xfe\xed'
           assert (board / 'j716f.dsc').is_file()
           assert (board / 'j716f.fdf').is_file()
+          assert (board / 'J716fR35Handoff.dec').is_file()
+          assert (board / 'Include/J716fR35RamSlot.h').is_file()
           dsc_text = (board / 'j716f.dsc').read_text()
           dxe_text = (board / 'Include/ENTRY_V15_DXE.inc').read_text()
-          for required in ('UniXNUDxe.inf', 'UniXNURamDiskDxe.inf', 'DarwinBoot.inf', 'J716fInheritedFbDxe.inf', 'J716fKeysDxe.inf', 'J716fIoConsoleBdsDxe.inf'):
+          for required in (
+              'UniXNUDxe.inf',
+              'UniXNURamDiskDxe.inf',
+              'DarwinBoot.inf',
+              'J716fInheritedFbDxe.inf',
+              'J716fKeysDxe.inf',
+              'J716fIoConsoleBdsDxe.inf',
+              'J716fR35RecordDxe.inf',
+          ):
               assert required in dsc_text and required in dxe_text, f'Missing {required} in j716f DSC/DXE'
-          print('J716F Python, JSON and boot-image configuration syntax passed')
+          print('J716F Python, JSON, r38 handoff modules and boot-image configuration syntax passed')
           PY
 
       - name: Check J716F SM8250 memory map and descriptor non-overlap policy
@@ -101,17 +112,125 @@ jobs:
           print(f'Verified {len(regions)} J716F SM8250 memory descriptors ({len(sorted_dram)} non-overlapping DRAM regions)')
           PY
 
+      - name: Run handoff diagnostics C sanitizer tests
+        run: |
+          python3 Platforms/Lenovo/j716fPkg/Drivers/J716fHandoffDiagnosticsDxe/tests/test_diagnostics.py --cc gcc --sanitize
+
       - name: Verify the Python build entry point can execute on Linux
         run: |
           python3 -m pip install --break-system-packages coloredlogs==15.0.1 || python3 -m pip install coloredlogs==15.0.1
           ./build_uefi.py --help
 
+  build-firmware:
+    name: Build J716F EDK II firmware (SILICIUM_UEFI.fd)
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    steps:
+      - name: Checkout uefi-j716f
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: uefi
+          persist-credentials: false
+
+      - name: Initialize required Mu submodules
+        run: |
+          git -C uefi submodule update --init --depth 1 Common/Mu Common/Mu_OEM_Sample
+
+      - name: Checkout upstream UniXNU core and DarwinBoot
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: UniXNU/UniXNU
+          ref: main
+          path: unixnu
+          persist-credentials: false
+      - name: Initialize DarwinBoot submodule
+        run: |
+          git -C unixnu submodule update --init --depth 1 drivers/DarwinBoot
+
+      - name: Checkout pinned mu_basecore (edk2 feed)
+        run: |
+          python3 - <<'PY'
+          import subprocess
+          import tomllib
+          from pathlib import Path
+
+          feeds = tomllib.loads(Path('unixnu/feeds.toml').read_text())
+          edk2 = next(src for src in feeds['source'] if src['name'] == 'edk2')
+          dest = Path('edk2')
+          subprocess.run(['git', 'init', str(dest)], check=True)
+          subprocess.run(['git', '-C', str(dest), 'remote', 'add', 'origin', edk2['git']], check=True)
+          subprocess.run(['git', '-C', str(dest), 'fetch', '--depth', '1', 'origin', edk2['commit']], check=True)
+          subprocess.run(['git', '-C', str(dest), 'checkout', '--detach', 'FETCH_HEAD'], check=True)
+          submodules = edk2.get('submodules', [])
+          if submodules:
+              subprocess.run(
+                  ['git', '-C', str(dest), 'submodule', 'update', '--init', '--depth', '1', '--', *submodules],
+                  check=True,
+              )
+          PY
+
+      - name: Install EDK II build toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            build-essential clang-18 lld-18 llvm-18 nasm acpica-tools uuid-dev
+
+      - name: Run early-handoff C sanitizer tests against pinned libfdt
+        run: |
+          python3 uefi/Platforms/Lenovo/j716fPkg/Library/J716fEarlyHandoffLib/tests/test_early_handoff.py \
+            --libfdt "$PWD/edk2/MdePkg/Library/BaseFdtLib/libfdt/libfdt" \
+            --dtb "$PWD/uefi/Resources/DTBs/j716f.dtb" \
+            --cc gcc
+
+      - name: Build EDK II BaseTools
+        run: |
+          make -C "$PWD/edk2/BaseTools/Source/C" -j"$(nproc)"
+
+      - name: Compile SILICIUM_UEFI.fd (DEBUG_CLANGPDB)
+        run: |
+          set -euo pipefail
+          UEFI="$PWD/uefi"
+          EDK2="$PWD/edk2"
+          UNIXNU="$PWD/unixnu"
+          CONF="$PWD/edk2-conf"
+          mkdir -p "$CONF"
+          for name in target tools_def build_rule; do
+            cp "$EDK2/BaseTools/Conf/${name}.template" "$CONF/${name}.txt"
+          done
+
+          export WORKSPACE="$UEFI"
+          export EDK_TOOLS_PATH="$EDK2/BaseTools"
+          export CONF_PATH="$CONF"
+          export CLANG_BIN="/usr/lib/llvm-18/bin/"
+          export PYTHON_COMMAND="python3"
+          export SOURCE_DATE_EPOCH="$(git -C "$UEFI" log -1 --format=%ct)"
+          export PATH="$EDK_TOOLS_PATH/BinWrappers/PosixLike:$EDK_TOOLS_PATH/Source/C/bin:$PATH"
+          export PACKAGES_PATH="$UEFI:$UEFI/Platforms/Lenovo:$UEFI/Common/Mu:$UEFI/Common/Mu_OEM_Sample:$EDK2:$UEFI/Silicon/Qualcomm:$UEFI/Silicon/Silicium:$UNIXNU/package:$UNIXNU/drivers/DarwinBoot"
+
+          cd "$UEFI"
+          build \
+            -p Platforms/Lenovo/j716fPkg/j716f.dsc \
+            -a AARCH64 \
+            -b DEBUG \
+            -t CLANGPDB \
+            -n "$(nproc)" \
+            -D FD_BASE=0xCE000000 \
+            -D FD_SIZE=0x700000 \
+            -D FD_BLOCKS=1792 \
+            -D DEVICE_MODEL=j716f \
+            -D ENABLE_SECUREBOOT=0
+
+          FD="$UEFI/Build/j716fPkg/DEBUG_CLANGPDB/FV/SILICIUM_UEFI.fd"
+          SIZE="$(stat -c %s "$FD")"
+          echo "Built $FD ($SIZE bytes)"
+          test "$SIZE" -eq 7340032
+          sha256sum "$FD"
+
       - name: Summary
         run: |
           {
-            echo '## J716F UEFI source checks'
-            echo 'Checked Git metadata, script execution and J716F configuration syntax.'
-            echo 'This job does not compile a firmware volume or validate a hardware boot.'
-            echo 'The legacy all-active-devices script is retained for source provenance; it is not run by this workflow.'
-            echo 'The official firmware path and pinned external dependencies are documented in Building.md.'
+            echo '## J716F UEFI Firmware Build'
+            echo '- Target: `Platforms/Lenovo/j716fPkg/j716f.dsc` (`AARCH64`, `DEBUG_CLANGPDB`)'
+            echo '- Output: `SILICIUM_UEFI.fd` (7,340,032 bytes / `0x700000` verified)'
+            echo '- Early-handoff UBSan/ASan tests passed against pinned `libfdt`'
           } >> "$GITHUB_STEP_SUMMARY"

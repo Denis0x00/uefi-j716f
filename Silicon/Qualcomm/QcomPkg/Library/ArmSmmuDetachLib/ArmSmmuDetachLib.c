@@ -20,6 +20,9 @@
 // Global Variables
 //
 STATIC ARM_SMMU_V2_DEVICE SmmuDevice;
+// Scoped to the synchronous new entry below; baseline entry always clears it.
+STATIC UINT32 R35PreserveBanks;
+STATIC UINT32 R35PreserveSlots[2];
 
 VOID
 ArmSmmuDisableContextBank (IN UINT32 ContextBankIndex)
@@ -120,6 +123,11 @@ ArmSmmuDetachAll (
     UINT32 S2cr;
     UINT32 Smr;
 
+    // Retain the original selected slots as evidence even if a route changed.
+    if (R35PreserveBanks && (i == 4 || i == R35PreserveSlots[0] || i == R35PreserveSlots[1])) {
+      continue;
+    }
+
     // Get GR0_SMR
     Smr = ArmSmmuGr0Read (&SmmuDevice, ARM_SMMU_GR0_SMR (i));
 
@@ -133,6 +141,12 @@ ArmSmmuDetachAll (
 
     // Extract Context Bank index and type
     ContextBankIndex = (S2cr >> S2CR_CBNDX_SHIFT) & S2CR_CBNDX_MASK;
+
+    // After a partially attempted maintenance operation, retain the old UFS
+    // namespace even if routing changed. This preserves evidence, not ownership.
+    if (ContextBankIndex < 32 && (R35PreserveBanks & (1U << ContextBankIndex))) {
+      continue;
+    }
 
     // Extract Stream ID and Mask
     SmrId   = (Smr >> SMR_ID_SHIFT) & SMR_ID_MASK;
@@ -198,13 +212,18 @@ ArmSmmuDetachAll (
       continue;
     }
 
+    if (i < 32 && (R35PreserveBanks & (1U << i))) {
+      continue;
+    }
+
     // Free Context Bank
     ArmSmmuFreeContextBank (i);
   }
 }
 
+STATIC
 VOID
-ArmSmmuDetach (
+ArmSmmuDetachInternal (
   IN CONST UINT16 *SkipStreams,
   IN UINT8         SkipStreamCount)
 {
@@ -233,4 +252,25 @@ ArmSmmuDetach (
 
   // Detach IOMMU Domains
   ArmSmmuDetachAll (SkipStreams, SkipStreamCount);
+}
+
+
+VOID
+ArmSmmuDetach (IN CONST UINT16 *SkipStreams, IN UINT8 SkipStreamCount)
+{
+  R35PreserveBanks = 0;
+  ArmSmmuDetachInternal (SkipStreams, SkipStreamCount);
+}
+
+VOID
+ArmSmmuDetachR35 (IN CONST UINT16 *SkipStreams, IN UINT8 SkipStreamCount, IN BOOLEAN PreserveUfs, IN UINT32 UfsSlot0, IN UINT32 UfsSlot1)
+{
+  // Caller is the reviewed TB-J716F Kona SEC producer, before DXE scheduling.
+  // Always retain CB4, even if its route changed or became invalid. Retain
+  // CB2/CB3 as well after any attempted SMMU maintenance; no ownership grant.
+  R35PreserveBanks = (1U << 4) | (PreserveUfs ? ((1U << 2) | (1U << 3)) : 0);
+  R35PreserveSlots[0] = PreserveUfs && UfsSlot0 < 87 ? UfsSlot0 : MAX_UINT32;
+  R35PreserveSlots[1] = PreserveUfs && UfsSlot1 < 87 ? UfsSlot1 : MAX_UINT32;
+  ArmSmmuDetachInternal (SkipStreams, SkipStreamCount);
+  R35PreserveBanks = 0;
 }
