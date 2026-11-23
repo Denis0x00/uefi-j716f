@@ -19,6 +19,13 @@ Snapdragon 870 / SM8250-AC), built on Mu-Silicium for the
   captures the SM8250 UFS HCI + APPS SMMU handoff state in SEC and publishes a
   versioned, checksummed RAM record for the companion XNU read-only storage
   bring-up driver (`UniXNU-j716f`).
+- **Verified iPadOS 17.7.11 hardware handoff (`UniXNU-j716f` Stage 6 & Stage 7+)**:
+  r38 `SILICIUM_UEFI.fd` (`DarwinBoot` + 80 MiB initrd `CRC32` verification +
+  `2560x1600` BGRX32 GOP + `PackedRAMDisk` + 2 GiB `darwinboot-memory-size`)
+  successfully handed off to XNU through real APFS root mount (`disk3s1`,
+  `/sbin/launchd` + `SystemVersion.plist` read) and rendered the real iPadOS
+  Apple logo on TB-J716F hardware while retaining full `JXLG` early XNU logs
+  across forced resets.
 
 ## Building
 
