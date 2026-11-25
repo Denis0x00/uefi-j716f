@@ -19,14 +19,17 @@ Snapdragon 870 / SM8250-AC), built on Mu-Silicium for the
   captures the SM8250 UFS HCI + APPS SMMU handoff state in SEC and publishes a
   versioned, checksummed RAM record for the companion XNU read-only storage
   bring-up driver (`UniXNU-j716f`).
-- **Verified iPadOS 17.7.11 hardware handoff (`UniXNU-j716f` Stage 6 & Stage 7+ desktop)**:
-  r38 `SILICIUM_UEFI.fd` (`DarwinBoot` + 80 MiB initrd `CRC32` verification +
-  `2560x1600` BGRX32 GOP + `PackedRAMDisk` + 2 GiB `darwinboot-memory-size`)
-  successfully handed off to XNU through real APFS root mount (`disk3s1`,
-  `/sbin/launchd` + `SystemVersion.plist` read), 8-core Kryo 585 SMP + EPSS
-  CPUfreq, Goodix GT7386 touch, PM8150 hardware buttons, and full iPadOS 17.7.11
-  SpringBoard desktop with wallpaper on TB-J716F hardware while retaining full
-  `JXLG` early XNU logs across forced resets.
+- **Verified iPadOS 17.7.11 hardware handoff (`UniXNU-j716f` Stage 6, Stage 7+ desktop & Phase 4a/4b GPU)**:
+  r38 `SILICIUM_UEFI.fd` (`DarwinBoot` + 80–88 MiB initrd `CRC32` verification +
+  `2560x1600` BGRX32 GOP + `PackedRAMDisk` + `GpuAddon` `NGPUADD2` +
+  `owner-trust.bundle` + contiguous `High RAM` `0xFFC20000..0x1F8000000`
+  [~3.88 GiB] hosting up to 3.5 GiB `0xE0000000` `darwinboot-memory-size` with
+  ~284 MiB loader headroom) successfully handed off to XNU through real APFS
+  root mount (`disk3s1`, `/sbin/launchd` + `SystemVersion.plist` read), 8-core
+  Kryo 585 SMP + EPSS CPUfreq, Goodix GT7386 touch, PM8150 hardware buttons,
+  Adreno 650 Phase 3b/4a KMD, and full iPadOS 17.7.11 SpringBoard desktop with
+  wallpaper on TB-J716F hardware while retaining full `JXLG` early XNU logs
+  across forced resets.
 
 ## Building
 
