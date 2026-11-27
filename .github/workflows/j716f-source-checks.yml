@@ -100,12 +100,13 @@ jobs:
           by_name = {name: (base, size) for name, base, size in regions}
           assert by_name['USB30_PRIM'] == (0x0A600000, 0x0011B000)
           assert by_name['AOP CMD DB'] == (0x80860000, 0x00020000)
+          assert by_name['Low RAM 0'] == (0x90500000, 0x0B700000)
           assert by_name['Display Reserved'] == (0x9C000000, 0x02400000)
           assert by_name['Boot Log'] == (0xB0000000, 0x00080000)
+          assert by_name['Low RAM 1'] == (0xB0080000, 0x0CB80000)
           assert by_name['DXE Heap'] == (0xC0000000, 0x0E000000)
           assert by_name['UEFI FD'] == (0xCE000000, 0x00700000)
-          assert by_name['XNU Window'] == (0xD0000000, 0x20000000)
-          assert by_name['High RAM'] == (0xFFC20000, 0xF83E0000)
+          assert by_name['High RAM'] == (0xD0000000, 0x128000000)
           sorted_dram = sorted([r for r in regions if r[1] >= 0x80000000], key=lambda r: r[1])
           for (n1, b1, s1), (n2, b2, s2) in zip(sorted_dram, sorted_dram[1:]):
               assert b1 + s1 <= b2, f'DRAM overlap between {n1} (0x{b1:x}+0x{s1:x}) and {n2} (0x{b2:x})'

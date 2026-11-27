@@ -320,6 +320,16 @@
     "UNCACHED_UNBUFFERED_XN"
   ],
   [
+    "Low RAM 0",
+    2421161984,
+    191889408,
+    "AddMem",
+    "SYS_MEM",
+    "SYS_MEM_CAP",
+    "Conv",
+    "WRITE_BACK_XN"
+  ],
+  [
     "Sched Heap",
     2613051392,
     4194304,
@@ -460,6 +470,16 @@
     "UNCACHED_UNBUFFERED_XN"
   ],
   [
+    "Low RAM 1",
+    2953314304,
+    213385216,
+    "AddMem",
+    "SYS_MEM",
+    "SYS_MEM_CAP",
+    "Conv",
+    "WRITE_BACK_XN"
+  ],
+  [
     "DXE Heap",
     3221225472,
     234881024,
@@ -490,19 +510,9 @@
     "UNCACHED_UNBUFFERED_XN"
   ],
   [
-    "XNU Window",
-    3489660928,
-    536870912,
-    "AddMem",
-    "SYS_MEM",
-    "SYS_MEM_CAP",
-    "Conv",
-    "WRITE_BACK_XN"
-  ],
-  [
     "High RAM",
-    4290904064,
-    4164812800,
+    3489660928,
+    4966055936,
     "AddMem",
     "SYS_MEM",
     "SYS_MEM_CAP",
