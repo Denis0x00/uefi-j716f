@@ -209,9 +209,9 @@ int main(int argc, char **argv) {
   fdt=tree_at(FDT_A,1); initrd(fdt,0xd0100001,0xd0100201,8,8); pack(fdt); accepted(FDT_A);
   CHECK(mPaddedEnd==0xd0100201); finish();
   begin("sector padding extending beyond permitted region rejected");
-  fdt=tree_at(FDT_A,1); initrd(fdt,0xefffff01,0xf0000000,8,8); pack(fdt); rejected(FDT_A,"padding"); finish();
+  fdt=tree_at(FDT_A,1); initrd(fdt,0x1f7ffff01ULL,0x1f8000000ULL,8,8); pack(fdt); rejected(FDT_A,"padding"); finish();
   begin("last complete sector of permitted region accepted");
-  fdt=tree_at(FDT_A,1); initrd(fdt,0xeffffe00,0xf0000000,8,8); pack(fdt); accepted(FDT_A); CHECK(mPaddedEnd==0xf0000000); finish();
+  fdt=tree_at(FDT_A,1); initrd(fdt,0x1f7fffe00ULL,0x1f8000000ULL,8,8); pack(fdt); accepted(FDT_A); CHECK(mPaddedEnd==0x1f8000000ULL); finish();
   begin("unmapped RAM hole initrd rejected without dereference");
   fdt=tree_at(FDT_A,1); initrd(fdt,0xbcc00000,0xbcc00200,8,8); pack(fdt); rejected(FDT_A,"outside"); finish();
   begin("initrd crossing physical RAM hole rejected");
